@@ -1,0 +1,32 @@
+[
+	{
+		"name": "Public APIs",
+		"description": "A collective list of free APIs for use in software and web development.",
+		"auth": "No",
+		"link": "https://api.publicapis.org/"
+	},
+	{
+		"name": "OpenWeatherMap",
+		"description": "Weather data APIs.",
+		"auth": "API Key",
+		"link": "https://openweathermap.org/api"
+	},
+	{
+		"name": "GitHub API",
+		"description": "Access GitHub data.",
+		"auth": "OAuth",
+		"link": "https://docs.github.com/en/rest"
+	},
+	{
+		"name": "NASA APIs",
+		"description": "APIs for NASA's data, including Astronomy Picture of the Day.",
+		"auth": "API Key",
+		"link": "https://api.nasa.gov/"
+	},
+	{
+		"name": "Random User Generator",
+		"description": "Generate random user data.",
+		"auth": "No",
+		"link": "https://randomuser.me/documentation"
+	}
+]
