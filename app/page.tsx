@@ -64,7 +64,7 @@ export default function HomePage() {
 			header={
 				<ToolHeader
 					icon={<SettingsIcon className="h-6 w-6" />}
-					title="Developer Utilities Hub"
+					title="kit."
 					actions={
 						<Button asChild size="sm" variant="outline">
 							<Link href="https://github.com">Star on GitHub</Link>

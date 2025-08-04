@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Developer Utilities Hub",
+	title: "kit.",
 	description: "A collection of developer tools.",
 };
 
