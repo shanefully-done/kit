@@ -67,7 +67,7 @@ export default function HomePage() {
 					title="kit."
 					actions={
 						<Button asChild size="sm" variant="outline">
-							<Link href="https://github.com">Star on GitHub</Link>
+							<Link href="https://github.com/shanefully-done/kit">Star on GitHub</Link>
 						</Button>
 					}
 				/>
