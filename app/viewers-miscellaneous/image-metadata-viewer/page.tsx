@@ -85,7 +85,7 @@ const ImageMetadataViewerPage = () => {
 						{isDragActive ? (
 							<p>Drop the image here ...</p>
 						) : (
-							<p>Drag 'n' drop an image here, or click to select one</p>
+							<p>Drag &apos;n&apos; drop an image here, or click to select one</p>
 						)}
 					</div>
 					{image && (

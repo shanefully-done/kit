@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,6 @@ import {
 import { Copy, PaletteIcon } from "lucide-react";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
-import { Card } from "@/components/ui/card";
 
 interface ColorStop {
 	id: string;
@@ -36,11 +35,7 @@ export default function GradientGeneratorPage() {
 	]);
 	const [cssOutput, setCssOutput] = useState("");
 
-	useEffect(() => {
-		updateCssOutput();
-	}, [gradientType, angle, radialPosition, colorStops]);
-
-	const updateCssOutput = () => {
+	const updateCssOutput = useCallback(() => {
 		const sortedColorStops = [...colorStops].sort(
 			(a, b) => a.position - b.position
 		);
@@ -55,7 +50,11 @@ export default function GradientGeneratorPage() {
 			css = `radial-gradient(at ${radialPosition.x}% ${radialPosition.y}%, ${stops})`;
 		}
 		setCssOutput(css);
-	};
+	}, [colorStops, gradientType, angle, radialPosition.x, radialPosition.y]);
+
+	useEffect(() => {
+		updateCssOutput();
+	}, [updateCssOutput]);
 
 	const addColorStop = () => {
 		const newId = String(colorStops.length + 1);

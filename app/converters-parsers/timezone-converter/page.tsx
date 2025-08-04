@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
 import {
 	Calendar as CalendarIcon,
@@ -42,11 +42,7 @@ export default function TimezoneConverterPage() {
 		setTimezones(allTimezones);
 	}, []);
 
-	useEffect(() => {
-		convertTime();
-	}, [sourceTime, sourceTimezone, targetTimezone]);
-
-	const convertTime = () => {
+	const convertTime = useCallback(() => {
 		if (!sourceTime) {
 			setConvertedTime("");
 			return;
@@ -60,7 +56,11 @@ export default function TimezoneConverterPage() {
 			console.error("Error converting timezone:", error);
 			setConvertedTime("Invalid Timezone or Date");
 		}
-	};
+	}, [sourceTime, sourceTimezone, targetTimezone]);
+
+	useEffect(() => {
+		convertTime();
+	}, [sourceTime, sourceTimezone, targetTimezone, convertTime]);
 
 	const TimezoneSelect = ({
 		selectedTimezone,

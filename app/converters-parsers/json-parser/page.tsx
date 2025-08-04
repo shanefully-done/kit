@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";

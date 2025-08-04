@@ -69,7 +69,7 @@ const Sidebar = () => {
 			<div className="flex items-center justify-between h-16 px-4 border-b">
 				{!isCollapsed && (
 					<Link href="/" className="text-xl font-bold">
-						tools.ixtj.dev
+						kit.
 					</Link>
 				)}
 				<Button

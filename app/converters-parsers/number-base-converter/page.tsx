@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -18,37 +18,9 @@ export default function NumberBaseConverter() {
 		"decimal" | "hexadecimal" | "octal" | "binary" | null
 	>(null);
 
-	const convert = (
-		value: string,
-		fromBase: "decimal" | "hexadecimal" | "octal" | "binary"
-	) => {
-		if (!value) {
-			setDecimal("");
-			setHexadecimal("");
-			setOctal("");
-			setBinary("");
-			return;
-		}
-
-		let decValue: number | null = null;
-
-		try {
-			if (fromBase === "decimal") {
-				if (!/^-?\d*$/.test(value)) throw new Error("Invalid decimal input");
-				decValue = parseInt(value, 10);
-			} else if (fromBase === "hexadecimal") {
-				if (!/^-?[0-9a-fA-F]*$/.test(value))
-					throw new Error("Invalid hexadecimal input");
-				decValue = parseInt(value, 16);
-			} else if (fromBase === "octal") {
-				if (!/^-?[0-7]*$/.test(value)) throw new Error("Invalid octal input");
-				decValue = parseInt(value, 8);
-			} else if (fromBase === "binary") {
-				if (!/^-?[01]*$/.test(value)) throw new Error("Invalid binary input");
-				decValue = parseInt(value, 2);
-			}
-
-			if (isNaN(decValue!)) {
+	const convert = useCallback(
+		(value: string, fromBase: "decimal" | "hexadecimal" | "octal" | "binary") => {
+			if (!value) {
 				setDecimal("");
 				setHexadecimal("");
 				setOctal("");
@@ -56,47 +28,75 @@ export default function NumberBaseConverter() {
 				return;
 			}
 
-			if (activeInput !== "decimal") setDecimal(decValue!.toString(10));
-			if (activeInput !== "hexadecimal")
-				setHexadecimal(decValue!.toString(16).toUpperCase());
-			if (activeInput !== "octal") setOctal(decValue!.toString(8));
-			if (activeInput !== "binary") setBinary(decValue!.toString(2));
-		} catch (error: unknown) {
-			if (error instanceof Error) {
-				toast.error(error.message);
-			} else {
-				toast.error("An unknown error occurred.");
+			let decValue: number | null = null;
+
+			try {
+				if (fromBase === "decimal") {
+					if (!/^-?\d*$/.test(value)) throw new Error("Invalid decimal input");
+					decValue = parseInt(value, 10);
+				} else if (fromBase === "hexadecimal") {
+					if (!/^-?[0-9a-fA-F]*$/.test(value))
+						throw new Error("Invalid hexadecimal input");
+					decValue = parseInt(value, 16);
+				} else if (fromBase === "octal") {
+					if (!/^-?[0-7]*$/.test(value)) throw new Error("Invalid octal input");
+					decValue = parseInt(value, 8);
+				} else if (fromBase === "binary") {
+					if (!/^-?[01]*$/.test(value)) throw new Error("Invalid binary input");
+					decValue = parseInt(value, 2);
+				}
+
+				if (isNaN(decValue!)) {
+					setDecimal("");
+					setHexadecimal("");
+					setOctal("");
+					setBinary("");
+					return;
+				}
+
+				if (activeInput !== "decimal") setDecimal(decValue!.toString(10));
+				if (activeInput !== "hexadecimal")
+					setHexadecimal(decValue!.toString(16).toUpperCase());
+				if (activeInput !== "octal") setOctal(decValue!.toString(8));
+				if (activeInput !== "binary") setBinary(decValue!.toString(2));
+			} catch (error: unknown) {
+				if (error instanceof Error) {
+					toast.error(error.message);
+				} else {
+					toast.error("An unknown error occurred.");
+				}
+				setDecimal("");
+				setHexadecimal("");
+				setOctal("");
+				setBinary("");
 			}
-			setDecimal("");
-			setHexadecimal("");
-			setOctal("");
-			setBinary("");
-		}
-	};
+		},
+		[activeInput]
+	);
 
 	useEffect(() => {
 		if (activeInput === "decimal") {
 			convert(decimal, "decimal");
 		}
-	}, [decimal, activeInput]);
+	}, [decimal, activeInput, convert]);
 
 	useEffect(() => {
 		if (activeInput === "hexadecimal") {
 			convert(hexadecimal, "hexadecimal");
 		}
-	}, [hexadecimal, activeInput]);
+	}, [hexadecimal, activeInput, convert]);
 
 	useEffect(() => {
 		if (activeInput === "octal") {
 			convert(octal, "octal");
 		}
-	}, [octal, activeInput]);
+	}, [octal, activeInput, convert]);
 
 	useEffect(() => {
 		if (activeInput === "binary") {
 			convert(binary, "binary");
 		}
-	}, [binary, activeInput]);
+	}, [binary, activeInput, convert]);
 
 	const handleCopy = (text: string) => {
 		if (text) {

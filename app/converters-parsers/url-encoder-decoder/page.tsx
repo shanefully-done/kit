@@ -21,8 +21,9 @@ export default function URLEncoderDecoderPage() {
 	useEffect(() => {
 		try {
 			setEncodedOutput(encodeURIComponent(encodeInput));
-		} catch (error: any) {
-			setEncodedOutput("Error encoding: " + error.message);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : "Unknown error";
+			setEncodedOutput("Error encoding: " + message);
 		}
 	}, [encodeInput]);
 
@@ -30,9 +31,10 @@ export default function URLEncoderDecoderPage() {
 		try {
 			setDecodedOutput(decodeURIComponent(decodeInput));
 			setDecodeError("");
-		} catch (error: any) {
+		} catch (error) {
 			setDecodedOutput("");
-			setDecodeError("Error decoding: " + error.message);
+			const message = error instanceof Error ? error.message : "Unknown error";
+			setDecodeError("Error decoding: " + message);
 		}
 	}, [decodeInput]);
 
