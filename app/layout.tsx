@@ -20,6 +20,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
 	title: "kit.",
 	description: "A collection of developer tools.",
+	openGraph: {
+		title: "kit.",
+		description: "A collection of developer tools.",
+		url: "https://kit.ixtj.dev",
+		siteName: "kit.",
+		images: [
+			{
+				url: "/preview.png",
+				width: 800,
+				height: 600,
+				alt: "A collection of developer tools.",
+			},
+		],
+		locale: "en_US",
+		type: "website",
+	},
 };
 
 export default function RootLayout({
