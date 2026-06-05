@@ -11,7 +11,9 @@ A fast, privacy-conscious collection of developer tools built with **Next.js 15*
 ### 🔁 Converters & Parsers
 
 - ✅ Base64 encoder/decoder
-- ✅ URL encoder/decoder and parser
+- ✅ Base64 image converter
+- ✅ URL encoder/decoder
+- ✅ URL parser
 - ✅ JSON formatter and parser
 - ✅ CRON expression parser
 - ✅ Regex tester
@@ -24,16 +26,17 @@ A fast, privacy-conscious collection of developer tools built with **Next.js 15*
 
 ### ⚙️ Generators
 
-- 🔢 UUID generator
-- 🔐 Password generator
-- 🔑 Hash generator
-- 🎨 Gradient generator
-- 📱 QR code generator & reader
+- ✅ UUID generator
+- ✅ Password generator
+- ✅ Hash generator
+- ✅ Gradient generator
+- ✅ QR code generator & reader
+- ✅ Port number generator
 
 ### 🔍 Viewers & Misc
 
-- 📚 API directory
-- 🖼️ Image metadata viewer
+- ✅ API directory
+- ✅ Image metadata viewer
 
 ---
 
@@ -75,7 +78,7 @@ yarn            # yarn
 Start the dev server:
 
 ```bash
-bun dev
+bun run dev
 # or:
 npm run dev
 pnpm dev
@@ -89,21 +92,19 @@ Then open: [http://localhost:3000](http://localhost:3000)
 ## 🗂️ Project Structure
 
 ```
-app/                # Next.js App Router pages
-components/         # Shared UI components
-hooks/              # Custom React hooks
-data/               # Static datasets (e.g., API listings)
-lib/                # Utility functions
-public/             # Static files
+app/                              # Next.js App Router pages
+  converters-parsers/<tool>/      # Converter & parser tool pages
+  generators/<tool>/              # Generator tool pages
+  viewers-miscellaneous/<tool>/   # Viewer & misc tool pages
+components/                       # Shared UI components
+hooks/                            # Custom React hooks
+data/                             # Static datasets (e.g., API listings)
+lib/                              # Utility functions
+public/                           # Static files
 ```
 
-### Tool Directories
-
-- `app/converters-parsers/`
-- `app/generators/`
-- `app/viewers-miscellaneous/`
-
 Main entry: [`app/page.tsx`](app/page.tsx)
+
 Hot reloading is enabled during development.
 
 ---
@@ -147,7 +148,7 @@ If you integrate external services, follow the [Next.js env guide](https://nextj
 4. Configure environment variables if needed
 5. Deploy
 
-More info: [Next.js Deployment Docs](https://nextjs.org/docs/app/building-your-application/deploying)
+More info: [Next.js Deployment Docs](https://nextjs.org/docs/app/building-your-application/deployment)
 
 ### 🌍 Other Platforms
 
