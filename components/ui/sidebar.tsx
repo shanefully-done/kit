@@ -29,6 +29,7 @@ const Sidebar = () => {
 		{ name: "CRON Parser", href: "/converters-parsers/cron-parser" },
 		{ name: "JSON Parser", href: "/converters-parsers/json-parser" },
 		{ name: "Hash Generator", href: "/generators/hash" },
+		{ name: "Port Number Generator", href: "/generators/port" },
 		{ name: "JWT Decoder", href: "/converters-parsers/jwt-decoder" },
 		{
 			name: "URL Encoder/Decoder",

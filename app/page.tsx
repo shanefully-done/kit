@@ -41,6 +41,7 @@ const categories = [
 			{ label: "Password", href: "/generators/password" },
 			{ label: "QR Code", href: "/generators/qr-code" },
 			{ label: "Gradient", href: "/generators/gradient" },
+		{ label: "Port Number", href: "/generators/port" },
 		],
 		icon: <Wand2Icon className="h-5 w-5" />,
 	},
