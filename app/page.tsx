@@ -30,6 +30,7 @@ const categories = [
 			{ label: "JSON Parser", href: "/converters-parsers/json-parser" },
 			{ label: "Regex Tester", href: "/converters-parsers/regex-tester" },
 			{ label: "URL Tools", href: "/converters-parsers/url-parser" },
+			{ label: "Base64 Image", href: "/converters-parsers/base64-image-converter" },
 		],
 		icon: <LayersIcon className="h-5 w-5" />,
 	},

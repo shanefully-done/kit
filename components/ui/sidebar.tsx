@@ -44,6 +44,10 @@ const Sidebar = () => {
 			name: "Base64 Encoder/Decoder",
 			href: "/converters-parsers/base64-encoder-decoder",
 		},
+		{
+			name: "Base64 Image Converter",
+			href: "/converters-parsers/base64-image-converter",
+		},
 		{ name: "Regex Tester", href: "/converters-parsers/regex-tester" },
 		{
 			name: "Number Base Converter",
