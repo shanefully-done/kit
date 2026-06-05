@@ -21,6 +21,28 @@ const PasswordGeneratorPage = () => {
 	const [includeSymbols, setIncludeSymbols] = useState(true);
 	const [strength, setStrength] = useState(0);
 
+	const calculateStrength = useCallback(
+		(pwd: string) => {
+			let newStrength = 0;
+			if (pwd.length > 0) {
+				newStrength += pwd.length * 4; // Length contributes
+				if (includeUppercase) newStrength += 10;
+				if (includeLowercase) newStrength += 10;
+				if (includeNumbers) newStrength += 10;
+				if (includeSymbols) newStrength += 10;
+
+				// Deductions for common patterns (simplified)
+				if (/(.)\1\1/.test(pwd)) newStrength -= 20; // Three consecutive identical characters
+				if (/(abc|123)/i.test(pwd)) newStrength -= 15; // Simple sequences
+
+				// Ensure strength is within 0-100 range
+				newStrength = Math.max(0, Math.min(100, newStrength));
+			}
+			setStrength(newStrength);
+		},
+		[includeUppercase, includeLowercase, includeNumbers, includeSymbols]
+	);
+
 	const generatePassword = useCallback(() => {
 		let characters = "";
 		if (includeUppercase) characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -47,29 +69,8 @@ const PasswordGeneratorPage = () => {
 		includeLowercase,
 		includeNumbers,
 		includeSymbols,
+		calculateStrength,
 	]);
-
-	const calculateStrength = useCallback(
-		(pwd: string) => {
-			let newStrength = 0;
-			if (pwd.length > 0) {
-				newStrength += pwd.length * 4; // Length contributes
-				if (includeUppercase) newStrength += 10;
-				if (includeLowercase) newStrength += 10;
-				if (includeNumbers) newStrength += 10;
-				if (includeSymbols) newStrength += 10;
-
-				// Deductions for common patterns (simplified)
-				if (/(.)\1\1/.test(pwd)) newStrength -= 20; // Three consecutive identical characters
-				if (/(abc|123)/i.test(pwd)) newStrength -= 15; // Simple sequences
-
-				// Ensure strength is within 0-100 range
-				newStrength = Math.max(0, Math.min(100, newStrength));
-			}
-			setStrength(newStrength);
-		},
-		[includeUppercase, includeLowercase, includeNumbers, includeSymbols]
-	);
 
 	const copyToClipboard = useCallback(() => {
 		navigator.clipboard.writeText(password);

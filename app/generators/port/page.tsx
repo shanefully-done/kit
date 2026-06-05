@@ -1,17 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Switch } from "@/components/ui/switch";
@@ -31,15 +25,11 @@ export default function PortGeneratorPage() {
 	const [generatedPorts, setGeneratedPorts] = useState("");
 	const [copyStatus, setCopyStatus] = useState("Copy");
 
-	useEffect(() => {
-		generatePorts();
-	}, []);
-
 	const effectiveMin = avoidReserved
 		? Math.max(minPort, RESERVED_PORT_CEILING)
 		: minPort;
 
-	const generatePorts = () => {
+	const generatePorts = useCallback(() => {
 		const clampedMin = Math.max(0, Math.min(65535, effectiveMin));
 		const clampedMax = Math.max(0, Math.min(65535, maxPort));
 		const lo = Math.min(clampedMin, clampedMax);
@@ -51,7 +41,11 @@ export default function PortGeneratorPage() {
 		}
 		setGeneratedPorts(ports.join("\n"));
 		setCopyStatus("Copy");
-	};
+	}, [effectiveMin, maxPort, numPorts]);
+
+	useEffect(() => {
+		generatePorts();
+	}, [generatePorts]);
 
 	const handleAvoidReservedChange = (checked: boolean) => {
 		setAvoidReserved(checked);

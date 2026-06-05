@@ -1,18 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Fingerprint as FingerprintIcon } from "lucide-react";
@@ -22,18 +16,18 @@ export default function UUIDGeneratorPage() {
 	const [generatedUUIDs, setGeneratedUUIDs] = useState("");
 	const [copyStatus, setCopyStatus] = useState("Copy");
 
-	useEffect(() => {
-		generateUUIDs();
-	}, []); // Generate UUIDs on initial load
-
-	const generateUUIDs = () => {
+	const generateUUIDs = useCallback(() => {
 		const uuids: string[] = [];
 		for (let i = 0; i < numUUIDs; i++) {
 			uuids.push(uuidv4());
 		}
 		setGeneratedUUIDs(uuids.join("\n"));
 		setCopyStatus("Copy"); // Reset copy status when new UUIDs are generated
-	};
+	}, [numUUIDs]);
+
+	useEffect(() => {
+		generateUUIDs();
+	}, [generateUUIDs]); // Generate UUIDs on initial load
 
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(generatedUUIDs).then(

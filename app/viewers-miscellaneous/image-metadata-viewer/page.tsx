@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Card } from "@/components/ui/card";
+import NextImage from "next/image";
 import { Input } from "@/components/ui/input";
 import {
 	Table,
@@ -91,10 +91,12 @@ const ImageMetadataViewerPage = () => {
 					{image && (
 						<div className="mt-2 text-center">
 							<p className="text-sm">Selected file: {image.name}</p>
-							<img
+							<NextImage
 								src={URL.createObjectURL(image)}
 								alt="Uploaded"
 								className="max-w-full h-auto mt-2 mx-auto"
+								width={300}
+								height={300}
 							/>
 						</div>
 					)}

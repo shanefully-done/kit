@@ -32,7 +32,7 @@ const base64UrlDecode = (str: string) => {
 const formatJson = (jsonString: string) => {
 	try {
 		return JSON.stringify(JSON.parse(jsonString), null, 2);
-	} catch (error) {
+	} catch {
 		return jsonString; // Return original if not valid JSON
 	}
 };

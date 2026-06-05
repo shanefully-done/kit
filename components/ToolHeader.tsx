@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
-import { SunIcon, MoonIcon } from "lucide-react";
 import { useMounted } from "@/hooks/use-mounted";
 
 type ToolHeaderProps = {
@@ -20,7 +18,6 @@ export function ToolHeader({
 	className,
 }: ToolHeaderProps) {
 	const mounted = useMounted();
-	const { resolvedTheme, theme } = useTheme();
 
 	// Wrap any theme-dependent icon with mounted guard to prevent SSR/CSR mismatch
 	const ThemedIcon = React.useMemo(() => {
@@ -43,7 +40,7 @@ export function ToolHeader({
 		// If consumer passes no theme-specific icon, show original icon
 		// For demonstration, if consumer passed nothing, fall back to null
 		return icon;
-	}, [icon, mounted, resolvedTheme, theme]);
+	}, [icon, mounted]);
 
 	return (
 		<div
