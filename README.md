@@ -1,162 +1,142 @@
 # kit.
 
-A fast, privacy-conscious collection of developer tools built with **Next.js 15**, **TypeScript**, and **shadcn/ui** — designed for speed, simplicity, and local-first convenience.
+A single-page developer toolkit — 20 instruments that run entirely in your browser. No API routes, no database, no auth, no telemetry: every route prerenders to static HTML and all computation (hashing, parsing, encoding, QR, EXIF) happens client-side.
 
-> ⚠️ Performance, feature completeness, and bug-free operation are not guaranteed. Use at your own discretion.
+Built with [Next.js 15](https://nextjs.org) (App Router), React 19, TypeScript, Tailwind CSS v4, and shadcn/ui, dressed in a Swiss Industrial Print design system: paper substrate, carbon ink, one hazard-red accent, zero rounded corners.
 
----
+Live at [kit.ixtj.dev](https://kit.ixtj.dev).
 
-## ✨ Features
+## Tools
 
-### 🔁 Converters & Parsers
+### Converters & Parsers
 
-- ✅ Base64 encoder/decoder
-- ✅ Base64 image converter
-- ✅ URL encoder/decoder
-- ✅ URL parser
-- ✅ JSON formatter and parser
-- ✅ CRON expression parser
-- ✅ Regex tester
-- ✅ Number base converter
-- ✅ Text case converter
-- ✅ Timestamp converter
-- ✅ Timezone converter
-- ✅ Unit converter
-- ✅ JWT decoder
+| Tool                   | Route                                        |
+| ---------------------- | -------------------------------------------- |
+| Base64 Encoder/Decoder | `/converters-parsers/base64-encoder-decoder` |
+| Base64 Image Converter | `/converters-parsers/base64-image-converter` |
+| CRON Parser            | `/converters-parsers/cron-parser`            |
+| JSON Parser            | `/converters-parsers/json-parser`            |
+| JWT Decoder            | `/converters-parsers/jwt-decoder`            |
+| Number Base Converter  | `/converters-parsers/number-base-converter`  |
+| Regex Tester           | `/converters-parsers/regex-tester`           |
+| Text Case Converter    | `/converters-parsers/text-case`              |
+| Timestamp Converter    | `/converters-parsers/timestamp-converter`    |
+| Timezone Converter     | `/converters-parsers/timezone-converter`     |
+| Unit Converter         | `/converters-parsers/unit-converter`         |
+| URL Encoder/Decoder    | `/converters-parsers/url-encoder-decoder`    |
+| URL Parser             | `/converters-parsers/url-parser`             |
 
-### ⚙️ Generators
+### Generators
 
-- ✅ UUID generator
-- ✅ Password generator
-- ✅ Hash generator
-- ✅ Gradient generator
-- ✅ QR code generator & reader
-- ✅ Port number generator
+| Tool                       | Route                  |
+| -------------------------- | ---------------------- |
+| Gradient Generator         | `/generators/gradient` |
+| Hash Generator             | `/generators/hash`     |
+| Password Generator         | `/generators/password` |
+| Port Number Generator      | `/generators/port`     |
+| QR Code Generator & Reader | `/generators/qr-code`  |
+| UUID Generator             | `/generators/uuid`     |
 
-### 🔍 Viewers & Misc
+### Viewers & Misc
 
-- ✅ API directory
-- ✅ Image metadata viewer
+| Tool                  | Route                                          |
+| --------------------- | ---------------------------------------------- |
+| API Directory         | `/viewers-miscellaneous/api-directory`         |
+| Image Metadata Viewer | `/viewers-miscellaneous/image-metadata-viewer` |
 
----
+## Design System
 
-## 🧱 Tech Stack
+One archetype, committed fully: **Swiss Industrial Print, light-only**. There is no dark mode.
 
-- [Next.js 15](https://nextjs.org) (App Router)
-- [TypeScript](https://www.typescriptlang.org/)
-- [shadcn/ui](https://ui.shadcn.com)
-- Tailwind CSS
-- Prettier for code formatting
+- **Substrate** — paper `#F4F4F0`, panel `#FCFCFA`, muted paper `#E9E8E2`
+- **Ink** — `#0A0A0A` for text, borders, and structural rules (1px internal, 2px outer panels)
+- **Hazard red** — `#E61919`, the single accent. Vital data, errors, selection, focus. Never decoration.
+- **Typography** — Inter Black for macro headings (uppercase, `-0.04em` tracking, compressed leading); IBM Plex Mono for everything data-adjacent. Labels and chrome are uppercase micro type; user data stays verbatim.
+- **Geometry** — square corners everywhere. No gradients, no backdrop blur, no soft shadows. Floating layers (dialogs, popovers, toasts) get a hard `4px 4px 0` offset shadow instead.
 
----
+Tokens live in `app/globals.css` (`--ink`, `--paper`, `--hazard` and the shadcn token set); all 40+ primitives in `components/ui/` implement the system, so new tools inherit it by using them.
 
-## 🚀 Getting Started
+## Getting Started
 
-### Requirements
-
-- [Node.js 20+](https://nodejs.org/) _(only if not using Bun)_
-- [Bun v1.1+](https://bun.sh) _(recommended for speed)_
-
-### Installation
-
-#### Using Bun _(recommended)_
+[Bun](https://bun.sh) is recommended; npm/pnpm/yarn also work.
 
 ```bash
 bun install
-```
-
-#### Or use your preferred package manager:
-
-```bash
-npm install     # npm
-pnpm install    # pnpm
-yarn            # yarn
-```
-
-### Development
-
-Start the dev server:
-
-```bash
 bun run dev
-# or:
-npm run dev
-pnpm dev
-yarn dev
 ```
 
-Then open: [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000). No environment variables are required — the app has no server dependencies to configure.
 
----
+### Commands
 
-## 🗂️ Project Structure
+| Command         | Action                                              |
+| --------------- | --------------------------------------------------- |
+| `bun install`   | Install dependencies                                |
+| `bun run dev`   | Dev server (Turbopack)                              |
+| `bun run lint`  | ESLint (`next/core-web-vitals` + `next/typescript`) |
+| `bun run build` | Production build                                    |
+| `bun run start` | Serve the production build                          |
+
+Change order: **edit → lint → build → commit**. No test runner is configured.
+
+## Project Structure
 
 ```
-app/                              # Next.js App Router pages
-  converters-parsers/<tool>/      # Converter & parser tool pages
-  generators/<tool>/              # Generator tool pages
-  viewers-miscellaneous/<tool>/   # Viewer & misc tool pages
-components/                       # Shared UI components
-hooks/                            # Custom React hooks
-data/                             # Static datasets (e.g., API listings)
-lib/                              # Utility functions
+app/
+  page.tsx                        # Homepage: spec-sheet index of all tools
+  layout.tsx                      # Shell: sidebar, fonts, toasters, noise overlay
+  globals.css                     # Design tokens + base layer
+  converters-parsers/<tool>/      # Client-side tool pages
+  generators/<tool>/
+  viewers-miscellaneous/<tool>/
+components/
+  ToolPageLayout.tsx              # Bordered panel wrapper for tool pages
+  ToolHeader.tsx                  # Macro-typography header bar
+  ui/                             # shadcn/ui primitives, restyled to the system
+data/
+  api-list.json                   # Static dataset for the API Directory
+lib/utils.ts                      # cn() helper
 public/                           # Static files
 ```
 
-Main entry: [`app/page.tsx`](app/page.tsx)
+All tool pages are client components (`"use client"`). There are no server components with data fetching, no API routes, and no server actions anywhere in the app.
 
-Hot reloading is enabled during development.
+## Adding a Tool
 
----
+Three files:
 
-## 📦 Build & Deploy
+1. **`app/<category>/<tool-name>/page.tsx`** — the tool page:
 
-### Production Build
+   ```tsx
+   "use client";
 
-```bash
-bun run build
-# or:
-npm run build
-pnpm build
-yarn build
-```
+   import { ToolPageLayout } from "@/components/ToolPageLayout";
+   import { ToolHeader } from "@/components/ToolHeader";
+   import { SomeIcon } from "lucide-react";
 
-### Start Server
+   export default function ToolPage() {
+   	return (
+   		<ToolPageLayout
+   			header={<ToolHeader icon={<SomeIcon aria-hidden />} title="Tool Name" />}
+   		>
+   			{/* tool UI */}
+   		</ToolPageLayout>
+   	);
+   }
+   ```
 
-```bash
-bun run start
-# or:
-npm run start
-pnpm start
-yarn start
-```
+2. **`components/ui/sidebar.tsx`** — add the entry to its category in the `groups` array.
 
-### Environment Variables
+3. **`app/page.tsx`** — add the tool to the matching section of the homepage data array.
 
-Most tools are fully client-side and require no `.env` configuration.
-If you integrate external services, follow the [Next.js env guide](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables) and use `.env.local`.
+Follow the design contract above: use the existing primitives, label compartments in mono uppercase, keep user data verbatim, and reserve red for things that matter.
 
----
+## Deployment
 
-## ☁️ Deployment
+The production build is fully static — every route is prerendered. Deploy to [Vercel](https://vercel.com/new), or any host that can serve a Next.js build (or plain static files). Nothing to configure.
 
-### 🔗 Deploy to Vercel _(Recommended)_
+## Credits
 
-1. Push the repo to GitHub/GitLab/Bitbucket
-2. Go to [vercel.com/new](https://vercel.com/new)
-3. Import your project
-4. Configure environment variables if needed
-5. Deploy
+Inspired by [utilsfor.dev](https://utilsfor.dev) by [Jairon Landa](https://github.com/Jaironlanda).
 
-More info: [Next.js Deployment Docs](https://nextjs.org/docs/app/building-your-application/deployment)
-
-### 🌍 Other Platforms
-
-This is a standard Next.js app and can be deployed to any environment that supports Node.js or Bun.
-Vercel is recommended for best DX, CI/CD, and edge support.
-
----
-
-## 🙏 Credits & Inspiration
-
-This project was inspired by the excellent work at [utilsfor.dev](https://utilsfor.dev) by [Jairon Landa](https://github.com/Jaironlanda).
+© 2026 [IXTJ](https://www.ixtj.dev/)
