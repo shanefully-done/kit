@@ -107,7 +107,7 @@ const Sidebar = () => {
 				/>
 			</div>
 
-			<nav className="flex-1 overflow-y-auto">
+			<nav className="flex-1 min-h-0 overflow-y-auto">
 				{hasResults ? (
 					filteredGroups.map((group) => (
 						<React.Fragment key={group.label}>

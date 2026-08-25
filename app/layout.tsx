@@ -47,14 +47,14 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inter.variable} ${ibmPlexMono.variable} antialiased`}>
-				<div className="flex min-h-screen bg-background">
+				<div className="flex h-dvh overflow-hidden bg-background">
 					{/* Desktop Sidebar */}
 					<aside className="hidden md:flex md:flex-col w-72 border-r-2 border-ink bg-paper">
 						<Sidebar />
 					</aside>
 
 					{/* Main Content */}
-					<main className="flex-1 overflow-auto">
+					<main className="flex-1 overflow-y-auto">
 						{/* Mobile Header with Sheet Trigger */}
 						<div className="sticky top-0 z-20 flex items-center gap-3 border-b-2 border-ink bg-paper p-3 md:hidden">
 							<Sheet>
