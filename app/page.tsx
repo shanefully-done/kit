@@ -80,7 +80,7 @@ export default function HomePage() {
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						SOURCE / GIT HUB
+						SOURCE / GITHUB
 					</Link>
 				</Button>
 			</div>
@@ -145,7 +145,14 @@ export default function HomePage() {
 
 			{/* Footer strip */}
 			<div className="flex flex-wrap justify-between gap-2 px-4 py-6 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground md:px-8">
-				<span>© KIT / SWISS SERIES</span>
+				<a
+					href="https://www.ixtj.dev/"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="transition-colors hover:text-hazard"
+				>
+					© 2026 IXTJ
+				</a>
 				<span>SET IN INTER + IBM PLEX MONO ®</span>
 			</div>
 		</main>

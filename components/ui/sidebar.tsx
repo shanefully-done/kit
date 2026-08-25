@@ -144,7 +144,7 @@ const Sidebar = () => {
 
 			<div className="border-t-2 border-ink px-4 py-3">
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					© KIT / ALL PROCESSING LOCAL
+					© IXTJ / ALL PROCESSING LOCAL
 				</p>
 				<p className="mt-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
 					NO ACCOUNTS · NO TELEMETRY · UNIT D-01

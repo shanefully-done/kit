@@ -13,7 +13,7 @@ import { Lock as LockIcon } from "lucide-react";
 
 const PasswordGeneratorPage = () => {
 	const [password, setPassword] = useState("");
-	const [length, setLength] = useState(12);
+	const [length, setLength] = useState(30);
 	const [includeUppercase, setIncludeUppercase] = useState(true);
 	const [includeLowercase, setIncludeLowercase] = useState(true);
 	const [includeNumbers, setIncludeNumbers] = useState(true);
