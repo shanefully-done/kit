@@ -4,6 +4,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { SheetTrigger } from "@/components/ui/sheet";
 import { MenuIcon } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 type MobileNavToggleProps = {
 	label?: string;
@@ -11,14 +12,16 @@ type MobileNavToggleProps = {
 };
 
 export function MobileNavToggle({
-	label = "Open navigation",
+	label,
 	className,
 }: MobileNavToggleProps) {
+	const { t } = useI18n();
+	const text = label ?? t("ui.openNavigation");
 	return (
 		<SheetTrigger asChild>
 			<Button
-				aria-label={label}
-				title={label}
+				aria-label={text}
+				title={text}
 				variant="outline"
 				size="icon"
 				className={className ? className : "md:hidden"}

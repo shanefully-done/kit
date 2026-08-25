@@ -16,6 +16,7 @@ import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Languages } from "lucide-react";
 import { toast } from "sonner";
+import { useI18n } from "@/lib/i18n";
 
 type CharInfo = {
 	char: string;
@@ -45,83 +46,53 @@ function getUtf8Bytes(codePoint: number): number[] {
 }
 
 function isControlOrWhitespace(ch: string): boolean {
-	const cp = ch.codePointAt(0)!;
-	if (cp <= 0x20 && cp !== 0x20) return true; // space is not control
+	const cp = ch.codePointAt(0) ?? 0;
+	if (cp <= 0x20) return true;
 	if (cp === 0x7f) return true;
 	if (cp >= 0x80 && cp <= 0x9f) return true;
 	return false;
 }
 
 function analyzeChars(text: string): CharInfo[] {
-	const result: CharInfo[] = [];
-	for (const ch of text) {
-		const cp = ch.codePointAt(0)!;
-		const utf8Bytes = getUtf8Bytes(cp);
-		result.push({
+	return [...text].map((ch) => {
+		const cp = ch.codePointAt(0) ?? 0;
+		const utf8 = getUtf8Bytes(cp);
+		return {
 			char: ch,
 			code: cp.toString(16).toUpperCase().padStart(4, "0"),
 			dec: cp,
-			utf8Hex: utf8Bytes
-				.map((b) => b.toString(16).toUpperCase().padStart(2, "0"))
-				.join(" "),
-			jsEscape:
-				cp <= 0xffff
-					? `\\u${cp.toString(16).toUpperCase().padStart(4, "0")}`
-					: `\\u{${cp.toString(16).toUpperCase()}}`,
-			htmlEntity: `&#${cp};`,
-		});
-	}
-	return result;
+			utf8Hex: utf8.map((b) => b.toString(16).toUpperCase().padStart(2, "0")).join(" "),
+			jsEscape: cp <= 0xffff
+				? `\\u${cp.toString(16).toUpperCase().padStart(4, "0")}`
+				: `\\u{${cp.toString(16).toUpperCase()}}`,
+			htmlEntity: cp <= 0xffff
+				? `&#${cp};`
+				: `&#${cp};`,
+		};
+	});
 }
 
 function escapeAll(text: string): string {
-	let result = "";
-	for (const ch of text) {
-		const cp = ch.codePointAt(0)!;
-		if (cp <= 0xffff) {
-			result += `\\u${cp.toString(16).toUpperCase().padStart(4, "0")}`;
-		} else {
-			result += `\\u{${cp.toString(16).toUpperCase()}}`;
-		}
-	}
-	return result;
+	return [...text]
+		.map((ch) => {
+			const cp = ch.codePointAt(0) ?? 0;
+			return `\\u${cp.toString(16).toUpperCase().padStart(4, "0")}`;
+		})
+		.join("");
 }
 
 function unescape(text: string): string {
-	let result = "";
-	let i = 0;
-	while (i < text.length) {
-		if (text[i] === "\\" && text[i + 1] === "u") {
-			if (text[i + 2] === "{") {
-				const close = text.indexOf("}", i + 3);
-				if (close !== -1) {
-					const hex = text.slice(i + 3, close);
-					const cp = parseInt(hex, 16);
-					if (!isNaN(cp)) {
-						result += String.fromCodePoint(cp);
-						i = close + 1;
-						continue;
-					}
-				}
-			} else {
-				const hex = text.slice(i + 2, i + 6);
-				if (hex.length === 4) {
-					const cp = parseInt(hex, 16);
-					if (!isNaN(cp)) {
-						result += String.fromCodePoint(cp);
-						i += 6;
-						continue;
-					}
-				}
-			}
-		}
-		result += text[i];
-		i++;
+	try {
+		return text.replace(/\\u\{?([0-9a-fA-F]+)\}?/g, (_, hex) =>
+			String.fromCodePoint(Number.parseInt(hex, 16)),
+		);
+	} catch {
+		return text;
 	}
-	return result;
 }
 
 export default function UnicodeInspectorPage() {
+	const { t } = useI18n();
 	const [text, setText] = useState("KIT \u00ae 2.6 \ud55c");
 	const [transformOutput, setTransformOutput] = useState("");
 
@@ -131,31 +102,31 @@ export default function UnicodeInspectorPage() {
 		const result = escapeAll(text);
 		setTransformOutput(result);
 		navigator.clipboard.writeText(result);
-		toast.success("COPIED");
-	}, [text]);
+		toast.success(t("common.copied"));
+	}, [text, t]);
 
 	const handleUnescape = useCallback(() => {
 		const result = unescape(text);
 		setTransformOutput(result);
 		navigator.clipboard.writeText(result);
-		toast.success("COPIED");
-	}, [text]);
+		toast.success(t("common.copied"));
+	}, [text, t]);
 
 	const handleCopyOutput = useCallback(() => {
 		navigator.clipboard.writeText(transformOutput);
-		toast.success("COPIED");
-	}, [transformOutput]);
+		toast.success(t("common.copied"));
+	}, [transformOutput, t]);
 
 	return (
 		<ToolPageLayout
 			header={
-				<ToolHeader icon={<Languages aria-hidden />} title="Unicode Inspector" />
+				<ToolHeader icon={<Languages aria-hidden />} title={t("tools.unicodeInspector.title")} />
 			}
 		>
 			<div className="space-y-4">
 				<div className="space-y-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						Input
+						{t("tools.unicodeInspector.inputLabel")}
 					</Label>
 					<Textarea
 						value={text}
@@ -166,34 +137,34 @@ export default function UnicodeInspectorPage() {
 
 				{chars.length === 0 ? (
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ AWAITING INPUT ]
+						{t("tools.unicodeInspector.awaitingInput")}
 					</p>
 				) : (
 					<>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ Character Breakdown ]
+							{t("tools.unicodeInspector.breakdownLabel")}
 						</p>
 						<div className="border border-ink overflow-auto">
 							<Table>
 								<TableHeader>
 									<TableRow>
 										<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
-											Char
+											{t("tools.unicodeInspector.headerChar")}
 										</TableHead>
 										<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
-											U+Code
+											{t("tools.unicodeInspector.headerCode")}
 										</TableHead>
 										<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
-											Dec
+											{t("tools.unicodeInspector.headerDec")}
 										</TableHead>
 										<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
-											UTF-8 Bytes
+											{t("tools.unicodeInspector.headerUtf8")}
 										</TableHead>
 										<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
-											JS Escape
+											{t("tools.unicodeInspector.headerJsEscape")}
 										</TableHead>
 										<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
-											HTML
+											{t("tools.unicodeInspector.headerHtml")}
 										</TableHead>
 									</TableRow>
 								</TableHeader>
@@ -213,7 +184,7 @@ export default function UnicodeInspectorPage() {
 											<TableCell className="font-mono text-xs">{c.jsEscape}</TableCell>
 											<TableCell className="font-mono text-xs">{c.htmlEntity}</TableCell>
 										</TableRow>
-									))}
+								))}
 								</TableBody>
 							</Table>
 						</div>
@@ -221,14 +192,14 @@ export default function UnicodeInspectorPage() {
 				)}
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ Transform ]
+					{t("tools.unicodeInspector.transformLabel")}
 				</p>
 				<div className="flex gap-2">
 					<Button variant="outline" onClick={handleEscapeAll}>
-						Escape All
+						{t("tools.unicodeInspector.escapeAll")}
 					</Button>
 					<Button variant="outline" onClick={handleUnescape}>
-						Unescape
+						{t("tools.unicodeInspector.unescape")}
 					</Button>
 				</div>
 
@@ -236,10 +207,10 @@ export default function UnicodeInspectorPage() {
 					<>
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 							<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-								Output
+								{t("tools.unicodeInspector.outputLabel")}
 							</span>
 							<Button variant="outline" size="sm" onClick={handleCopyOutput}>
-								Copy
+								{t("common.copy")}
 							</Button>
 						</div>
 						<pre className="border border-ink bg-muted/40 p-3 font-mono text-sm whitespace-pre-wrap break-all overflow-auto max-h-64">

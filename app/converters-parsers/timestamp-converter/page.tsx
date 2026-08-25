@@ -20,8 +20,10 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 const TimestampConverterPage = () => {
+	const { t } = useI18n();
 	const [unixTimestamp, setUnixTimestamp] = useState("");
 	const [humanReadableDate, setHumanReadableDate] = useState("");
 	const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -41,7 +43,7 @@ const TimestampConverterPage = () => {
 
 		const numValue = Number(value);
 		if (isNaN(numValue)) {
-			setTimestampError("Invalid timestamp");
+			setTimestampError(t("tools.timestampConverter.invalidTimestamp"));
 			setHumanReadableDate("");
 			setSelectedDate(undefined);
 			return;
@@ -58,7 +60,7 @@ const TimestampConverterPage = () => {
 			setHumanReadableDate(format(date, "yyyy-MM-dd HH:mm:ss"));
 			setSelectedDate(date);
 		} else {
-			setTimestampError("Invalid timestamp");
+			setTimestampError(t("tools.timestampConverter.invalidTimestamp"));
 			setHumanReadableDate("");
 			setSelectedDate(undefined);
 		}
@@ -82,7 +84,7 @@ const TimestampConverterPage = () => {
 			setUnixTimestamp(getUnixTime(date).toString());
 			setSelectedDate(date);
 		} else {
-			setDateError("Invalid date format (e.g., YYYY-MM-DD HH:mm:ss)");
+			setDateError(t("tools.timestampConverter.invalidDateFormat"));
 			setUnixTimestamp("");
 			setSelectedDate(undefined);
 		}
@@ -102,7 +104,7 @@ const TimestampConverterPage = () => {
 
 	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(text);
-		toast.success("Copied to clipboard!");
+		toast.success(t("common.copied"));
 	};
 
 	return (
@@ -110,26 +112,26 @@ const TimestampConverterPage = () => {
 			header={
 				<ToolHeader
 					icon={<ClockIcon aria-hidden className="h-5 w-5" />}
-					title="Timestamp Converter"
+					title={t("tools.timestampConverter.title")}
 				/>
 			}
 		>
 			<div className="space-y-4">
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ UNIX → HUMAN ]
+					{t("tools.timestampConverter.unixToHumanLabel")}
 				</p>
 				<div className="grid w-full items-center gap-2">
 					<label
 						htmlFor="unix-timestamp"
 						className="font-mono text-[11px] uppercase tracking-[0.08em]"
 					>
-						EXPRESSION
+						{t("tools.timestampConverter.expressionLabel")}
 					</label>
 					<Input
 						id="unix-timestamp"
-						placeholder="e.g., 1678886400 or 1678886400000"
+						placeholder={t("tools.timestampConverter.unixPlaceholder")}
 						value={unixTimestamp}
-						onChange={handleUnixTimestampChange}
+					onChange={handleUnixTimestampChange}
 					/>
 					{timestampError && (
 						<p className="font-mono text-sm text-hazard-text">{timestampError}</p>
@@ -137,18 +139,18 @@ const TimestampConverterPage = () => {
 				</div>
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ HUMAN → UNIX ]
+					{t("tools.timestampConverter.humanToUnixLabel")}
 				</p>
 				<div className="grid w-full items-center gap-2">
 					<label
 						htmlFor="human-readable-input"
 						className="font-mono text-[11px] uppercase tracking-[0.08em]"
 					>
-						EXPRESSION
+						{t("tools.timestampConverter.expressionLabel")}
 					</label>
 					<Input
 						id="human-readable-input"
-						placeholder="e.g., 2023-03-15 00:00:00"
+						placeholder={t("tools.timestampConverter.humanPlaceholder")}
 						value={humanReadableDate}
 						onChange={handleHumanReadableDateChange}
 					/>
@@ -156,7 +158,7 @@ const TimestampConverterPage = () => {
 				</div>
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ DATE PICKER ]
+					{t("tools.timestampConverter.datePickerLabel")}
 				</p>
 				<Popover>
 					<PopoverTrigger asChild>
@@ -168,7 +170,7 @@ const TimestampConverterPage = () => {
 							)}
 						>
 							<CalendarIcon className="mr-2 h-4 w-4" />
-							{selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
+							{selectedDate ? format(selectedDate, "PPP") : <span>{t("tools.timestampConverter.pickDate")}</span>}
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent className="w-auto p-0">
@@ -183,12 +185,12 @@ const TimestampConverterPage = () => {
 
 				<div className="border-t border-ink pt-4" />
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ READOUTS ]
+					{t("tools.timestampConverter.readoutsLabel")}
 				</p>
 				<div className="space-y-3">
 					<div>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-1">
-							UNIX TIMESTAMP
+							{t("tools.timestampConverter.unixTimestampLabel")}
 						</p>
 						<div className="border border-ink bg-muted/40 px-3 py-3 flex items-center justify-between gap-2">
 							<span className="font-mono text-lg md:text-xl break-all">
@@ -199,7 +201,7 @@ const TimestampConverterPage = () => {
 								size="icon"
 								onClick={() => copyToClipboard(unixTimestamp)}
 								disabled={!unixTimestamp}
-								aria-label="Copy unix timestamp"
+								aria-label={t("tools.timestampConverter.copyUnixAria")}
 							>
 								<CopyIcon className="h-4 w-4" aria-hidden />
 							</Button>
@@ -207,7 +209,7 @@ const TimestampConverterPage = () => {
 					</div>
 					<div>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-1">
-							ISO 8601
+							{t("tools.timestampConverter.iso8601Label")}
 						</p>
 						<div className="border border-ink bg-muted/40 px-3 py-3 flex items-center justify-between gap-2">
 							<span className="font-mono text-lg md:text-xl break-all">
@@ -218,7 +220,7 @@ const TimestampConverterPage = () => {
 								size="icon"
 								onClick={() => copyToClipboard(humanReadableDate)}
 								disabled={!humanReadableDate}
-								aria-label="Copy human readable"
+								aria-label={t("tools.timestampConverter.copyHumanAria")}
 							>
 								<CopyIcon className="h-4 w-4" aria-hidden />
 							</Button>

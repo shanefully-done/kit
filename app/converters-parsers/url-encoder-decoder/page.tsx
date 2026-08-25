@@ -8,8 +8,10 @@ import { CopyIcon, SettingsIcon } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 export default function URLEncoderDecoderPage() {
+	const { t } = useI18n();
 	const [encodeInput, setEncodeInput] = useState("");
 	const [decodeInput, setDecodeInput] = useState("");
 	const [encodedOutput, setEncodedOutput] = useState("");
@@ -41,8 +43,7 @@ export default function URLEncoderDecoderPage() {
 	const handleCopy = (text: string) => {
 		navigator.clipboard.writeText(text);
 		toast({
-			title: "Copied!",
-			description: "Content copied to clipboard.",
+			title: t("common.copied"),
 		});
 	};
 
@@ -51,37 +52,37 @@ export default function URLEncoderDecoderPage() {
 			header={
 				<ToolHeader
 					icon={<SettingsIcon aria-hidden />}
-					title="URL Encoder/Decoder"
+					title={t("tools.urlEncoderDecoder.title")}
 				/>
 			}
 		>
 			<div className="space-y-4">
 				<Tabs defaultValue="encode" className="w-full">
 					<TabsList className="grid w-full grid-cols-2">
-						<TabsTrigger value="encode">Encode URL</TabsTrigger>
-						<TabsTrigger value="decode">Decode URL</TabsTrigger>
+						<TabsTrigger value="encode">{t("tools.urlEncoderDecoder.encodeTab")}</TabsTrigger>
+						<TabsTrigger value="decode">{t("tools.urlEncoderDecoder.decodeTab")}</TabsTrigger>
 					</TabsList>
 
 					<TabsContent value="encode" className="p-0 space-y-4">
 						<Textarea
-							placeholder="Enter text to encode..."
+							placeholder={t("tools.urlEncoderDecoder.encodePlaceholder")}
 							value={encodeInput}
 							onChange={(e) => setEncodeInput(e.target.value)}
 							className="min-h-[150px] font-mono"
 						/>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ ENCODED OUTPUT ]
+							[ {t("tools.urlEncoderDecoder.encodedOutputLabel")} ]
 						</p>
 						<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[150px] relative">
 							{encodedOutput || (
-								<span className="text-muted-foreground">Encoded output</span>
+								<span className="text-muted-foreground">{t("tools.urlEncoderDecoder.encodedOutputEmpty")}</span>
 							)}
 							<Button
 								variant="outline"
 								size="sm"
 								className="absolute top-2 right-2"
 								onClick={() => handleCopy(encodedOutput)}
-								aria-label="Copy encoded output"
+								aria-label={t("tools.urlEncoderDecoder.copyEncodedAria")}
 							>
 								<CopyIcon className="h-4 w-4" />
 							</Button>
@@ -90,7 +91,7 @@ export default function URLEncoderDecoderPage() {
 
 					<TabsContent value="decode" className="p-0 space-y-4">
 						<Textarea
-							placeholder="Enter text to decode..."
+							placeholder={t("tools.urlEncoderDecoder.decodePlaceholder")}
 							value={decodeInput}
 							onChange={(e) => setDecodeInput(e.target.value)}
 							className={`min-h-[150px] font-mono ${decodeError ? "border-hazard" : ""}`}
@@ -99,18 +100,18 @@ export default function URLEncoderDecoderPage() {
 							<p className="text-hazard-text font-mono text-sm">{decodeError}</p>
 						)}
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ DECODED OUTPUT ]
+							[ {t("tools.urlEncoderDecoder.decodedOutputLabel")} ]
 						</p>
 						<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[150px] relative">
 							{decodedOutput || (
-								<span className="text-muted-foreground">Decoded output</span>
+								<span className="text-muted-foreground">{t("tools.urlEncoderDecoder.decodedOutputEmpty")}</span>
 							)}
 							<Button
 								variant="outline"
 								size="sm"
 								className="absolute top-2 right-2"
 								onClick={() => handleCopy(decodedOutput)}
-								aria-label="Copy decoded output"
+								aria-label={t("tools.urlEncoderDecoder.copyDecodedAria")}
 							>
 								<CopyIcon className="h-4 w-4" />
 							</Button>

@@ -13,9 +13,11 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 import { ScanLine } from "lucide-react";
 
 export default function IdGeneratorPage() {
+	const { t } = useI18n();
 	const [tab, setTab] = usePersistentState("id-generator:tab", "uuid-v4");
 	const [count, setCount] = usePersistentState("id-generator:count", 5);
 	const [uppercase, setUppercase] = usePersistentState(
@@ -72,12 +74,17 @@ export default function IdGeneratorPage() {
 
 	const handleCopy = useCallback(() => {
 		navigator.clipboard.writeText(allIds);
-		toast.success("COPIED");
-	}, [allIds]);
+		toast.success(t("common.copied"));
+	}, [allIds, t]);
 
 	return (
 		<ToolPageLayout
-			header={<ToolHeader icon={<ScanLine aria-hidden />} title="ID Generator" />}
+			header={
+				<ToolHeader
+					icon={<ScanLine aria-hidden />}
+					title={t("tools.idGenerator.title")}
+				/>
+			}
 		>
 			<div className="space-y-4">
 				<Tabs value={tab} onValueChange={setTab}>
@@ -91,13 +98,13 @@ export default function IdGeneratorPage() {
 					<TabsContent value="uuid-v4" className="space-y-4">
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								UPPERCASE
+								{t("tools.idGenerator.uppercaseLabel")}
 							</Label>
 							<Switch checked={uppercase} onCheckedChange={setUppercase} />
 						</div>
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								HYPHENS
+								{t("tools.idGenerator.hyphensLabel")}
 							</Label>
 							<Switch checked={hyphens} onCheckedChange={setHyphens} />
 						</div>
@@ -106,13 +113,13 @@ export default function IdGeneratorPage() {
 					<TabsContent value="uuid-v7" className="space-y-4">
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								UPPERCASE
+								{t("tools.idGenerator.uppercaseLabel")}
 							</Label>
 							<Switch checked={uppercase} onCheckedChange={setUppercase} />
 						</div>
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								HYPHENS
+								{t("tools.idGenerator.hyphensLabel")}
 							</Label>
 							<Switch checked={hyphens} onCheckedChange={setHyphens} />
 						</div>
@@ -121,7 +128,7 @@ export default function IdGeneratorPage() {
 					<TabsContent value="ulid" className="space-y-4">
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								UPPERCASE
+								{t("tools.idGenerator.uppercaseLabel")}
 							</Label>
 							<Switch checked={ulidUppercase} onCheckedChange={setUlidUppercase} />
 						</div>
@@ -130,7 +137,7 @@ export default function IdGeneratorPage() {
 					<TabsContent value="nanoid" className="space-y-4">
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								SIZE
+								{t("tools.idGenerator.sizeLabel")}
 							</Label>
 							<Input
 								type="number"
@@ -146,7 +153,7 @@ export default function IdGeneratorPage() {
 
 				<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						Count
+						{t("tools.idGenerator.countLabel")}
 					</Label>
 					<Input
 						type="number"
@@ -159,14 +166,16 @@ export default function IdGeneratorPage() {
 				</div>
 
 				<div className="flex flex-wrap gap-2">
-					<Button onClick={generate}>GENERATE</Button>
+					<Button onClick={generate}>
+						{t("tools.idGenerator.generateButton")}
+					</Button>
 					<Button variant="outline" onClick={handleCopy}>
-						COPY ALL
+						{t("tools.idGenerator.copyAll")}
 					</Button>
 				</div>
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ Output ]
+					{t("tools.idGenerator.outputLabel")}
 				</p>
 				<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all space-y-1">
 					{ids.map((id, i) => (

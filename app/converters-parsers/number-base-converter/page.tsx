@@ -8,8 +8,10 @@ import { Copy, Calculator as CalculatorIcon } from "lucide-react";
 import { toast } from "sonner";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 export default function NumberBaseConverter() {
+	const { t } = useI18n();
 	const [decimal, setDecimal] = useState("");
 	const [hexadecimal, setHexadecimal] = useState("");
 	const [octal, setOctal] = useState("");
@@ -32,17 +34,17 @@ export default function NumberBaseConverter() {
 
 			try {
 				if (fromBase === "decimal") {
-					if (!/^-?\d*$/.test(value)) throw new Error("Invalid decimal input");
+					if (!/^-?\d*$/.test(value)) throw new Error(t("tools.numberBaseConverter.invalidDecimal"));
 					decValue = parseInt(value, 10);
 				} else if (fromBase === "hexadecimal") {
 					if (!/^-?[0-9a-fA-F]*$/.test(value))
-						throw new Error("Invalid hexadecimal input");
+						throw new Error(t("tools.numberBaseConverter.invalidHexadecimal"));
 					decValue = parseInt(value, 16);
 				} else if (fromBase === "octal") {
-					if (!/^-?[0-7]*$/.test(value)) throw new Error("Invalid octal input");
+					if (!/^-?[0-7]*$/.test(value)) throw new Error(t("tools.numberBaseConverter.invalidOctal"));
 					decValue = parseInt(value, 8);
 				} else if (fromBase === "binary") {
-					if (!/^-?[01]*$/.test(value)) throw new Error("Invalid binary input");
+					if (!/^-?[01]*$/.test(value)) throw new Error(t("tools.numberBaseConverter.invalidBinary"));
 					decValue = parseInt(value, 2);
 				}
 
@@ -63,7 +65,7 @@ export default function NumberBaseConverter() {
 				if (error instanceof Error) {
 					toast.error(error.message);
 				} else {
-					toast.error("An unknown error occurred.");
+					toast.error(t("tools.numberBaseConverter.unknownError"));
 				}
 				setDecimal("");
 				setHexadecimal("");
@@ -71,7 +73,7 @@ export default function NumberBaseConverter() {
 				setBinary("");
 			}
 		},
-		[activeInput],
+		[activeInput, t],
 	);
 
 	useEffect(() => {
@@ -101,9 +103,9 @@ export default function NumberBaseConverter() {
 	const handleCopy = (text: string) => {
 		if (text) {
 			navigator.clipboard.writeText(text);
-			toast.success("Copied to clipboard!");
+			toast.success(t("common.copied"));
 		} else {
-			toast.error("Nothing to copy!");
+			toast.error(t("tools.numberBaseConverter.nothingToCopy"));
 		}
 	};
 
@@ -112,13 +114,13 @@ export default function NumberBaseConverter() {
 			header={
 				<ToolHeader
 					icon={<CalculatorIcon aria-hidden className="h-5 w-5" />}
-					title="Number Base Converter"
+					title={t("tools.numberBaseConverter.title")}
 				/>
 			}
 		>
 			<div className="space-y-3">
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ INPUT ]
+					{t("tools.numberBaseConverter.inputLabel")}
 				</p>
 				<div className="space-y-2">
 					<div className="grid grid-cols-[4.5rem_1fr] items-center gap-2">
@@ -126,7 +128,7 @@ export default function NumberBaseConverter() {
 							htmlFor="decimal"
 							className="font-mono text-[11px] uppercase tracking-[0.08em]"
 						>
-							DEC
+							{t("tools.numberBaseConverter.decLabel")}
 						</label>
 						<div className="flex gap-2">
 							<Input
@@ -137,12 +139,12 @@ export default function NumberBaseConverter() {
 									setDecimal(e.target.value);
 									setActiveInput("decimal");
 								}}
-								placeholder="Enter decimal number"
+								placeholder={t("tools.numberBaseConverter.decPlaceholder")}
 							/>
 							<Button
 								variant="outline"
 								size="icon"
-								aria-label="Copy decimal"
+								aria-label={t("tools.numberBaseConverter.copyDecAria")}
 								onClick={() => handleCopy(decimal)}
 							>
 								<Copy className="h-4 w-4" aria-hidden />
@@ -155,7 +157,7 @@ export default function NumberBaseConverter() {
 							htmlFor="hexadecimal"
 							className="font-mono text-[11px] uppercase tracking-[0.08em]"
 						>
-							HEX
+							{t("tools.numberBaseConverter.hexLabel")}
 						</label>
 						<div className="flex gap-2">
 							<Input
@@ -163,12 +165,12 @@ export default function NumberBaseConverter() {
 								type="text"
 								value={hexadecimal}
 								onChange={(e) => setHexadecimal(e.target.value)}
-								placeholder="Enter hexadecimal number"
+								placeholder={t("tools.numberBaseConverter.hexPlaceholder")}
 							/>
 							<Button
 								variant="outline"
 								size="icon"
-								aria-label="Copy hexadecimal"
+								aria-label={t("tools.numberBaseConverter.copyHexAria")}
 								onClick={() => handleCopy(hexadecimal)}
 							>
 								<Copy className="h-4 w-4" aria-hidden />
@@ -181,7 +183,7 @@ export default function NumberBaseConverter() {
 							htmlFor="octal"
 							className="font-mono text-[11px] uppercase tracking-[0.08em]"
 						>
-							OCT
+							{t("tools.numberBaseConverter.octLabel")}
 						</label>
 						<div className="flex gap-2">
 							<Input
@@ -192,12 +194,12 @@ export default function NumberBaseConverter() {
 									setOctal(e.target.value);
 									setActiveInput("octal");
 								}}
-								placeholder="Enter octal number"
+								placeholder={t("tools.numberBaseConverter.octPlaceholder")}
 							/>
 							<Button
 								variant="outline"
 								size="icon"
-								aria-label="Copy octal"
+								aria-label={t("tools.numberBaseConverter.copyOctAria")}
 								onClick={() => handleCopy(octal)}
 							>
 								<Copy className="h-4 w-4" aria-hidden />
@@ -210,7 +212,7 @@ export default function NumberBaseConverter() {
 							htmlFor="binary"
 							className="font-mono text-[11px] uppercase tracking-[0.08em]"
 						>
-							BIN
+							{t("tools.numberBaseConverter.binLabel")}
 						</label>
 						<div className="flex gap-2">
 							<Input
@@ -221,12 +223,12 @@ export default function NumberBaseConverter() {
 									setBinary(e.target.value);
 									setActiveInput("binary");
 								}}
-								placeholder="Enter binary number"
+								placeholder={t("tools.numberBaseConverter.binPlaceholder")}
 							/>
 							<Button
 								variant="outline"
 								size="icon"
-								aria-label="Copy binary"
+								aria-label={t("tools.numberBaseConverter.copyBinAria")}
 								onClick={() => handleCopy(binary)}
 							>
 								<Copy className="h-4 w-4" aria-hidden />

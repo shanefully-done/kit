@@ -8,14 +8,19 @@ import { Copy, Braces as BracesIcon } from "lucide-react";
 import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
 
 class ErrorBoundary extends React.Component<
-	{ children: React.ReactNode },
+	{ children: React.ReactNode; renderErrorLabel: string; errorDetailsLabel: string },
 	{ hasError: boolean; error: Error | null; errorInfo: React.ErrorInfo | null }
 > {
-	constructor(props: { children: React.ReactNode }) {
+	constructor(props: {
+		children: React.ReactNode;
+		renderErrorLabel: string;
+		errorDetailsLabel: string;
+	}) {
 		super(props);
 		this.state = { hasError: false, error: null, errorInfo: null };
 	}
@@ -31,12 +36,12 @@ class ErrorBoundary extends React.Component<
 			return (
 				<div className="text-hazard-text p-3 border border-hazard font-mono text-xs">
 					<h4 className="font-mono text-[11px] uppercase tracking-[0.08em] mb-2">
-						[ RENDER ERROR ]
+						{this.props.renderErrorLabel}
 					</h4>
 					<p className="break-all">{this.state.error?.message}</p>
 					<details className="mt-2">
 						<summary className="font-mono text-[11px] uppercase tracking-[0.08em] cursor-pointer">
-							Error Details
+							{this.props.errorDetailsLabel}
 						</summary>
 						<pre className="whitespace-pre-wrap text-xs mt-1">
 							{this.state.errorInfo?.componentStack}
@@ -50,6 +55,7 @@ class ErrorBoundary extends React.Component<
 }
 
 export default function JsonParserPage() {
+	const { t } = useI18n();
 	const [jsonInput, setJsonInput] = useState("");
 	const [isValidJson, setIsValidJson] = useState(true);
 	const [errorMessage, setErrorMessage] = useState("");
@@ -71,25 +77,25 @@ export default function JsonParserPage() {
 		try {
 			const parsedJson = JSON.parse(jsonInput);
 			navigator.clipboard.writeText(JSON.stringify(parsedJson, null, 2));
-			toast.success("Formatted JSON copied to clipboard!");
+			toast.success(t("tools.jsonParser.formattedCopied"));
 		} catch {
-			toast.error("Failed to copy JSON. Please ensure it's valid.");
+			toast.error(t("tools.jsonParser.copyFailed"));
 		}
 	};
 
 	return (
 		<ToolPageLayout
-			header={<ToolHeader icon={<BracesIcon aria-hidden />} title="JSON Parser" />}
+			header={<ToolHeader icon={<BracesIcon aria-hidden />} title={t("tools.jsonParser.title")} />}
 		>
 			<div className="space-y-4">
 				<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ INPUT ]
+					{t("tools.jsonParser.inputLabel")}
 				</p>
 				<Textarea
 					className={`w-full h-64 font-mono ${!isValidJson ? "border-hazard" : ""}`}
 					value={jsonInput}
 					onChange={handleJsonInputChange}
-					placeholder='Enter JSON here, e.g., {"name": "Kilo Code", "age": 30}'
+					placeholder={t("tools.jsonParser.placeholder")}
 				/>
 
 				<div
@@ -99,7 +105,9 @@ export default function JsonParserPage() {
 							: "border-hazard text-hazard-text"
 					}`}
 				>
-					{isValidJson ? <span>[ VALID JSON ]</span> : <span>[ PARSE ERROR ]</span>}
+					{isValidJson
+						? <span>{t("tools.jsonParser.validJson")}</span>
+						: <span>{t("tools.jsonParser.parseError")}</span>}
 				</div>
 
 				{!isValidJson && errorMessage && (
@@ -107,11 +115,14 @@ export default function JsonParserPage() {
 				)}
 
 				<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ FORMATTED OUTPUT ]
+					{t("tools.jsonParser.formattedOutputLabel")}
 				</p>
 				<div className="border border-ink bg-card p-2 overflow-auto max-h-96">
 					{isValidJson && jsonInput ? (
-						<ErrorBoundary>
+						<ErrorBoundary
+							renderErrorLabel={t("tools.jsonParser.renderError")}
+							errorDetailsLabel={t("tools.jsonParser.errorDetails")}
+						>
 							<ReactJson
 								src={JSON.parse(jsonInput)}
 								name={false}
@@ -123,7 +134,7 @@ export default function JsonParserPage() {
 						</ErrorBoundary>
 					) : (
 						<pre className="font-mono text-sm text-muted-foreground">
-							{isValidJson ? "" : "Invalid JSON"}
+							{isValidJson ? "" : t("tools.jsonParser.invalidJson")}
 						</pre>
 					)}
 				</div>
@@ -133,9 +144,9 @@ export default function JsonParserPage() {
 						variant="outline"
 						onClick={handleCopyToClipboard}
 						disabled={!isValidJson || !jsonInput}
-						aria-label="Copy formatted JSON to clipboard"
+						aria-label={t("tools.jsonParser.copyFormattedAria")}
 					>
-						<Copy className="mr-2 h-4 w-4" /> Copy Formatted JSON
+						<Copy className="mr-2 h-4 w-4" /> {t("tools.jsonParser.copyFormatted")}
 					</Button>
 				</div>
 			</div>

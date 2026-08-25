@@ -10,11 +10,13 @@ import { Label } from "@/components/ui/label";
 import { CopyIcon, UploadIcon } from "@radix-ui/react-icons";
 import { DownloadIcon, ImageIcon } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useI18n } from "@/lib/i18n";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
 import NextImage from "next/image";
 
 export default function Base64ImageConverterPage() {
+	const { t } = useI18n();
 	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 	const [encodedBase64, setEncodedBase64] = useState("");
 	const [decodeInput, setDecodeInput] = useState("");
@@ -63,15 +65,15 @@ export default function Base64ImageConverterPage() {
 			setUploadError("");
 		};
 		reader.onerror = () => {
-			setUploadError("Failed to read file");
+			setUploadError(t("tools.base64ImageConverter.readFileError"));
 		};
 		reader.readAsDataURL(uploadedFile);
-	}, [uploadedFile, includeDataUriPrefix]);
+	}, [uploadedFile, includeDataUriPrefix, t]);
 
 	const handleBase64ToImage = useCallback(() => {
 		setDecodeError("");
 		if (!decodeInput.trim()) {
-			setDecodeError("Please enter a Base64 string");
+			setDecodeError(t("tools.base64ImageConverter.emptyInputError"));
 			return;
 		}
 
@@ -102,18 +104,20 @@ export default function Base64ImageConverterPage() {
 			setDecodeError("");
 		} catch (error: unknown) {
 			setDecodeError(
-				`Invalid Base64 string: ${error instanceof Error ? error.message : String(error)}`,
+				t("tools.base64ImageConverter.invalidBase64Error", {
+					message: error instanceof Error ? error.message : String(error),
+				}),
 			);
 			setDecodedImage(null);
 		}
-	}, [decodeInput, decodedImage]);
+	}, [decodeInput, decodedImage, t]);
 
 	const handleFileUpload = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
 			const file = event.target.files?.[0];
 			if (file) {
 				if (!file.type.startsWith("image/")) {
-					setUploadError("Please upload an image file");
+					setUploadError(t("tools.base64ImageConverter.notImageError"));
 					return;
 				}
 				setUploadedFile(file);
@@ -121,7 +125,7 @@ export default function Base64ImageConverterPage() {
 				setUploadError("");
 			}
 		},
-		[],
+		[t],
 	);
 
 	const handleDragOver = useCallback(
@@ -151,24 +155,24 @@ export default function Base64ImageConverterPage() {
 		const file = event.dataTransfer.files?.[0];
 		if (file) {
 			if (!file.type.startsWith("image/")) {
-				setUploadError("Please upload an image file");
+				setUploadError(t("tools.base64ImageConverter.notImageError"));
 				return;
 			}
 			setUploadedFile(file);
 			setEncodedBase64("");
 			setUploadError("");
 		}
-	}, []);
+	}, [t]);
 
 	const copyToClipboard = useCallback(
 		(text: string, type: string) => {
 			navigator.clipboard.writeText(text);
 			toast({
-				title: `${type} copied to clipboard!`,
+				title: t("common.copiedType", { what: type }),
 				description: text.substring(0, 50) + (text.length > 50 ? "..." : ""),
 			});
 		},
-		[toast],
+		[toast, t],
 	);
 
 	const downloadImage = useCallback(() => {
@@ -188,37 +192,45 @@ export default function Base64ImageConverterPage() {
 			header={
 				<ToolHeader
 					icon={<ImageIcon aria-hidden />}
-					title="Base64 Image Converter"
+					title={t("tools.base64ImageConverter.title")}
 				/>
 			}
 		>
 			<div className="space-y-4">
-				<div className="sr-only">Inputs and outputs organized in tabs below</div>
+				<div className="sr-only">
+					{t("tools.base64ImageConverter.srTabsDescription")}
+				</div>
 
 				<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 					<Label
 						htmlFor="data-uri-prefix"
 						className="font-mono text-[11px] uppercase tracking-[0.08em]"
 					>
-						DATA URI PREFIX
+					{t("tools.base64ImageConverter.dataUriPrefixLabel")}
 					</Label>
 					<div className="flex items-center gap-2">
 						<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-							{includeDataUriPrefix ? "ON" : "OFF"}
+						{includeDataUriPrefix
+							? t("tools.base64ImageConverter.on")
+							: t("tools.base64ImageConverter.off")}
 						</span>
 						<Switch
 							id="data-uri-prefix"
 							checked={includeDataUriPrefix}
 							onCheckedChange={setIncludeDataUriPrefix}
-							aria-label="Toggle data URI prefix"
+						aria-label={t("tools.base64ImageConverter.dataUriToggleAria")}
 						/>
 					</div>
 				</div>
 
 				<Tabs defaultValue="image-to-base64" className="w-full">
 					<TabsList className="grid w-full grid-cols-2">
-						<TabsTrigger value="image-to-base64">Image → Base64</TabsTrigger>
-						<TabsTrigger value="base64-to-image">Base64 → Image</TabsTrigger>
+						<TabsTrigger value="image-to-base64">
+							{t("tools.base64ImageConverter.imgToBase64Tab")}
+						</TabsTrigger>
+						<TabsTrigger value="base64-to-image">
+							{t("tools.base64ImageConverter.base64ToImgTab")}
+						</TabsTrigger>
 					</TabsList>
 
 					<TabsContent value="image-to-base64" className="p-0">
@@ -233,11 +245,11 @@ export default function Base64ImageConverterPage() {
 								onDragLeave={handleDragLeave}
 								onDrop={handleDrop}
 								onClick={() => document.getElementById("image-upload-input")?.click()}
-								aria-label="Upload image to convert"
+							aria-label={t("tools.base64ImageConverter.uploadImageAria")}
 							>
 								<UploadIcon className="w-12 h-12 text-muted-foreground mb-4" />
 								<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground text-center">
-									Drag & drop an image here, or click to select
+								{t("tools.base64ImageConverter.dropzoneLabel")}
 								</p>
 								<input
 									id="image-upload-input"
@@ -251,19 +263,25 @@ export default function Base64ImageConverterPage() {
 							{uploadedFile && (
 								<div className="border border-ink bg-muted/40 p-3">
 									<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground mb-2">
-										[ FILE INFO ]
+									{t("tools.base64ImageConverter.fileInfoLabel")}
 									</p>
 									<div className="grid grid-cols-2 gap-2 font-mono text-sm">
 										<div>
-											<span className="text-muted-foreground">Name:</span>{" "}
+										<span className="text-muted-foreground">
+											{t("tools.base64ImageConverter.nameLabel")}:
+										</span>{" "}
 											<span>{uploadedFile.name}</span>
 										</div>
 										<div>
-											<span className="text-muted-foreground">Size:</span>{" "}
+										<span className="text-muted-foreground">
+											{t("tools.base64ImageConverter.sizeLabel")}:
+										</span>{" "}
 											<span>{(uploadedFile.size / 1024).toFixed(2)} KB</span>
 										</div>
 										<div>
-											<span className="text-muted-foreground">Type:</span>{" "}
+										<span className="text-muted-foreground">
+											{t("tools.base64ImageConverter.typeLabel")}:
+										</span>{" "}
 											<span>{uploadedFile.type}</span>
 										</div>
 									</div>
@@ -274,9 +292,9 @@ export default function Base64ImageConverterPage() {
 								<Button
 									onClick={handleImageToBase64}
 									disabled={!uploadedFile}
-									aria-label="Convert image to Base64"
+								aria-label={t("tools.base64ImageConverter.convertButtonAria")}
 								>
-									Convert to Base64
+								{t("tools.base64ImageConverter.convertButton")}
 								</Button>
 							</div>
 
@@ -284,7 +302,7 @@ export default function Base64ImageConverterPage() {
 								<div className="border border-ink bg-muted/40 p-3 grid place-items-center">
 									<NextImage
 										src={uploadPreview}
-										alt="Uploaded image preview"
+									alt={t("tools.base64ImageConverter.uploadPreviewAlt")}
 										width={300}
 										height={200}
 										unoptimized
@@ -295,7 +313,7 @@ export default function Base64ImageConverterPage() {
 							{encodedBase64 && (
 								<>
 									<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-										[ BASE64 OUTPUT ]
+									{t("tools.base64ImageConverter.base64OutputLabel")}
 									</p>
 									<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[200px] whitespace-pre-wrap">
 										{encodedBase64}
@@ -304,11 +322,18 @@ export default function Base64ImageConverterPage() {
 										<Button
 											variant="outline"
 											size="sm"
-											onClick={() => copyToClipboard(encodedBase64, "Base64 string")}
-											aria-label="Copy Base64 output"
+										onClick={() =>
+											copyToClipboard(
+												encodedBase64,
+												t("tools.base64ImageConverter.base64StringType"),
+											)
+										}
+										aria-label={t(
+											"tools.base64ImageConverter.copyOutputAria",
+										)}
 										>
 											<CopyIcon className="w-4 h-4 mr-2" />
-											Copy
+										{t("common.copy")}
 										</Button>
 									</div>
 								</>
@@ -325,10 +350,10 @@ export default function Base64ImageConverterPage() {
 					<TabsContent value="base64-to-image" className="p-0">
 						<div className="grid w-full gap-4">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-								[ BASE64 INPUT ]
+								{t("tools.base64ImageConverter.base64InputLabel")}
 							</Label>
 							<Textarea
-								placeholder="Paste Base64 string here..."
+							placeholder={t("tools.base64ImageConverter.pastePlaceholder")}
 								value={decodeInput}
 								onChange={(e) => setDecodeInput(e.target.value)}
 								className="min-h-[150px]"
@@ -337,9 +362,9 @@ export default function Base64ImageConverterPage() {
 							<div className="flex flex-wrap gap-2">
 								<Button
 									onClick={handleBase64ToImage}
-									aria-label="Decode Base64 to image"
+								aria-label={t("tools.base64ImageConverter.decodeButtonAria")}
 								>
-									Decode to Image
+								{t("tools.base64ImageConverter.decodeButton")}
 								</Button>
 							</div>
 
@@ -347,15 +372,20 @@ export default function Base64ImageConverterPage() {
 								<div className="border border-ink bg-muted/40 p-3 grid place-items-center">
 									<NextImage
 										src={decodedImage}
-										alt="Decoded image preview"
+									alt={t("tools.base64ImageConverter.decodedPreviewAlt")}
 										width={400}
 										height={300}
 										unoptimized
 									/>
 									<div className="mt-3">
-										<Button onClick={downloadImage} aria-label="Download decoded image">
+									<Button
+										onClick={downloadImage}
+										aria-label={t(
+											"tools.base64ImageConverter.downloadButtonAria",
+										)}
+									>
 											<DownloadIcon className="w-4 h-4 mr-2" />
-											Download Image
+										{t("tools.base64ImageConverter.downloadButton")}
 										</Button>
 									</div>
 								</div>

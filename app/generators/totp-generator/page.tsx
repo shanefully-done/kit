@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { ShieldCheck } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 type ParsedUri = {
 	issuer?: string;
@@ -28,6 +29,7 @@ type ParsedUri = {
 };
 
 export default function TotpGeneratorPage() {
+	const { t } = useI18n();
 	const [input, setInput] = useState("");
 	const [digits, setDigits] = usePersistentState("totp-generator:digits", "6");
 	const [period, setPeriod] = usePersistentState("totp-generator:period", "30");
@@ -54,7 +56,7 @@ export default function TotpGeneratorPage() {
 				if (!(parsed instanceof TOTP)) {
 					setTotp(null);
 					setMeta(null);
-					setError("NOT A TOTP URI");
+					setError(t("tools.totpGenerator.errorNotTotpUri"));
 					return;
 				}
 				setTotp(parsed);
@@ -69,7 +71,7 @@ export default function TotpGeneratorPage() {
 			} catch {
 				setTotp(null);
 				setMeta(null);
-				setError("INVALID URI");
+				setError(t("tools.totpGenerator.errorInvalidUri"));
 			}
 			return;
 		}
@@ -91,9 +93,9 @@ export default function TotpGeneratorPage() {
 		} catch {
 			setTotp(null);
 			setMeta(null);
-			setError("INVALID BASE32");
+			setError(t("tools.totpGenerator.errorInvalidBase32"));
 		}
-	}, [input, isUriMode, digits, period]);
+	}, [input, isUriMode, digits, period, t]);
 
 	useEffect(() => {
 		buildTotp();
@@ -129,19 +131,22 @@ export default function TotpGeneratorPage() {
 	const handleCopy = () => {
 		if (currentCode) {
 			navigator.clipboard.writeText(currentCode);
-			toast.success("COPIED");
+			toast.success(t("tools.totpGenerator.copied"));
 		}
 	};
 
 	return (
 		<ToolPageLayout
 			header={
-				<ToolHeader icon={<ShieldCheck aria-hidden />} title="TOTP Generator" />
+				<ToolHeader
+					icon={<ShieldCheck aria-hidden />}
+					title={t("tools.totpGenerator.title")}
+				/>
 			}
 		>
 			<div className="space-y-4">
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ SECRET / otpauth URI ]
+					{t("tools.totpGenerator.secretLabel")}
 				</p>
 				<Textarea
 					value={input}
@@ -154,7 +159,7 @@ export default function TotpGeneratorPage() {
 					<div className="flex gap-4">
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2 flex-1">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								DIGITS
+								{t("tools.totpGenerator.digitsLabel")}
 							</Label>
 							<Select value={digits} onValueChange={setDigits}>
 								<SelectTrigger className="w-[80px]">
@@ -168,7 +173,7 @@ export default function TotpGeneratorPage() {
 						</div>
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2 flex-1">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								PERIOD
+								{t("tools.totpGenerator.periodLabel")}
 							</Label>
 							<Select value={period} onValueChange={setPeriod}>
 								<SelectTrigger className="w-[80px]">
@@ -193,26 +198,26 @@ export default function TotpGeneratorPage() {
 				{totp && !error && (
 					<>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ CURRENT CODE ]
+							{t("tools.totpGenerator.currentLabel")}
 						</p>
 						<div className="border border-ink bg-muted/40 px-3 py-4 flex items-center justify-between gap-3">
 							<span className="font-mono text-4xl tracking-[0.3em]">
 								{currentCode}
 							</span>
 							<Button variant="outline" onClick={handleCopy}>
-								COPY
+								{t("common.copy")}
 							</Button>
 						</div>
 
 						<div className="space-y-1">
 							<Progress value={progressValue} />
 							<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-								T-{remaining}s
+								{t("tools.totpGenerator.remainingLabel", { seconds: remaining })}
 							</p>
 						</div>
 
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ NEXT ]
+							{t("tools.totpGenerator.nextLabel")}
 						</p>
 						<div className="border border-ink bg-muted/40 px-3 py-3 font-mono text-lg tracking-[0.3em] text-muted-foreground">
 							{nextCode}
@@ -223,13 +228,13 @@ export default function TotpGeneratorPage() {
 				{meta && (
 					<>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ URI METADATA ]
+							{t("tools.totpGenerator.metadataLabel")}
 						</p>
 						<dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 font-mono text-[11px]">
 							{meta.issuer && (
 								<>
 									<dt className="uppercase tracking-[0.08em] text-muted-foreground">
-										ISSUER
+										{t("tools.totpGenerator.metaIssuer")}
 									</dt>
 									<dd>{meta.issuer}</dd>
 								</>
@@ -237,7 +242,7 @@ export default function TotpGeneratorPage() {
 							{meta.account && (
 								<>
 									<dt className="uppercase tracking-[0.08em] text-muted-foreground">
-										ACCOUNT
+										{t("tools.totpGenerator.metaAccount")}
 									</dt>
 									<dd>{meta.account}</dd>
 								</>
@@ -245,7 +250,7 @@ export default function TotpGeneratorPage() {
 							{meta.algorithm && (
 								<>
 									<dt className="uppercase tracking-[0.08em] text-muted-foreground">
-										ALGORITHM
+										{t("tools.totpGenerator.metaAlgorithm")}
 									</dt>
 									<dd>{meta.algorithm}</dd>
 								</>
@@ -253,7 +258,7 @@ export default function TotpGeneratorPage() {
 							{meta.digits != null && (
 								<>
 									<dt className="uppercase tracking-[0.08em] text-muted-foreground">
-										DIGITS
+										{t("tools.totpGenerator.metaDigits")}
 									</dt>
 									<dd>{meta.digits}</dd>
 								</>
@@ -261,7 +266,7 @@ export default function TotpGeneratorPage() {
 							{meta.period != null && (
 								<>
 									<dt className="uppercase tracking-[0.08em] text-muted-foreground">
-										PERIOD
+										{t("tools.totpGenerator.metaPeriod")}
 									</dt>
 									<dd>{meta.period}s</dd>
 								</>

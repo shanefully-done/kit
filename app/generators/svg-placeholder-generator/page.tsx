@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { ImagePlus, Copy, Download } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 type BgColor = "ink" | "muted" | "paper" | "hazard";
 
@@ -31,6 +32,7 @@ const BG_COLORS: Record<BgColor, { bg: string; fg: string; label: string }> = {
 };
 
 export default function SvgPlaceholderGeneratorPage() {
+	const { t } = useI18n();
 	const [width, setWidth] = usePersistentState(
 		"svg-placeholder-generator:width",
 		400,
@@ -73,13 +75,13 @@ export default function SvgPlaceholderGeneratorPage() {
 
 	const handleCopySvg = () => {
 		navigator.clipboard.writeText(svgCode);
-		toast.success("COPIED");
+		toast.success(t("tools.svgPlaceholderGenerator.copied"));
 	};
 
 	const handleCopyDataUri = () => {
 		const encoded = btoa(unescape(encodeURIComponent(svgCode)));
 		navigator.clipboard.writeText(`data:image/svg+xml;base64,${encoded}`);
-		toast.success("COPIED");
+		toast.success(t("tools.svgPlaceholderGenerator.copied"));
 	};
 
 	const handleDownload = () => {
@@ -97,7 +99,7 @@ export default function SvgPlaceholderGeneratorPage() {
 			header={
 				<ToolHeader
 					icon={<ImagePlus aria-hidden="true" className="h-5 w-5" />}
-					title="SVG Placeholder Generator"
+					title={t("tools.svgPlaceholderGenerator.title")}
 				/>
 			}
 		>
@@ -105,7 +107,7 @@ export default function SvgPlaceholderGeneratorPage() {
 				{/* Width */}
 				<div className="space-y-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						WIDTH — {width}px
+						{t("tools.svgPlaceholderGenerator.widthLabel", { width })}
 					</Label>
 					<Slider
 						min={16}
@@ -120,7 +122,7 @@ export default function SvgPlaceholderGeneratorPage() {
 				{/* Height */}
 				<div className="space-y-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						HEIGHT — {height}px
+						{t("tools.svgPlaceholderGenerator.heightLabel", { height })}
 					</Label>
 					<Slider
 						min={16}
@@ -134,7 +136,7 @@ export default function SvgPlaceholderGeneratorPage() {
 
 				{/* Color */}
 				<div className="space-y-2">
-					<Label>BG COLOR</Label>
+					<Label>{t("tools.svgPlaceholderGenerator.bgColorLabel")}</Label>
 					<Select value={bgColor} onValueChange={(v) => setBgColor(v as BgColor)}>
 						<SelectTrigger className="w-full font-mono">
 							<SelectValue />
@@ -155,7 +157,7 @@ export default function SvgPlaceholderGeneratorPage() {
 						htmlFor="show-dims"
 						className="font-mono text-[11px] uppercase tracking-[0.08em]"
 					>
-						SHOW DIMENSIONS
+						{t("tools.svgPlaceholderGenerator.showDimensionsLabel")}
 					</Label>
 					<Switch
 						id="show-dims"
@@ -167,8 +169,12 @@ export default function SvgPlaceholderGeneratorPage() {
 				{/* Output */}
 				<Tabs value={outputTab} onValueChange={setOutputTab}>
 					<TabsList>
-						<TabsTrigger value="preview">PREVIEW</TabsTrigger>
-						<TabsTrigger value="code">SVG CODE</TabsTrigger>
+						<TabsTrigger value="preview">
+							{t("tools.svgPlaceholderGenerator.previewTab")}
+						</TabsTrigger>
+						<TabsTrigger value="code">
+							{t("tools.svgPlaceholderGenerator.codeTab")}
+						</TabsTrigger>
 					</TabsList>
 					<TabsContent value="preview">
 						<div className="border border-ink bg-card p-4 grid place-items-center min-h-[120px]">
@@ -196,7 +202,7 @@ export default function SvgPlaceholderGeneratorPage() {
 						className="flex-1 font-mono"
 					>
 						<Copy aria-hidden="true" className="h-4 w-4 mr-2" />
-						COPY SVG
+						{t("tools.svgPlaceholderGenerator.copySvg")}
 					</Button>
 					<Button
 						onClick={handleCopyDataUri}
@@ -204,11 +210,11 @@ export default function SvgPlaceholderGeneratorPage() {
 						className="flex-1 font-mono"
 					>
 						<Copy aria-hidden="true" className="h-4 w-4 mr-2" />
-						COPY DATA URI
+						{t("tools.svgPlaceholderGenerator.copyDataUri")}
 					</Button>
 					<Button onClick={handleDownload} className="flex-1 font-mono">
 						<Download aria-hidden="true" className="h-4 w-4 mr-2" />
-						DOWNLOAD
+						{t("tools.svgPlaceholderGenerator.download")}
 					</Button>
 				</div>
 			</div>

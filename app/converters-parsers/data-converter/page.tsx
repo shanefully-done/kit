@@ -15,6 +15,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { useI18n } from "@/lib/i18n";
 import { toast } from "sonner";
 import * as yaml from "js-yaml";
 import * as toml from "smol-toml";
@@ -176,6 +177,7 @@ function serialize(
 }
 
 export default function DataConverterPage() {
+	const { t } = useI18n();
 	const [fromFormat, setFromFormat] = usePersistentState<Format>(
 		"data-converter:fromFormat",
 		"JSON",
@@ -211,21 +213,21 @@ export default function DataConverterPage() {
 
 	const handleCopy = useCallback(() => {
 		navigator.clipboard.writeText(result.output);
-		toast.success("COPIED");
-	}, [result.output]);
+		toast.success(t("tools.dataConverter.copied"));
+	}, [result.output, t]);
 
 	return (
 		<ToolPageLayout
-			header={<ToolHeader icon={<Braces aria-hidden />} title="Data Converter" />}
+			header={<ToolHeader icon={<Braces aria-hidden />} title={t("tools.dataConverter.title")} />}
 		>
 			<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-				[ FORMAT CONVERSION ]
+				{t("tools.dataConverter.formatConversionLabel")}
 			</p>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div className="space-y-3">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						FROM
+						{t("tools.dataConverter.fromLabel")}
 					</Label>
 					<Select
 						value={fromFormat}
@@ -246,14 +248,14 @@ export default function DataConverterPage() {
 						value={input}
 						onChange={(e) => setInput(e.target.value)}
 						className="font-mono text-sm min-h-40 resize-y"
-						placeholder="Paste data here..."
+						placeholder={t("tools.dataConverter.placeholder")}
 					/>
 				</div>
 
 				<div className="space-y-3">
 					<div className="flex items-center justify-between">
 						<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-							TO
+							{t("tools.dataConverter.toLabel")}
 						</Label>
 						{result.output && (
 							<Button variant="outline" size="sm" onClick={handleCopy}>
@@ -276,7 +278,7 @@ export default function DataConverterPage() {
 					{result.error ? (
 						<>
 							<div className="border border-hazard text-hazard-text font-mono text-xs px-3 py-2">
-								[ PARSE ERROR ]
+								{t("tools.dataConverter.parseError")}
 							</div>
 							<div className="border border-hazard bg-muted/40 p-3 font-mono text-xs text-hazard-text break-all min-h-40">
 								{result.error}

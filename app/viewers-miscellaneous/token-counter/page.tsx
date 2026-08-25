@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Calculator } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 const MODEL_MAP = {
 	"gpt-4o": { encoding: "o200k_base", label: "gpt-4o (o200k_base)" },
@@ -28,6 +29,7 @@ const MODEL_MAP = {
 type ModelKey = keyof typeof MODEL_MAP;
 
 export default function TokenCounterPage() {
+	const { t } = useI18n();
 	const [model, setModel] = usePersistentState<ModelKey>(
 		"token-counter:model",
 		"gpt-4o",
@@ -53,13 +55,13 @@ export default function TokenCounterPage() {
 	return (
 		<ToolPageLayout
 			header={
-				<ToolHeader icon={<Calculator aria-hidden />} title="Token Counter" />
+				<ToolHeader icon={<Calculator aria-hidden />} title={t("tools.tokenCounter.title")} />
 			}
 		>
 			<div className="space-y-4">
 				<div className="space-y-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						Model
+						{t("tools.tokenCounter.modelLabel")}
 					</Label>
 					<Select value={model} onValueChange={(v) => setModel(v as ModelKey)}>
 						<SelectTrigger className="w-full font-mono">
@@ -77,34 +79,34 @@ export default function TokenCounterPage() {
 
 				<div className="space-y-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						Input
+						{t("tools.tokenCounter.inputLabel")}
 					</Label>
 					<Textarea
 						value={text}
 						onChange={(e) => setText(e.target.value)}
 						className="font-mono min-h-40"
-						placeholder="Paste text..."
+						placeholder={t("tools.tokenCounter.inputPlaceholder")}
 					/>
 				</div>
 
 				<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 					<div className="border border-ink bg-muted/40 px-3 py-3">
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							Tokens
+							{t("tools.tokenCounter.tokensLabel")}
 						</p>
 						<p className="font-mono text-2xl mt-1">{tokens.toLocaleString()}</p>
 					</div>
 					<div className="border border-ink bg-muted/40 px-3 py-3">
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							Chars
+							{t("tools.tokenCounter.charsLabel")}
 						</p>
 						<p className="font-mono text-lg md:text-xl mt-1">
-							{chars.toLocaleString()}
-						</p>
+								{chars.toLocaleString()}
+							</p>
 					</div>
 					<div className="border border-ink bg-muted/40 px-3 py-3">
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							Words
+							{t("tools.tokenCounter.wordsLabel")}
 						</p>
 						<p className="font-mono text-lg md:text-xl mt-1">
 							{words.toLocaleString()}
@@ -112,7 +114,7 @@ export default function TokenCounterPage() {
 					</div>
 					<div className="border border-ink bg-muted/40 px-3 py-3">
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							Chars / Token
+							{t("tools.tokenCounter.charsPerTokenLabel")}
 						</p>
 						<p
 							className={
@@ -127,7 +129,7 @@ export default function TokenCounterPage() {
 				</div>
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ Counts are local estimates — {model} / {MODEL_MAP[model].encoding} ]
+					{t("tools.tokenCounter.estimateNote", { model, encoding: MODEL_MAP[model].encoding })}
 				</p>
 			</div>
 		</ToolPageLayout>

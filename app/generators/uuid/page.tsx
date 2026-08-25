@@ -9,11 +9,13 @@ import { Input } from "@/components/ui/input";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Fingerprint as FingerprintIcon } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 export default function UUIDGeneratorPage() {
+	const { t } = useI18n();
 	const [numUUIDs, setNumUUIDs] = usePersistentState("uuid:numUUIDs", 1);
 	const [generatedUUIDs, setGeneratedUUIDs] = useState("");
-	const [copyStatus, setCopyStatus] = useState("Copy");
+	const [copyStatus, setCopyStatus] = useState(() => t("tools.uuid.copy"));
 
 	const generateUUIDs = useCallback(() => {
 		const uuids: string[] = [];
@@ -21,8 +23,8 @@ export default function UUIDGeneratorPage() {
 			uuids.push(uuidv4());
 		}
 		setGeneratedUUIDs(uuids.join("\n"));
-		setCopyStatus("Copy");
-	}, [numUUIDs]);
+		setCopyStatus(t("tools.uuid.copy"));
+	}, [numUUIDs, t]);
 
 	useEffect(() => {
 		generateUUIDs();
@@ -31,11 +33,11 @@ export default function UUIDGeneratorPage() {
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(generatedUUIDs).then(
 			() => {
-				setCopyStatus("Copied!");
-				setTimeout(() => setCopyStatus("Copy"), 2000);
+				setCopyStatus(t("tools.uuid.copied"));
+				setTimeout(() => setCopyStatus(t("tools.uuid.copy")), 2000);
 			},
 			(err) => {
-				setCopyStatus("Failed to copy!");
+				setCopyStatus(t("tools.uuid.copyFailed"));
 				console.error("Could not copy text: ", err);
 			},
 		);
@@ -44,7 +46,10 @@ export default function UUIDGeneratorPage() {
 	return (
 		<ToolPageLayout
 			header={
-				<ToolHeader icon={<FingerprintIcon aria-hidden />} title="UUID Generator" />
+				<ToolHeader
+					icon={<FingerprintIcon aria-hidden />}
+					title={t("tools.uuid.title")}
+				/>
 			}
 		>
 			<div className="space-y-4">
@@ -53,7 +58,7 @@ export default function UUIDGeneratorPage() {
 						htmlFor="num-uuids"
 						className="font-mono text-[11px] uppercase tracking-[0.08em]"
 					>
-						Count
+						{t("tools.uuid.countLabel")}
 					</Label>
 					<Input
 						id="num-uuids"
@@ -67,18 +72,18 @@ export default function UUIDGeneratorPage() {
 				</div>
 
 				<div className="flex flex-wrap gap-2">
-					<Button onClick={generateUUIDs}>Generate</Button>
+					<Button onClick={generateUUIDs}>{t("tools.uuid.generate")}</Button>
 					<Button
 						variant="outline"
 						onClick={copyToClipboard}
-						aria-label="Copy generated UUIDs"
+						aria-label={t("tools.uuid.ariaCopyGenerated")}
 					>
 						{copyStatus}
 					</Button>
 				</div>
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ Output ]
+					{t("tools.uuid.outputLabel")}
 				</p>
 				<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all space-y-1">
 					{generatedUUIDs

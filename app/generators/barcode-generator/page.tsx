@@ -19,6 +19,7 @@ import { Switch } from "@/components/ui/switch";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Barcode, Download } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 type BarcodeFormat =
 	| "CODE128"
@@ -53,6 +54,7 @@ const FORMATS: BarcodeFormat[] = [
 ];
 
 export default function BarcodeGeneratorPage() {
+	const { t } = useI18n();
 	const [format, setFormat] = usePersistentState<BarcodeFormat>(
 		"barcode-generator:format",
 		"CODE128",
@@ -137,14 +139,14 @@ export default function BarcodeGeneratorPage() {
 			header={
 				<ToolHeader
 					icon={<Barcode aria-hidden="true" className="h-5 w-5" />}
-					title="Barcode Generator"
+					title={t("tools.barcodeGenerator.title")}
 				/>
 			}
 		>
 			<div className="space-y-4">
 				{/* Type */}
 				<div className="space-y-2">
-					<Label>FORMAT</Label>
+					<Label>{t("tools.barcodeGenerator.formatLabel")}</Label>
 					<Select
 						value={format}
 						onValueChange={(v) => handleFormatChange(v as BarcodeFormat)}
@@ -164,7 +166,7 @@ export default function BarcodeGeneratorPage() {
 
 				{/* Value */}
 				<div className="space-y-2">
-					<Label htmlFor="barcode-value">VALUE</Label>
+					<Label htmlFor="barcode-value">{t("tools.barcodeGenerator.valueLabel")}</Label>
 					<Input
 						id="barcode-value"
 						value={value}
@@ -176,7 +178,7 @@ export default function BarcodeGeneratorPage() {
 				{/* Width */}
 				<div className="space-y-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						WIDTH — {barWidth}
+						{t("tools.barcodeGenerator.widthLabel", { width: barWidth })}
 					</Label>
 					<Slider
 						min={1}
@@ -191,7 +193,7 @@ export default function BarcodeGeneratorPage() {
 				{/* Height */}
 				<div className="space-y-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						HEIGHT — {barHeight}
+						{t("tools.barcodeGenerator.heightLabel", { height: barHeight })}
 					</Label>
 					<Slider
 						min={20}
@@ -209,7 +211,7 @@ export default function BarcodeGeneratorPage() {
 						htmlFor="show-text"
 						className="font-mono text-[11px] uppercase tracking-[0.08em]"
 					>
-						SHOW TEXT
+						{t("tools.barcodeGenerator.showTextLabel")}
 					</Label>
 					<Switch id="show-text" checked={showText} onCheckedChange={setShowText} />
 				</div>
@@ -232,7 +234,7 @@ export default function BarcodeGeneratorPage() {
 					className="w-full font-mono"
 				>
 					<Download aria-hidden="true" className="h-4 w-4 mr-2" />
-					DOWNLOAD SVG
+					{t("tools.barcodeGenerator.downloadSvg")}
 				</Button>
 			</div>
 		</ToolPageLayout>

@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { GitCompare } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 type DiffRow = {
 	type: "add" | "remove" | "context";
@@ -16,6 +17,7 @@ type DiffRow = {
 };
 
 export default function DiffViewerPage() {
+	const { t } = useI18n();
 	const [source, setSource] = useState("");
 	const [target, setTarget] = useState("");
 	const [ignoreCase, setIgnoreCase] = usePersistentState(
@@ -60,49 +62,52 @@ export default function DiffViewerPage() {
 
 	return (
 		<ToolPageLayout
-			header={<ToolHeader icon={<GitCompare aria-hidden />} title="Diff Viewer" />}
+			header={<ToolHeader icon={<GitCompare aria-hidden />} title={t("tools.diffViewer.title")} />}
 		>
 			<div className="space-y-4">
 				<div className="grid md:grid-cols-2 gap-4">
 					<div className="space-y-2">
 						<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-							Source
+							{t("tools.diffViewer.sourceLabel")}
 						</Label>
 						<Textarea
 							value={source}
 							onChange={(e) => setSource(e.target.value)}
 							className="font-mono min-h-40"
-							placeholder="Paste source text..."
+							placeholder={t("tools.diffViewer.sourcePlaceholder")}
 						/>
 					</div>
 					<div className="space-y-2">
 						<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-							Target
+							{t("tools.diffViewer.targetLabel")}
 						</Label>
 						<Textarea
 							value={target}
 							onChange={(e) => setTarget(e.target.value)}
 							className="font-mono min-h-40"
-							placeholder="Paste target text..."
+							placeholder={t("tools.diffViewer.targetPlaceholder")}
 						/>
 					</div>
 				</div>
 
 				<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 					<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-						Options
+						{t("tools.diffViewer.optionsLabel")}
 					</span>
 					<div className="flex items-center gap-4">
 						<label className="flex items-center gap-2 cursor-pointer">
 							<Switch checked={ignoreCase} onCheckedChange={setIgnoreCase} />
 							<span className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								Ignore Case
+								{t("tools.diffViewer.ignoreCase")}
 							</span>
 						</label>
 						<label className="flex items-center gap-2 cursor-pointer">
-							<Switch checked={trimWhitespace} onCheckedChange={setTrimWhitespace} />
+							<Switch
+								checked={trimWhitespace}
+								onCheckedChange={setTrimWhitespace}
+							/>
 							<span className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								Trim Whitespace
+								{t("tools.diffViewer.trimWhitespace")}
 							</span>
 						</label>
 					</div>
@@ -110,7 +115,7 @@ export default function DiffViewerPage() {
 
 				{identical ? (
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ IDENTICAL ]
+						{t("tools.diffViewer.identical")}
 					</p>
 				) : rows.length > 0 ? (
 					<>

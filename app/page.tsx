@@ -2,87 +2,88 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useI18n, type Path } from "@/lib/i18n";
 
-type Tool = { name: string; href: string };
-type Category = { title: string; tools: Tool[] };
+type Tool = { nameKey: Path; href: string };
+type Category = { titleKey: Path; tools: Tool[] };
 
 const categories: Category[] = [
 	{
-		title: "Converters & Parsers",
+		titleKey: "nav.categories.converters",
 		tools: [
 			{
-				name: "Base64 Encoder/Decoder",
+				nameKey: "tools.base64EncoderDecoder.title",
 				href: "/converters-parsers/base64-encoder-decoder",
 			},
 			{
-				name: "Base64 Image Converter",
+				nameKey: "tools.base64ImageConverter.title",
 				href: "/converters-parsers/base64-image-converter",
 			},
-			{ name: "chmod Calculator", href: "/converters-parsers/chmod-calculator" },
-			{ name: "Color Converter", href: "/converters-parsers/color-converter" },
-			{ name: "CRON Parser", href: "/converters-parsers/cron-parser" },
-			{ name: "curl to fetch", href: "/converters-parsers/curl-converter" },
-			{ name: "Data Converter", href: "/converters-parsers/data-converter" },
-			{ name: "JSON Parser", href: "/converters-parsers/json-parser" },
-			{ name: "JWT Decoder", href: "/converters-parsers/jwt-decoder" },
+			{ nameKey: "tools.chmodCalculator.title", href: "/converters-parsers/chmod-calculator" },
+			{ nameKey: "tools.colorConverter.title", href: "/converters-parsers/color-converter" },
+			{ nameKey: "tools.cronParser.title", href: "/converters-parsers/cron-parser" },
+			{ nameKey: "tools.curlConverter.title", href: "/converters-parsers/curl-converter" },
+			{ nameKey: "tools.dataConverter.title", href: "/converters-parsers/data-converter" },
+			{ nameKey: "tools.jsonParser.title", href: "/converters-parsers/json-parser" },
+			{ nameKey: "tools.jwtDecoder.title", href: "/converters-parsers/jwt-decoder" },
 			{
-				name: "Number Base Converter",
+				nameKey: "tools.numberBaseConverter.title",
 				href: "/converters-parsers/number-base-converter",
 			},
-			{ name: "Regex Tester", href: "/converters-parsers/regex-tester" },
-			{ name: "Text Case Converter", href: "/converters-parsers/text-case" },
+			{ nameKey: "tools.regexTester.title", href: "/converters-parsers/regex-tester" },
+			{ nameKey: "tools.textCase.title", href: "/converters-parsers/text-case" },
 			{
-				name: "Timestamp Converter",
+				nameKey: "tools.timestampConverter.title",
 				href: "/converters-parsers/timestamp-converter",
 			},
 			{
-				name: "Timezone Converter",
+				nameKey: "tools.timezoneConverter.title",
 				href: "/converters-parsers/timezone-converter",
 			},
-			{ name: "Unit Converter", href: "/converters-parsers/unit-converter" },
+			{ nameKey: "tools.unitConverter.title", href: "/converters-parsers/unit-converter" },
 			{
-				name: "URL Encoder/Decoder",
+				nameKey: "tools.urlEncoderDecoder.title",
 				href: "/converters-parsers/url-encoder-decoder",
 			},
-			{ name: "URL Parser", href: "/converters-parsers/url-parser" },
+			{ nameKey: "tools.urlParser.title", href: "/converters-parsers/url-parser" },
 		],
 	},
 	{
-		title: "Generators",
+		titleKey: "nav.categories.generators",
 		tools: [
-			{ name: "Barcode Generator", href: "/generators/barcode-generator" },
-			{ name: "Gradient Generator", href: "/generators/gradient" },
-			{ name: "Hash Generator", href: "/generators/hash" },
-			{ name: "HMAC Generator", href: "/generators/hmac-generator" },
-			{ name: "ID Generator", href: "/generators/id-generator" },
-			{ name: "Lorem Generator", href: "/generators/lorem-generator" },
-			{ name: "Password Generator", href: "/generators/password" },
-			{ name: "Port Number Generator", href: "/generators/port" },
-			{ name: "QR Code Generator & Reader", href: "/generators/qr-code" },
+			{ nameKey: "tools.barcodeGenerator.title", href: "/generators/barcode-generator" },
+			{ nameKey: "tools.gradient.title", href: "/generators/gradient" },
+			{ nameKey: "tools.hash.title", href: "/generators/hash" },
+			{ nameKey: "tools.hmacGenerator.title", href: "/generators/hmac-generator" },
+			{ nameKey: "tools.idGenerator.title", href: "/generators/id-generator" },
+			{ nameKey: "tools.loremGenerator.title", href: "/generators/lorem-generator" },
+			{ nameKey: "tools.password.title", href: "/generators/password" },
+			{ nameKey: "tools.port.title", href: "/generators/port" },
+			{ nameKey: "tools.qrCode.title", href: "/generators/qr-code" },
 			{
-				name: "SVG Placeholder Generator",
+				nameKey: "tools.svgPlaceholderGenerator.title",
 				href: "/generators/svg-placeholder-generator",
 			},
-			{ name: "TOTP Generator", href: "/generators/totp-generator" },
-			{ name: "UUID Generator", href: "/generators/uuid" },
+			{ nameKey: "tools.totpGenerator.title", href: "/generators/totp-generator" },
+			{ nameKey: "tools.uuid.title", href: "/generators/uuid" },
 		],
 	},
 	{
-		title: "Viewers & Misc",
+		titleKey: "nav.categories.viewers",
 		tools: [
-			{ name: "API Directory", href: "/viewers-miscellaneous/api-directory" },
-			{ name: "Diff Viewer", href: "/viewers-miscellaneous/diff-viewer" },
+			{ nameKey: "tools.apiDirectory.title", href: "/viewers-miscellaneous/api-directory" },
+			{ nameKey: "tools.diffViewer.title", href: "/viewers-miscellaneous/diff-viewer" },
 			{
-				name: "HTTP Status Codes",
+				nameKey: "tools.httpStatusCodes.title",
 				href: "/viewers-miscellaneous/http-status-codes",
 			},
 			{
-				name: "Image Metadata Viewer",
+				nameKey: "tools.imageMetadataViewer.title",
 				href: "/viewers-miscellaneous/image-metadata-viewer",
 			},
-			{ name: "Token Counter", href: "/viewers-miscellaneous/token-counter" },
+			{ nameKey: "tools.tokenCounter.title", href: "/viewers-miscellaneous/token-counter" },
 			{
-				name: "Unicode Inspector",
+				nameKey: "tools.unicodeInspector.title",
 				href: "/viewers-miscellaneous/unicode-inspector",
 			},
 		],
@@ -91,12 +92,14 @@ const categories: Category[] = [
 const totalUnits = categories.reduce((n, c) => n + c.tools.length, 0);
 
 export default function HomePage() {
+	const { t } = useI18n();
+
 	return (
 		<main className="min-h-screen bg-paper text-foreground">
 			{/* Top strip */}
 			<div className="flex items-center justify-between border-b-2 border-ink px-4 py-3 md:px-8">
 				<span className="font-mono text-[11px] uppercase tracking-[0.08em]">
-					KIT® DEV TOOLKIT / REV 2.6
+					{t("home.topStrip")}
 				</span>
 				<Button asChild variant="outline" size="sm">
 					<Link
@@ -104,7 +107,7 @@ export default function HomePage() {
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						SOURCE / GITHUB
+						{t("home.sourceButton")}
 					</Link>
 				</Button>
 			</div>
@@ -127,21 +130,28 @@ export default function HomePage() {
 					Kit<span className="text-hazard-text">.</span>
 				</h1>
 				<div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-					<span>{String(totalUnits).padStart(2, "0")} UNITS / 03 SECTIONS</span>
-					<span>ALL PROCESSING LOCAL</span>
-					<span>NO ACCOUNTS / NO TELEMETRY™</span>
+					<span>
+						{t("home.statsUnits", {
+							units: String(totalUnits).padStart(2, "0"),
+							sections: String(categories.length).padStart(2, "0"),
+						})}
+					</span>
+					<span>{t("home.allLocal")}</span>
+					<span>{t("home.noTelemetry")}</span>
 				</div>
 			</div>
 
 			{/* Index sections */}
 			{categories.map((category) => (
-				<section key={category.title}>
+				<section key={category.titleKey}>
 					<div className="flex items-baseline justify-between gap-4 border-b-2 border-ink px-4 py-6 md:px-8">
 						<h2 className="font-sans font-black uppercase tracking-[-0.04em] leading-[0.9] text-3xl md:text-5xl">
-							{category.title}
+							{t(category.titleKey)}
 						</h2>
 						<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-							{String(category.tools.length).padStart(2, "0")} UNITS
+							{t("home.unitsCount", {
+								count: String(category.tools.length).padStart(2, "0"),
+							})}
 						</span>
 					</div>
 					{category.tools.map((tool, i) => (
@@ -154,7 +164,7 @@ export default function HomePage() {
 								{String(i + 1).padStart(2, "0")}
 							</span>
 							<span className="font-sans font-bold uppercase tracking-[-0.02em] text-lg md:text-xl">
-								{tool.name}
+								{t(tool.nameKey)}
 							</span>
 							<span
 								aria-hidden="true"
@@ -177,7 +187,7 @@ export default function HomePage() {
 				>
 					© 2026 IXTJ
 				</a>
-				<span>SET IN INTER + IBM PLEX MONO ®</span>
+				<span>{t("home.setIn")}</span>
 			</div>
 		</main>
 	);

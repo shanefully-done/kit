@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 import { Type, Copy } from "lucide-react";
 
 // --- Hangul composition (standard jamo indices) ---
@@ -118,6 +119,7 @@ function clampCount(v: string): number {
 }
 
 export default function LoremGeneratorPage() {
+	const { t } = useI18n();
 	const [alphabetical, setAlphabetical] = usePersistentState(
 		"lorem-generator:alphabetical",
 		true,
@@ -163,7 +165,7 @@ export default function LoremGeneratorPage() {
 	const handleCopy = () => {
 		if (!output) return;
 		navigator.clipboard.writeText(output);
-		toast.success("COPIED");
+		toast.success(t("common.copied"));
 	};
 
 	const stats = computeStats(output);
@@ -173,7 +175,7 @@ export default function LoremGeneratorPage() {
 			header={
 				<ToolHeader
 					icon={<Type aria-hidden="true" className="h-5 w-5" />}
-					title="Lorem Generator"
+					title={t("tools.loremGenerator.title")}
 				/>
 			}
 		>
@@ -181,7 +183,7 @@ export default function LoremGeneratorPage() {
 				{/* CHARACTER SETS */}
 				<div className="space-y-2">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ CHARACTER SETS ]
+						{t("tools.loremGenerator.characterSetsLabel")}
 					</p>
 					<div className="border border-ink bg-muted/40 p-3 space-y-3">
 						<div className="flex items-center gap-2">
@@ -194,7 +196,7 @@ export default function LoremGeneratorPage() {
 								htmlFor="set-alpha"
 								className="font-mono text-[11px] uppercase tracking-[0.08em]"
 							>
-								ALPHABETICAL
+								{t("tools.loremGenerator.alphabeticalLabel")}
 							</Label>
 						</div>
 						<div className="flex items-center gap-2">
@@ -207,7 +209,7 @@ export default function LoremGeneratorPage() {
 								htmlFor="set-korean"
 								className="font-mono text-[11px] uppercase tracking-[0.08em]"
 							>
-								KOREAN
+								{t("tools.loremGenerator.koreanLabel")}
 							</Label>
 						</div>
 						<div className="flex items-center gap-2">
@@ -220,13 +222,13 @@ export default function LoremGeneratorPage() {
 								htmlFor="set-num"
 								className="font-mono text-[11px] uppercase tracking-[0.08em]"
 							>
-								NUMERICAL
+								{t("tools.loremGenerator.numericalLabel")}
 							</Label>
 						</div>
 					</div>
 					{!anyTicked && (
 						<div className="border-hazard text-hazard-text font-mono text-[11px] uppercase tracking-[0.08em] px-3 py-2 border">
-							[ SELECT AT LEAST ONE SET ]
+							{t("tools.loremGenerator.selectAtLeastOne")}
 						</div>
 					)}
 				</div>
@@ -234,12 +236,12 @@ export default function LoremGeneratorPage() {
 				{/* STRUCTURE */}
 				<div className="space-y-2">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ STRUCTURE ]
+						{t("tools.loremGenerator.structureLabel")}
 					</p>
 					<div className="grid grid-cols-3 gap-3">
 						<div className="space-y-1">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								WORDS / SENTENCE
+								{t("tools.loremGenerator.wordsPerSentence")}
 							</Label>
 							<Input
 								type="number"
@@ -252,7 +254,7 @@ export default function LoremGeneratorPage() {
 						</div>
 						<div className="space-y-1">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								SENTENCES / PARAGRAPH
+								{t("tools.loremGenerator.sentencesPerParagraph")}
 							</Label>
 							<Input
 								type="number"
@@ -265,7 +267,7 @@ export default function LoremGeneratorPage() {
 						</div>
 						<div className="space-y-1">
 							<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								PARAGRAPHS
+								{t("tools.loremGenerator.paragraphsLabel")}
 							</Label>
 							<Input
 								type="number"
@@ -285,13 +287,13 @@ export default function LoremGeneratorPage() {
 					disabled={!anyTicked}
 					className="w-full font-mono"
 				>
-					GENERATE
+					{t("tools.loremGenerator.generateButton")}
 				</Button>
 
 				{/* OUTPUT */}
 				<div className="space-y-2">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ OUTPUT ]
+						{t("tools.loremGenerator.outputLabel")}
 					</p>
 					<div className="border border-ink bg-muted/40 p-3 font-mono text-sm whitespace-pre-wrap break-all">
 						{output}
@@ -300,7 +302,11 @@ export default function LoremGeneratorPage() {
 					{/* Stats strip */}
 					<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 						<span className="font-mono text-sm">
-							[ {stats.paragraphs} P / {stats.sentences} S / {stats.words} W ]
+							{t("tools.loremGenerator.statsFormat", {
+								paragraphs: stats.paragraphs,
+								sentences: stats.sentences,
+								words: stats.words,
+							})}
 						</span>
 					</div>
 
@@ -312,7 +318,7 @@ export default function LoremGeneratorPage() {
 							variant="outline"
 							className="flex-1 font-mono"
 						>
-							REGENERATE
+							{t("tools.loremGenerator.regenerateButton")}
 						</Button>
 						<Button
 							onClick={handleCopy}
@@ -320,7 +326,7 @@ export default function LoremGeneratorPage() {
 							className="flex-1 font-mono"
 						>
 							<Copy aria-hidden="true" className="h-4 w-4 mr-2" />
-							COPY
+							{t("common.copy")}
 						</Button>
 					</div>
 				</div>

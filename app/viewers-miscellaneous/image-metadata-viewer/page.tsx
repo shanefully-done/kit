@@ -16,12 +16,14 @@ import EXIF from "exif-js";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { ImageIcon } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 interface ExifData {
 	[key: string]: unknown;
 }
 
 const ImageMetadataViewerPage = () => {
+	const { t } = useI18n();
 	const [image, setImage] = useState<File | null>(null);
 	const [exifData, setExifData] = useState<ExifData | null>(null);
 	const [error, setError] = useState<string | null>(null);
@@ -47,7 +49,7 @@ const ImageMetadataViewerPage = () => {
 								setExifData(allTags);
 							} else {
 								setExifData(null);
-								setError("No EXIF data found in this image.");
+								setError(t("tools.imageMetadataViewer.noExif"));
 							}
 						});
 					};
@@ -55,12 +57,12 @@ const ImageMetadataViewerPage = () => {
 				};
 				reader.readAsDataURL(file);
 			} else {
-				setError("Please upload a valid image file.");
+				setError(t("tools.imageMetadataViewer.invalidFile"));
 				setImage(null);
 				setExifData(null);
 			}
 		}
-	}, []);
+	}, [t]);
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -68,7 +70,7 @@ const ImageMetadataViewerPage = () => {
 		<ToolPageLayout
 			header={
 				<ToolHeader
-					title="Image Metadata Viewer"
+					title={t("tools.imageMetadataViewer.title")}
 					icon={<ImageIcon aria-hidden="true" className="h-5 w-5" />}
 				/>
 			}
@@ -76,7 +78,7 @@ const ImageMetadataViewerPage = () => {
 			<div className="space-y-4">
 				{/* Dropzone */}
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ UPLOAD ]
+					{t("tools.imageMetadataViewer.uploadLabel")}
 				</p>
 				<div
 					{...getRootProps()}
@@ -84,10 +86,10 @@ const ImageMetadataViewerPage = () => {
 				>
 					<Input {...getInputProps()} />
 					{isDragActive ? (
-						<p className="font-mono text-sm">Drop the image here ...</p>
-					) : (
+						<p className="font-mono text-sm">{t("tools.imageMetadataViewer.dropHere")}</p>
+				) : (
 						<p className="font-mono text-sm text-muted-foreground">
-							Drag &apos;n&apos; drop an image here, or click to select
+							{t("tools.imageMetadataViewer.dropOrClick")}
 						</p>
 					)}
 				</div>
@@ -97,7 +99,7 @@ const ImageMetadataViewerPage = () => {
 						<p className="font-mono text-sm mb-2">{image.name}</p>
 						<NextImage
 							src={URL.createObjectURL(image)}
-							alt="Uploaded"
+							alt={t("tools.imageMetadataViewer.imageAlt")}
 							className="max-w-full h-auto"
 							width={300}
 							height={300}
@@ -112,16 +114,16 @@ const ImageMetadataViewerPage = () => {
 				{exifData && (
 					<>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ EXIF DATA ]
+							{t("tools.imageMetadataViewer.exifDataLabel")}
 						</p>
 						<Table>
 							<TableHeader>
 								<TableRow>
 									<TableHead className="font-mono text-[10px] uppercase tracking-[0.08em] w-1/3">
-										Tag
+										{t("tools.imageMetadataViewer.headerTag")}
 									</TableHead>
 									<TableHead className="font-mono text-[10px] uppercase tracking-[0.08em]">
-										Value
+										{t("tools.imageMetadataViewer.headerValue")}
 									</TableHead>
 								</TableRow>
 							</TableHeader>
@@ -143,7 +145,7 @@ const ImageMetadataViewerPage = () => {
 
 				{!exifData && !error && (
 					<p className="font-mono text-sm text-muted-foreground">
-						Upload an image to view its metadata.
+						{t("tools.imageMetadataViewer.emptyHint")}
 					</p>
 				)}
 			</div>

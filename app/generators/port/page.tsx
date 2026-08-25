@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 import { EthernetPort as EthernetPortIcon } from "lucide-react";
 
 const RESERVED_PORT_CEILING = 1024;
@@ -17,6 +18,7 @@ function getRandomPort(min: number, max: number): number {
 }
 
 export default function PortGeneratorPage() {
+	const { t } = useI18n();
 	const [numPorts, setNumPorts] = usePersistentState("port:numPorts", 1);
 	const [minPort, setMinPort] = usePersistentState(
 		"port:minPort",
@@ -28,7 +30,7 @@ export default function PortGeneratorPage() {
 		true,
 	);
 	const [generatedPorts, setGeneratedPorts] = useState("");
-	const [copyStatus, setCopyStatus] = useState("Copy");
+	const [copyStatus, setCopyStatus] = useState(t("common.copy"));
 
 	const effectiveMin = avoidReserved
 		? Math.max(minPort, RESERVED_PORT_CEILING)
@@ -45,8 +47,8 @@ export default function PortGeneratorPage() {
 			ports.push(getRandomPort(lo, hi));
 		}
 		setGeneratedPorts(ports.join("\n"));
-		setCopyStatus("Copy");
-	}, [effectiveMin, maxPort, numPorts]);
+		setCopyStatus(t("common.copy"));
+	}, [effectiveMin, maxPort, numPorts, t]);
 
 	useEffect(() => {
 		generatePorts();
@@ -62,11 +64,11 @@ export default function PortGeneratorPage() {
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(generatedPorts).then(
 			() => {
-				setCopyStatus("Copied!");
-				setTimeout(() => setCopyStatus("Copy"), 2000);
+				setCopyStatus(t("tools.port.copiedStatus"));
+				setTimeout(() => setCopyStatus(t("common.copy")), 2000);
 			},
 			(err) => {
-				setCopyStatus("Failed to copy!");
+				setCopyStatus(t("tools.port.copyFailed"));
 				console.error("Could not copy text: ", err);
 			},
 		);
@@ -77,7 +79,7 @@ export default function PortGeneratorPage() {
 			header={
 				<ToolHeader
 					icon={<EthernetPortIcon aria-hidden />}
-					title="Port Number Generator"
+					title={t("tools.port.title")}
 				/>
 			}
 		>
@@ -88,7 +90,7 @@ export default function PortGeneratorPage() {
 							htmlFor="num-ports"
 							className="font-mono text-[11px] uppercase tracking-[0.08em]"
 						>
-							Count
+							{t("tools.port.countLabel")}
 						</Label>
 						<Input
 							id="num-ports"
@@ -105,7 +107,7 @@ export default function PortGeneratorPage() {
 							htmlFor="min-port"
 							className="font-mono text-[11px] uppercase tracking-[0.08em]"
 						>
-							Min Port
+							{t("tools.port.minPortLabel")}
 						</Label>
 						<Input
 							id="min-port"
@@ -122,7 +124,7 @@ export default function PortGeneratorPage() {
 							htmlFor="max-port"
 							className="font-mono text-[11px] uppercase tracking-[0.08em]"
 						>
-							Max Port
+							{t("tools.port.maxPortLabel")}
 						</Label>
 						<Input
 							id="max-port"
@@ -141,7 +143,7 @@ export default function PortGeneratorPage() {
 						htmlFor="avoid-reserved"
 						className="font-mono text-[11px] uppercase tracking-[0.08em]"
 					>
-						Avoid Reserved (0–1023)
+						{t("tools.port.avoidReservedLabel")}
 					</Label>
 					<Switch
 						id="avoid-reserved"
@@ -151,18 +153,18 @@ export default function PortGeneratorPage() {
 				</div>
 
 				<div className="flex flex-wrap gap-2">
-					<Button onClick={generatePorts}>Generate</Button>
+					<Button onClick={generatePorts}>{t("tools.port.generateButton")}</Button>
 					<Button
 						variant="outline"
 						onClick={copyToClipboard}
-						aria-label="Copy generated ports"
+						aria-label={t("tools.port.copyAriaLabel")}
 					>
 						{copyStatus}
 					</Button>
 				</div>
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ Generated Ports ]
+					{t("tools.port.generatedPortsLabel")}
 				</p>
 				<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all space-y-1">
 					{generatedPorts
@@ -172,7 +174,7 @@ export default function PortGeneratorPage() {
 
 				{avoidReserved && (
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-hazard-text">
-						Reserved ports (0–1023) excluded from generation range.
+						{t("tools.port.reservedNote")}
 					</p>
 				)}
 			</div>

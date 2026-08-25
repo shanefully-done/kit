@@ -11,6 +11,7 @@ import { Copy, PaletteIcon, Plus, X } from "lucide-react";
 import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 interface ColorStop {
 	id: string;
@@ -39,6 +40,7 @@ const isColorStops = (v: unknown): v is ColorStop[] =>
 	);
 
 export default function GradientGeneratorPage() {
+	const { t } = useI18n();
 	const [gradientType, setGradientType] = usePersistentState<GradientType>(
 		"gradient:gradientType",
 		"linear",
@@ -107,14 +109,14 @@ export default function GradientGeneratorPage() {
 
 	const handleCopyCss = () => {
 		navigator.clipboard.writeText(cssOutput);
-		toast.success("COPIED");
+		toast.success(t("tools.gradient.copied"));
 	};
 
 	return (
 		<ToolPageLayout
 			header={
 				<ToolHeader
-					title="Gradient Generator"
+					title={t("tools.gradient.title")}
 					icon={<PaletteIcon aria-hidden="true" className="h-5 w-5" />}
 				/>
 			}
@@ -122,14 +124,14 @@ export default function GradientGeneratorPage() {
 			<div className="space-y-4">
 				{/* Type Toggle */}
 				<div className="space-y-2">
-					<Label>TYPE</Label>
+					<Label>{t("tools.gradient.typeLabel")}</Label>
 					<Tabs
 						value={gradientType}
 						onValueChange={(val) => setGradientType(val as GradientType)}
 					>
 						<TabsList>
-							<TabsTrigger value="linear">LINEAR</TabsTrigger>
-							<TabsTrigger value="radial">RADIAL</TabsTrigger>
+							<TabsTrigger value="linear">{t("tools.gradient.linear")}</TabsTrigger>
+							<TabsTrigger value="radial">{t("tools.gradient.radial")}</TabsTrigger>
 						</TabsList>
 					</Tabs>
 				</div>
@@ -141,7 +143,7 @@ export default function GradientGeneratorPage() {
 							htmlFor="angle"
 							className="font-mono text-[11px] uppercase tracking-[0.08em]"
 						>
-							ANGLE — {angle}DEG
+							{t("tools.gradient.angleLabel", { angle })}
 						</Label>
 						<Slider
 							id="angle"
@@ -158,7 +160,7 @@ export default function GradientGeneratorPage() {
 				{gradientType === "radial" && (
 					<div className="space-y-2">
 						<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-							POSITION — X: {radialPosition.x}% / Y: {radialPosition.y}%
+							{t("tools.gradient.positionLabel", { x: radialPosition.x, y: radialPosition.y })}
 						</Label>
 						<div className="flex gap-4">
 							<div className="flex-1 space-y-1">
@@ -195,7 +197,7 @@ export default function GradientGeneratorPage() {
 									value={[radialPosition.y]}
 									onValueChange={(val) =>
 										setRadialPosition({ ...radialPosition, y: val[0] })
-									}
+								}
 									className="w-full"
 								/>
 							</div>
@@ -206,7 +208,7 @@ export default function GradientGeneratorPage() {
 				{/* Color Stops */}
 				<div className="space-y-2">
 					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ COLOR STOPS ]
+						[ {t("tools.gradient.colorStops")} ]
 					</p>
 					<div>
 						{colorStops.map((stop) => (
@@ -234,7 +236,7 @@ export default function GradientGeneratorPage() {
 									variant="outline"
 									size="sm"
 									onClick={() => removeColorStop(stop.id)}
-									aria-label={`Remove stop ${stop.id}`}
+									aria-label={t("tools.gradient.removeStopAria", { id: stop.id })}
 								>
 									<X className="h-4 w-4" aria-hidden="true" />
 								</Button>
@@ -243,14 +245,14 @@ export default function GradientGeneratorPage() {
 					</div>
 					<Button variant="outline" onClick={addColorStop}>
 						<Plus className="h-4 w-4 mr-2" aria-hidden="true" />
-						Add Stop
+						{t("tools.gradient.addStop")}
 					</Button>
 				</div>
 
 				{/* Preview — functional gradient surface */}
 				<div className="space-y-2">
 					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ PREVIEW ]
+						[ {t("tools.gradient.preview")} ]
 					</p>
 					<div
 						style={{ background: cssOutput }}
@@ -261,7 +263,7 @@ export default function GradientGeneratorPage() {
 				{/* CSS Output */}
 				<div className="space-y-2">
 					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ CSS OUTPUT ]
+						[ {t("tools.gradient.cssOutput")} ]
 					</p>
 					<div className="relative">
 						<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all pr-10">
@@ -272,7 +274,7 @@ export default function GradientGeneratorPage() {
 							size="sm"
 							className="absolute right-1 top-1"
 							onClick={handleCopyCss}
-							aria-label="Copy CSS"
+							aria-label={t("tools.gradient.copyCssAria")}
 						>
 							<Copy className="h-4 w-4" aria-hidden="true" />
 						</Button>

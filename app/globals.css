@@ -4,8 +4,8 @@
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
-	--font-sans: var(--font-inter);
-	--font-mono: var(--font-ibm-plex-mono);
+	--font-sans: var(--font-inter), "Pretendard Variable", sans-serif;
+	--font-mono: var(--font-ibm-plex-mono), "Pretendard Variable", monospace;
 	--color-ink: var(--ink);
 	--color-paper: var(--paper);
 	--color-hazard: var(--hazard);
@@ -135,6 +135,15 @@
 ::selection {
 	background: #e61919;
 	color: #f2f1eb;
+}
+
+/* Sidebar nav: fully hidden scrollbar, scroll stays functional */
+.sidebar-scroll {
+	scrollbar-width: none; /* Firefox */
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+	display: none; /* Chromium / Safari */
 }
 
 @layer base {

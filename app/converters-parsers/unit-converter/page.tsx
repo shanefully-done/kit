@@ -16,8 +16,10 @@ import { Copy as CopyIcon, Ruler as RulerIcon } from "lucide-react";
 import convert, { Measure, Unit } from "convert-units";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 const UnitConverterPage = () => {
+	const { t } = useI18n();
 	const [unitType, setUnitType] = usePersistentState<Measure | "">(
 		"unit-converter:unitType",
 		"",
@@ -35,6 +37,33 @@ const UnitConverterPage = () => {
 	const [error, setError] = useState("");
 
 	const unitTypes: Measure[] = convert().measures();
+
+	/** Display labels for unit categories (Measure values → user-facing names) */
+	const measureLabels: Record<string, string> = {
+		length: t("tools.unitConverter.catLength"),
+		area: t("tools.unitConverter.catArea"),
+		mass: t("tools.unitConverter.catMass"),
+		volume: t("tools.unitConverter.catVolume"),
+		each: t("tools.unitConverter.catEach"),
+		temperature: t("tools.unitConverter.catTemperature"),
+		time: t("tools.unitConverter.catTime"),
+		digital: t("tools.unitConverter.catDigital"),
+		partsPer: t("tools.unitConverter.catPartsPer"),
+		speed: t("tools.unitConverter.catSpeed"),
+		pace: t("tools.unitConverter.catPace"),
+		pressure: t("tools.unitConverter.catPressure"),
+		current: t("tools.unitConverter.catCurrent"),
+		voltage: t("tools.unitConverter.catVoltage"),
+		power: t("tools.unitConverter.catPower"),
+		reactivePower: t("tools.unitConverter.catReactivePower"),
+		apparentPower: t("tools.unitConverter.catApparentPower"),
+		energy: t("tools.unitConverter.catEnergy"),
+		reactiveEnergy: t("tools.unitConverter.catReactiveEnergy"),
+		volumeFlowRate: t("tools.unitConverter.catVolumeFlowRate"),
+		illuminance: t("tools.unitConverter.catIlluminance"),
+		frequency: t("tools.unitConverter.catFrequency"),
+		angle: t("tools.unitConverter.catAngle"),
+	};
 
 	const getUnitsForType = (type: Measure): Unit[] => {
 		try {
@@ -85,9 +114,9 @@ const UnitConverterPage = () => {
 				setError("");
 			} catch (e: unknown) {
 				if (e instanceof Error) {
-					setError(`Error: ${e.message}`);
+					setError(`${t("tools.unitConverter.errorPrefix")} ${e.message}`);
 				} else {
-					setError("An unknown error occurred during conversion.");
+					setError(t("tools.unitConverter.unknownError"));
 				}
 				setConvertedValue("");
 			}
@@ -95,7 +124,7 @@ const UnitConverterPage = () => {
 			setConvertedValue("");
 			setError("");
 		}
-	}, [inputValue, fromUnit, toUnit, unitType]);
+	}, [inputValue, fromUnit, toUnit, unitType, t]);
 
 	const handleCopy = () => {
 		if (convertedValue) {
@@ -108,7 +137,7 @@ const UnitConverterPage = () => {
 			header={
 				<ToolHeader
 					icon={<RulerIcon aria-hidden className="h-5 w-5" />}
-					title="Unit Converter"
+					title={t("tools.unitConverter.title")}
 				/>
 			}
 		>
@@ -118,16 +147,16 @@ const UnitConverterPage = () => {
 						htmlFor="unit-type"
 						className="font-mono text-[11px] uppercase tracking-[0.08em]"
 					>
-						CATEGORY
+						{t("tools.unitConverter.categoryLabel")}
 					</label>
 					<Select onValueChange={handleUnitTypeChange} value={unitType}>
 						<SelectTrigger id="unit-type">
-							<SelectValue placeholder="Select a unit type" />
+							<SelectValue placeholder={t("tools.unitConverter.selectCategoryPlaceholder")} />
 						</SelectTrigger>
 						<SelectContent>
 							{unitTypes.map((type) => (
 								<SelectItem key={type} value={type}>
-									{type.charAt(0).toUpperCase() + type.slice(1)}
+									{measureLabels[type] ?? type}
 								</SelectItem>
 							))}
 						</SelectContent>
@@ -137,7 +166,7 @@ const UnitConverterPage = () => {
 				{unitType && (
 					<>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ CONVERSION RIG ]
+							{t("tools.unitConverter.conversionRigLabel")}
 						</p>
 						<div className="grid md:grid-cols-[1fr_auto_1fr] gap-3 items-end">
 							<div className="grid w-full items-center gap-2">
@@ -145,11 +174,11 @@ const UnitConverterPage = () => {
 									htmlFor="from-unit"
 									className="font-mono text-[11px] uppercase tracking-[0.08em]"
 								>
-									FROM
+									{t("tools.unitConverter.fromLabel")}
 								</label>
 								<Select onValueChange={handleFromUnitChange} value={fromUnit}>
 									<SelectTrigger id="from-unit">
-										<SelectValue placeholder="Select unit" />
+										<SelectValue placeholder={t("tools.unitConverter.selectUnitPlaceholder")} />
 									</SelectTrigger>
 									<SelectContent>
 										{getUnitsForType(unitType).map((unit) => (
@@ -172,18 +201,18 @@ const UnitConverterPage = () => {
 									htmlFor="to-unit"
 									className="font-mono text-[11px] uppercase tracking-[0.08em]"
 								>
-									TO
+									{t("tools.unitConverter.toLabel")}
 								</label>
 								<Select onValueChange={handleToUnitChange} value={toUnit}>
 									<SelectTrigger id="to-unit">
-										<SelectValue placeholder="Select unit" />
+										<SelectValue placeholder={t("tools.unitConverter.selectUnitPlaceholder")} />
 									</SelectTrigger>
 									<SelectContent>
 										{getUnitsForType(unitType).map((unit) => (
-											<SelectItem key={unit} value={unit}>
-												{unit}
-											</SelectItem>
-										))}
+												<SelectItem key={unit} value={unit}>
+													{unit}
+												</SelectItem>
+											))}
 									</SelectContent>
 								</Select>
 							</div>
@@ -194,14 +223,14 @@ const UnitConverterPage = () => {
 								htmlFor="input-value"
 								className="font-mono text-[11px] uppercase tracking-[0.08em]"
 							>
-								VALUE
+								{t("tools.unitConverter.valueLabel")}
 							</label>
 							<Input
 								id="input-value"
 								type="number"
 								value={inputValue}
 								onChange={(e) => setInputValue(e.target.value)}
-								placeholder="Enter value"
+								placeholder={t("tools.unitConverter.valuePlaceholder")}
 							/>
 						</div>
 
@@ -211,7 +240,7 @@ const UnitConverterPage = () => {
 							<>
 								<div className="border-t border-ink pt-4" />
 								<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-1">
-									[ RESULT ]
+									{t("tools.unitConverter.resultLabel")}
 								</p>
 								<div className="border border-ink bg-muted/40 px-3 py-3 flex items-center justify-between gap-2">
 									<span className="font-mono text-xl break-all">{convertedValue}</span>
@@ -219,7 +248,7 @@ const UnitConverterPage = () => {
 										variant="outline"
 										size="icon"
 										onClick={handleCopy}
-										aria-label="Copy converted value"
+										aria-label={t("tools.unitConverter.copyResultAria")}
 									>
 										<CopyIcon className="h-4 w-4" aria-hidden />
 									</Button>

@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 import { QrCodeIcon, Download, Copy } from "lucide-react";
 
 export default function QRCodePage() {
+	const { t } = useI18n();
 	const [text, setText] = useState("");
 	const [qrCodeSvg, setQrCodeSvg] = useState("");
 	const qrCodeRef = useRef<HTMLDivElement>(null);
@@ -28,7 +30,7 @@ export default function QRCodePage() {
 			setQrCodeSvg(svg);
 		} catch (err) {
 			console.error(err);
-			toast("Error generating QR code: Please try again.", {
+			toast(t("tools.qrCode.errorGenerate"), {
 				description: err instanceof Error ? err.message : String(err),
 				duration: 5000,
 			});
@@ -72,7 +74,7 @@ export default function QRCodePage() {
 
 		link.click();
 		URL.revokeObjectURL(link.href);
-		toast(`QR code downloaded as ${format.toUpperCase()}`);
+		toast(t("tools.qrCode.downloaded", { format: format.toUpperCase() }));
 	};
 
 	const copyToClipboard = () => {
@@ -80,11 +82,11 @@ export default function QRCodePage() {
 		navigator.clipboard
 			.writeText(text)
 			.then(() => {
-				toast("Text copied to clipboard");
+				toast(t("tools.qrCode.textCopied"));
 			})
 			.catch((err) => {
 				console.error("Failed to copy text: ", err);
-				toast("Failed to copy text: Please try again.", {
+				toast(t("tools.qrCode.copyFailed"), {
 					description: err instanceof Error ? err.message : String(err),
 					duration: 5000,
 				});
@@ -115,12 +117,12 @@ export default function QRCodePage() {
 
 				if (code) {
 					setDecodedText(code.data);
-					toast("QR code decoded successfully", {
+					toast(t("tools.qrCode.decodeSuccess"), {
 						description: code.data,
 					});
 				} else {
-					setDecodedText("No QR code found.");
-					toast("No QR code found: Please try another image.", {
+					setDecodedText(t("tools.qrCode.noQrCodeFound"));
+					toast(t("tools.qrCode.notFoundToast"), {
 						duration: 5000,
 					});
 				}
@@ -135,11 +137,11 @@ export default function QRCodePage() {
 		navigator.clipboard
 			.writeText(decodedText)
 			.then(() => {
-				toast("Decoded text copied to clipboard");
+				toast(t("tools.qrCode.decodedCopied"));
 			})
 			.catch((err) => {
 				console.error("Failed to copy decoded text: ", err);
-				toast("Failed to copy decoded text: Please try again.", {
+				toast(t("tools.qrCode.decodedCopyFailed"), {
 					description: err instanceof Error ? err.message : String(err),
 					duration: 5000,
 				});
@@ -150,7 +152,7 @@ export default function QRCodePage() {
 		<ToolPageLayout
 			header={
 				<ToolHeader
-					title="QR Code Generator"
+					title={t("tools.qrCode.title")}
 					icon={<QrCodeIcon aria-hidden="true" className="h-5 w-5" />}
 				/>
 			}
@@ -158,19 +160,19 @@ export default function QRCodePage() {
 			<div className="space-y-4">
 				{/* Encode Section */}
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ ENCODE ]
+					{t("tools.qrCode.encodeLabel")}
 				</p>
 				<div className="space-y-2">
 					<label
 						htmlFor="qr-text"
 						className="font-mono text-[11px] uppercase tracking-[0.08em]"
 					>
-						Content
+						{t("tools.qrCode.contentLabel")}
 					</label>
 					<Input
 						id="qr-text"
 						type="text"
-						placeholder="Enter text or URL"
+						placeholder={t("tools.qrCode.contentPlaceholder")}
 						value={text}
 						onChange={(e) => setText(e.target.value)}
 						className="font-mono"
@@ -178,7 +180,7 @@ export default function QRCodePage() {
 				</div>
 
 				<div className="flex flex-wrap gap-2">
-					<Button onClick={generateQrCode}>Generate</Button>
+					<Button onClick={generateQrCode}>{t("tools.qrCode.generate")}</Button>
 					{qrCodeSvg && (
 						<>
 							<Button variant="outline" onClick={() => downloadQrCode("png")}>
@@ -191,7 +193,7 @@ export default function QRCodePage() {
 							</Button>
 							<Button variant="outline" onClick={copyToClipboard}>
 								<Copy className="h-4 w-4 mr-2" aria-hidden="true" />
-								Copy Text
+								{t("tools.qrCode.copyText")}
 							</Button>
 						</>
 					)}
@@ -200,14 +202,14 @@ export default function QRCodePage() {
 				{/* QR Output */}
 				<div className="space-y-2">
 					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ OUTPUT ]
+						{t("tools.qrCode.outputLabel")}
 					</p>
 					<div className="border border-ink bg-card p-4 grid place-items-center">
 						{qrCodeSvg ? (
 							<div ref={qrCodeRef} dangerouslySetInnerHTML={{ __html: qrCodeSvg }} />
 						) : (
 							<p className="font-mono text-sm text-muted-foreground">
-								No QR yet. Generate one.
+								{t("tools.qrCode.emptyOutput")}
 							</p>
 						)}
 					</div>
@@ -216,14 +218,14 @@ export default function QRCodePage() {
 				{/* Decode Section */}
 				<div className="border-t border-ink pt-4">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ DECODE ]
+						{t("tools.qrCode.decodeLabel")}
 					</p>
 					<div className="mt-3 space-y-2">
 						<label
 							htmlFor="qr-image-upload"
 							className="font-mono text-[11px] uppercase tracking-[0.08em]"
 						>
-							Upload Image
+							{t("tools.qrCode.uploadLabel")}
 						</label>
 						<div className="border border-ink border-dashed p-8 grid place-items-center">
 							<Input
@@ -237,7 +239,7 @@ export default function QRCodePage() {
 								htmlFor="qr-image-upload"
 								className="cursor-pointer font-mono text-sm text-muted-foreground"
 							>
-								Click to upload QR image
+								{t("tools.qrCode.uploadHint")}
 							</label>
 						</div>
 					</div>
@@ -245,10 +247,12 @@ export default function QRCodePage() {
 					{decodedText && (
 						<div className="mt-3 space-y-2">
 							<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-								[ DECODED ]
+								{t("tools.qrCode.decodedLabel")}
 							</p>
-							{decodedText === "No QR code found." ? (
-								<p className="font-mono text-sm text-hazard-text">No QR code found.</p>
+							{decodedText === t("tools.qrCode.noQrCodeFound") ? (
+								<p className="font-mono text-sm text-hazard-text">
+									{t("tools.qrCode.noQrCodeFound")}
+								</p>
 							) : (
 								<>
 									<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all">
@@ -260,7 +264,7 @@ export default function QRCodePage() {
 										onClick={copyDecodedTextToClipboard}
 									>
 										<Copy className="h-4 w-4 mr-2" aria-hidden="true" />
-										Copy Decoded
+										{t("tools.qrCode.copyDecoded")}
 									</Button>
 								</>
 							)}

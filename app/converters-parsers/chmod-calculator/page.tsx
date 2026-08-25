@@ -12,6 +12,7 @@ import { Copy, FileKey as FileKeyIcon } from "lucide-react";
 import { toast } from "sonner";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 type Perm = { read: boolean; write: boolean; execute: boolean };
 
@@ -71,6 +72,7 @@ const isPerm = (v: unknown): v is Perm =>
 const isOctal = (v: unknown): v is string =>
 	typeof v === "string" && /^[0-7]{3,4}$/.test(v);
 export default function ChmodCalculatorPage() {
+	const { t } = useI18n();
 	const [owner, setOwner] = usePersistentState<Perm>(
 		"chmod-calculator:owner",
 		{ read: true, write: true, execute: true },
@@ -110,15 +112,15 @@ export default function ChmodCalculatorPage() {
 		perm: Perm;
 		setPerm: (p: Perm) => void;
 	}> = [
-		{ key: "owner", label: "OWNER", perm: owner, setPerm: setOwner },
-		{ key: "group", label: "GROUP", perm: group, setPerm: setGroup },
-		{ key: "other", label: "OTHER", perm: other, setPerm: setOther },
+		{ key: "owner", label: t("tools.chmodCalculator.owner"), perm: owner, setPerm: setOwner },
+		{ key: "group", label: t("tools.chmodCalculator.group"), perm: group, setPerm: setGroup },
+		{ key: "other", label: t("tools.chmodCalculator.other"), perm: other, setPerm: setOther },
 	];
 
 	const perms: Array<{ key: keyof Perm; label: string }> = [
-		{ key: "read", label: "READ" },
-		{ key: "write", label: "WRITE" },
-		{ key: "execute", label: "EXECUTE" },
+		{ key: "read", label: t("tools.chmodCalculator.read") },
+		{ key: "write", label: t("tools.chmodCalculator.write") },
+		{ key: "execute", label: t("tools.chmodCalculator.execute") },
 	];
 
 	const octalFull = useMemo(() => {
@@ -224,14 +226,14 @@ export default function ChmodCalculatorPage() {
 			header={
 				<ToolHeader
 					icon={<FileKeyIcon aria-hidden className="h-5 w-5" />}
-					title="chmod Calculator"
+				title={t("tools.chmodCalculator.title")}
 				/>
 			}
 		>
 			<div className="space-y-6">
 				<section className="space-y-3">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ PERMISSION MATRIX ]
+					{t("tools.chmodCalculator.permissionMatrixLabel")}
 					</p>
 					<div className="border border-ink">
 						<div className="grid grid-cols-4 border-b border-ink bg-ink px-3 py-2 text-paper">
@@ -319,43 +321,43 @@ export default function ChmodCalculatorPage() {
 
 				<section className="space-y-3">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ RESULT ]
+					{t("tools.chmodCalculator.resultLabel")}
 					</p>
 					<div className="border border-ink bg-muted/40 px-3 py-3">
 						<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-							OCTAL
+						{t("tools.chmodCalculator.octalLabel")}
 						</p>
 						<p className="font-mono text-2xl">{octalFull}</p>
 					</div>
 					<div className="flex items-center justify-between gap-3 border border-ink bg-muted/40 px-3 py-3">
 						<div className="min-w-0">
 							<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-								SYMBOLIC
+							{t("tools.chmodCalculator.symbolicLabel")}
 							</p>
 							<p className="truncate font-mono">{symbolic}</p>
 						</div>
 						<Button variant="outline" size="sm" onClick={() => copyText(symbolic)}>
 							<Copy aria-hidden className="h-3.5 w-3.5" />
-							COPY
+						{t("common.copy")}
 						</Button>
 					</div>
 					<div className="flex items-center justify-between gap-3 border border-ink bg-muted/40 px-3 py-3">
 						<div className="min-w-0">
 							<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-								COMMAND
+							{t("tools.chmodCalculator.commandLabel")}
 							</p>
 							<p className="truncate font-mono">{command}</p>
 						</div>
 						<Button variant="outline" size="sm" onClick={() => copyText(command)}>
 							<Copy aria-hidden className="h-3.5 w-3.5" />
-							COPY
+						{t("common.copy")}
 						</Button>
 					</div>
 				</section>
 
 				<section className="space-y-3">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ OCTAL INPUT ]
+					{t("tools.chmodCalculator.octalInputLabel")}
 					</p>
 					<Input
 						value={octalInput}
@@ -366,7 +368,7 @@ export default function ChmodCalculatorPage() {
 					/>
 					{!parsedInputOk && (
 						<p className="border border-hazard bg-muted/40 px-3 py-2 font-mono text-sm text-hazard-text">
-							[ INVALID OCTAL ]
+						{t("tools.chmodCalculator.invalidOctalError")}
 						</p>
 					)}
 				</section>

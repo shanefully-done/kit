@@ -30,8 +30,10 @@ import {
 } from "@/components/ui/command";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 export default function TimezoneConverterPage() {
+	const { t } = useI18n();
 	const [sourceTime, setSourceTime] = useState<Date | undefined>(new Date());
 	const [sourceTimezone, setSourceTimezone] = usePersistentState(
 		"timezone-converter:sourceTimezone",
@@ -42,6 +44,7 @@ export default function TimezoneConverterPage() {
 		"America/New_York",
 	);
 	const [convertedTime, setConvertedTime] = useState("");
+	const [conversionError, setConversionError] = useState(false);
 	const [timezones, setTimezones] = useState<string[]>([]);
 
 	useEffect(() => {
@@ -52,6 +55,7 @@ export default function TimezoneConverterPage() {
 	const convertTime = useCallback(() => {
 		if (!sourceTime) {
 			setConvertedTime("");
+			setConversionError(false);
 			return;
 		}
 
@@ -59,9 +63,11 @@ export default function TimezoneConverterPage() {
 			const zonedSourceTime = toZonedTime(sourceTime, sourceTimezone);
 			const zonedTargetTime = fromZonedTime(zonedSourceTime, targetTimezone);
 			setConvertedTime(format(zonedTargetTime, "yyyy-MM-dd HH:mm:ss zzz"));
+			setConversionError(false);
 		} catch (error) {
 			console.error("Error converting timezone:", error);
-			setConvertedTime("Invalid Timezone or Date");
+			setConvertedTime("");
+			setConversionError(true);
 		}
 	}, [sourceTime, sourceTimezone, targetTimezone]);
 
@@ -94,19 +100,19 @@ export default function TimezoneConverterPage() {
 					>
 						{selectedTimezone
 							? timezones.find((timezone) => timezone === selectedTimezone)
-							: "Select timezone..."}
+							: t("tools.timezoneConverter.selectTimezone")}
 						<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent className="w-[300px] p-0">
 					<Command>
 						<CommandInput
-							placeholder="Search timezone..."
+							placeholder={t("tools.timezoneConverter.searchTimezonePlaceholder")}
 							value={searchValue}
 							onValueChange={setSearchValue}
 						/>
 						<CommandList>
-							<CommandEmpty>No timezone found.</CommandEmpty>
+							<CommandEmpty>{t("tools.timezoneConverter.noTimezoneFound")}</CommandEmpty>
 							<CommandGroup>
 								{filteredTimezones.map((timezone) => (
 									<CommandItem
@@ -139,26 +145,26 @@ export default function TimezoneConverterPage() {
 			header={
 				<ToolHeader
 					icon={<GlobeIcon aria-hidden className="h-5 w-5" />}
-					title="Timezone Converter"
+					title={t("tools.timezoneConverter.title")}
 				/>
 			}
 		>
 			<div className="space-y-4">
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ CONVERSION ]
+					{t("tools.timezoneConverter.conversionLabel")}
 				</p>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					{/* Source Timezone */}
 					<div className="border border-ink bg-muted/40 p-4 space-y-3">
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ SOURCE ]
+							{t("tools.timezoneConverter.sourceLabel")}
 						</p>
 						<div className="grid w-full items-center gap-2">
 							<label
 								htmlFor="source-time"
 								className="font-mono text-[11px] uppercase tracking-[0.08em]"
 							>
-								DATE
+								{t("tools.timezoneConverter.dateLabel")}
 							</label>
 							<div className="flex items-center gap-2">
 								<Popover>
@@ -171,7 +177,7 @@ export default function TimezoneConverterPage() {
 											)}
 										>
 											<CalendarIcon className="mr-2 h-4 w-4" />
-											{sourceTime ? format(sourceTime, "PPP") : <span>Pick a date</span>}
+											{sourceTime ? format(sourceTime, "PPP") : <span>{t("tools.timezoneConverter.pickDate")}</span>}
 										</Button>
 									</PopoverTrigger>
 									<PopoverContent className="w-auto p-0">
@@ -203,7 +209,7 @@ export default function TimezoneConverterPage() {
 								htmlFor="source-timezone"
 								className="font-mono text-[11px] uppercase tracking-[0.08em]"
 							>
-								TIMEZONE
+								{t("tools.timezoneConverter.timezoneLabel")}
 							</label>
 							<TimezoneSelect
 								selectedTimezone={sourceTimezone}
@@ -215,14 +221,14 @@ export default function TimezoneConverterPage() {
 					{/* Target Timezone */}
 					<div className="border border-ink bg-muted/40 p-4 space-y-3">
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ TARGET ]
+							{t("tools.timezoneConverter.targetLabel")}
 						</p>
 						<div className="grid w-full items-center gap-2">
 							<label
 								htmlFor="target-timezone"
 								className="font-mono text-[11px] uppercase tracking-[0.08em]"
 							>
-								TIMEZONE
+								{t("tools.timezoneConverter.timezoneLabel")}
 							</label>
 							<TimezoneSelect
 								selectedTimezone={targetTimezone}
@@ -231,21 +237,23 @@ export default function TimezoneConverterPage() {
 						</div>
 						<div>
 							<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-1">
-								CONVERTED TIME
+								{t("tools.timezoneConverter.convertedTimeLabel")}
 							</p>
 							<div className="border border-ink bg-muted/40 px-3 py-3 flex items-center justify-between gap-2">
 								<span
 									className={cn(
 										"font-mono text-lg md:text-xl break-all",
-										convertedTime === "Invalid Timezone or Date" && "text-hazard-text",
+										conversionError && "text-hazard-text",
 									)}
 								>
-									{convertedTime || "—"}
+									{conversionError
+										? t("tools.timezoneConverter.invalidTimezone")
+										: (convertedTime || "—")}
 								</span>
 								<Button
 									variant="outline"
 									size="icon"
-									aria-label="Copy converted time"
+									aria-label={t("tools.timezoneConverter.copyConvertedAria")}
 									onClick={() => navigator.clipboard.writeText(convertedTime)}
 									disabled={!convertedTime}
 								>

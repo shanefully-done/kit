@@ -18,6 +18,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 import { KeyRound } from "lucide-react";
 
 type AlgKey = "SHA1" | "SHA256" | "SHA384" | "SHA512" | "MD5" | "SHA3";
@@ -70,6 +71,7 @@ function hmac(
 }
 
 export default function HmacGeneratorPage() {
+	const { t } = useI18n();
 	const [message, setMessage] = useState("");
 	const [secret, setSecret] = useState("");
 	const [algorithm, setAlgorithm] = usePersistentState(
@@ -92,56 +94,62 @@ export default function HmacGeneratorPage() {
 	const handleCopyHex = () => {
 		if (result) {
 			navigator.clipboard.writeText(result.hex);
-			toast.success("COPIED");
+			toast.success(t("common.copied"));
 		}
 	};
 
 	const handleCopyBase64 = () => {
 		if (result) {
 			navigator.clipboard.writeText(result.base64);
-			toast.success("COPIED");
+			toast.success(t("common.copied"));
 		}
 	};
 
 	return (
 		<ToolPageLayout
 			header={
-				<ToolHeader icon={<KeyRound aria-hidden />} title="HMAC Generator" />
+				<ToolHeader
+					icon={<KeyRound aria-hidden />}
+					title={t("tools.hmacGenerator.title")}
+				/>
 			}
 		>
 			<div className="space-y-4">
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ MESSAGE ]
+					{t("tools.hmacGenerator.messageLabel")}
 				</p>
 				<Textarea
 					value={message}
 					onChange={(e) => setMessage(e.target.value)}
-					placeholder="Enter message to sign..."
+					placeholder={t("tools.hmacGenerator.messagePlaceholder")}
 					className="font-mono text-sm min-h-[80px]"
 				/>
 
 				<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						SECRET
+						{t("tools.hmacGenerator.secretLabel")}
 					</Label>
 					<div className="flex items-center gap-2">
 						<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-							SHOW
+							{t("tools.hmacGenerator.showLabel")}
 						</Label>
-						<Switch checked={showSecret} onCheckedChange={setShowSecret} />
+						<Switch
+							checked={showSecret}
+							onCheckedChange={setShowSecret}
+						/>
 					</div>
 				</div>
 				<Input
 					type={showSecret ? "text" : "password"}
 					value={secret}
 					onChange={(e) => setSecret(e.target.value)}
-					placeholder="Enter secret key..."
+					placeholder={t("tools.hmacGenerator.secretPlaceholder")}
 					className="font-mono text-sm"
 				/>
 
 				<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 					<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
-						ALGORITHM
+						{t("tools.hmacGenerator.algorithmLabel")}
 					</Label>
 					<Select value={algorithm} onValueChange={setAlgorithm}>
 						<SelectTrigger className="w-[140px]">
@@ -159,36 +167,36 @@ export default function HmacGeneratorPage() {
 				</div>
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ Output ]
+					{t("tools.hmacGenerator.outputLabel")}
 				</p>
 
 				{!result ? (
 					<div className="border border-ink bg-muted/40 px-3 py-3 font-mono text-sm text-muted-foreground">
-						[ AWAITING INPUT ]
+						{t("tools.hmacGenerator.awaitingInput")}
 					</div>
 				) : (
 					<div className="space-y-4">
 						<div className="space-y-2">
 							<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-								[ HEX ]
+								{t("tools.hmacGenerator.hexLabel")}
 							</p>
 							<div className="border border-ink bg-muted/40 px-3 py-3 font-mono text-lg break-all">
 								{result.hex}
 							</div>
 							<Button variant="outline" onClick={handleCopyHex}>
-								COPY HEX
+								{t("tools.hmacGenerator.copyHex")}
 							</Button>
 						</div>
 
 						<div className="space-y-2">
 							<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-								[ BASE64 ]
+								{t("tools.hmacGenerator.base64Label")}
 							</p>
 							<div className="border border-ink bg-muted/40 px-3 py-3 font-mono text-lg break-all">
 								{result.base64}
 							</div>
 							<Button variant="outline" onClick={handleCopyBase64}>
-								COPY BASE64
+								{t("tools.hmacGenerator.copyBase64")}
 							</Button>
 						</div>
 					</div>

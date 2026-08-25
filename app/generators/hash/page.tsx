@@ -15,8 +15,10 @@ import CryptoJS from "crypto-js";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { HashIcon } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 const HashGeneratorPage = () => {
+	const { t } = useI18n();
 	const [inputText, setInputText] = useState("");
 	const [selectedAlgorithm, setSelectedAlgorithm] = usePersistentState(
 		"hash:selectedAlgorithm",
@@ -57,7 +59,7 @@ const HashGeneratorPage = () => {
 		<ToolPageLayout
 			header={
 				<ToolHeader
-					title="Hash Generator"
+					title={t("tools.hash.title")}
 					icon={<HashIcon aria-hidden="true" className="h-5 w-5" />}
 				/>
 			}
@@ -65,10 +67,10 @@ const HashGeneratorPage = () => {
 			<div className="space-y-4">
 				<div>
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-2">
-						[ Input ]
+						[ {t("tools.hash.inputLabel")} ]
 					</p>
 					<Textarea
-						placeholder="Enter text here..."
+						placeholder={t("tools.hash.inputPlaceholder")}
 						value={inputText}
 						onChange={(e) => setInputText(e.target.value)}
 						rows={8}
@@ -78,14 +80,14 @@ const HashGeneratorPage = () => {
 
 				<div>
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-2">
-						[ Algorithm ]
+						[ {t("tools.hash.algorithmLabel")} ]
 					</p>
 					<Select
 						value={selectedAlgorithm}
 						onValueChange={(value) => setSelectedAlgorithm(value)}
 					>
 						<SelectTrigger className="w-full">
-							<SelectValue placeholder="Select an algorithm" />
+							<SelectValue placeholder={t("tools.hash.selectAlgorithm")} />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectItem value="MD5">MD5</SelectItem>
@@ -99,13 +101,13 @@ const HashGeneratorPage = () => {
 				{hashedOutput && (
 					<>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ Digest ]
+							[ {t("tools.hash.digestLabel")} ]
 						</p>
 						<div className="grid grid-cols-[5rem_1fr_auto] items-center gap-2 border-b border-ink py-2">
 							<span className="font-mono text-xs uppercase">{selectedAlgorithm}</span>
 							<span className="font-mono text-sm break-all">{hashedOutput}</span>
 							<Button variant="outline" onClick={handleCopyClick}>
-								Copy
+								{t("common.copy")}
 							</Button>
 						</div>
 					</>

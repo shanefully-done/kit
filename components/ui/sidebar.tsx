@@ -6,84 +6,88 @@ import { usePathname } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import { useI18n, type Path } from "@/lib/i18n";
 
-const groups = [
+const groups: {
+	labelKey: Path;
+	tools: { nameKey: Path; href: string }[];
+}[] = [
 	{
-		label: "CONVERTERS & PARSERS",
+		labelKey: "nav.categories.converters",
 		tools: [
 			{
-				name: "Base64 Encoder/Decoder",
+				nameKey: "tools.base64EncoderDecoder.title",
 				href: "/converters-parsers/base64-encoder-decoder",
 			},
 			{
-				name: "Base64 Image Converter",
+				nameKey: "tools.base64ImageConverter.title",
 				href: "/converters-parsers/base64-image-converter",
 			},
-			{ name: "chmod Calculator", href: "/converters-parsers/chmod-calculator" },
-			{ name: "Color Converter", href: "/converters-parsers/color-converter" },
-			{ name: "CRON Parser", href: "/converters-parsers/cron-parser" },
-			{ name: "JSON Parser", href: "/converters-parsers/json-parser" },
-			{ name: "JWT Decoder", href: "/converters-parsers/jwt-decoder" },
+			{ nameKey: "tools.chmodCalculator.title", href: "/converters-parsers/chmod-calculator" },
+			{ nameKey: "tools.colorConverter.title", href: "/converters-parsers/color-converter" },
+			{ nameKey: "tools.cronParser.title", href: "/converters-parsers/cron-parser" },
+			{ nameKey: "tools.jsonParser.title", href: "/converters-parsers/json-parser" },
+			{ nameKey: "tools.jwtDecoder.title", href: "/converters-parsers/jwt-decoder" },
 			{
-				name: "Number Base Converter",
+				nameKey: "tools.numberBaseConverter.title",
 				href: "/converters-parsers/number-base-converter",
 			},
-			{ name: "curl to fetch", href: "/converters-parsers/curl-converter" },
-			{ name: "Data Converter", href: "/converters-parsers/data-converter" },
-			{ name: "Regex Tester", href: "/converters-parsers/regex-tester" },
-			{ name: "Text Case Converter", href: "/converters-parsers/text-case" },
+			{ nameKey: "tools.curlConverter.title", href: "/converters-parsers/curl-converter" },
+			{ nameKey: "tools.dataConverter.title", href: "/converters-parsers/data-converter" },
+			{ nameKey: "tools.regexTester.title", href: "/converters-parsers/regex-tester" },
+			{ nameKey: "tools.textCase.title", href: "/converters-parsers/text-case" },
 			{
-				name: "Timestamp Converter",
+				nameKey: "tools.timestampConverter.title",
 				href: "/converters-parsers/timestamp-converter",
 			},
 			{
-				name: "Timezone Converter",
+				nameKey: "tools.timezoneConverter.title",
 				href: "/converters-parsers/timezone-converter",
 			},
-			{ name: "Unit Converter", href: "/converters-parsers/unit-converter" },
+			{ nameKey: "tools.unitConverter.title", href: "/converters-parsers/unit-converter" },
 			{
-				name: "URL Encoder/Decoder",
+				nameKey: "tools.urlEncoderDecoder.title",
 				href: "/converters-parsers/url-encoder-decoder",
 			},
-			{ name: "URL Parser", href: "/converters-parsers/url-parser" },
+			{ nameKey: "tools.urlParser.title", href: "/converters-parsers/url-parser" },
 		],
 	},
 	{
-		label: "GENERATORS",
+		labelKey: "nav.categories.generators",
 		tools: [
-			{ name: "Barcode Generator", href: "/generators/barcode-generator" },
-			{ name: "Gradient Generator", href: "/generators/gradient" },
-			{ name: "Hash Generator", href: "/generators/hash" },
-			{ name: "HMAC Generator", href: "/generators/hmac-generator" },
-			{ name: "ID Generator", href: "/generators/id-generator" },
-			{ name: "Lorem Generator", href: "/generators/lorem-generator" },
-			{ name: "Password Generator", href: "/generators/password" },
-			{ name: "Port Number Generator", href: "/generators/port" },
-			{ name: "QR Code Generator & Reader", href: "/generators/qr-code" },
+			{ nameKey: "tools.barcodeGenerator.title", href: "/generators/barcode-generator" },
+			{ nameKey: "tools.gradient.title", href: "/generators/gradient" },
+			{ nameKey: "tools.hash.title", href: "/generators/hash" },
+			{ nameKey: "tools.hmacGenerator.title", href: "/generators/hmac-generator" },
+			{ nameKey: "tools.idGenerator.title", href: "/generators/id-generator" },
+			{ nameKey: "tools.loremGenerator.title", href: "/generators/lorem-generator" },
+			{ nameKey: "tools.password.title", href: "/generators/password" },
+			{ nameKey: "tools.port.title", href: "/generators/port" },
+			{ nameKey: "tools.qrCode.title", href: "/generators/qr-code" },
 			{
-				name: "SVG Placeholder Generator",
+				nameKey: "tools.svgPlaceholderGenerator.title",
 				href: "/generators/svg-placeholder-generator",
 			},
-			{ name: "TOTP Generator", href: "/generators/totp-generator" },
-			{ name: "UUID Generator", href: "/generators/uuid" },
+			{ nameKey: "tools.totpGenerator.title", href: "/generators/totp-generator" },
+			{ nameKey: "tools.uuid.title", href: "/generators/uuid" },
 		],
 	},
 	{
-		label: "VIEWERS & MISC",
+		labelKey: "nav.categories.viewers",
 		tools: [
-			{ name: "API Directory", href: "/viewers-miscellaneous/api-directory" },
-			{ name: "Diff Viewer", href: "/viewers-miscellaneous/diff-viewer" },
+			{ nameKey: "tools.apiDirectory.title", href: "/viewers-miscellaneous/api-directory" },
+			{ nameKey: "tools.diffViewer.title", href: "/viewers-miscellaneous/diff-viewer" },
 			{
-				name: "HTTP Status Codes",
+				nameKey: "tools.httpStatusCodes.title",
 				href: "/viewers-miscellaneous/http-status-codes",
 			},
 			{
-				name: "Image Metadata Viewer",
+				nameKey: "tools.imageMetadataViewer.title",
 				href: "/viewers-miscellaneous/image-metadata-viewer",
 			},
-			{ name: "Token Counter", href: "/viewers-miscellaneous/token-counter" },
+			{ nameKey: "tools.tokenCounter.title", href: "/viewers-miscellaneous/token-counter" },
 			{
-				name: "Unicode Inspector",
+				nameKey: "tools.unicodeInspector.title",
 				href: "/viewers-miscellaneous/unicode-inspector",
 			},
 		],
@@ -94,6 +98,7 @@ const Sidebar = () => {
 	const [query, setQuery] = useState("");
 	const pathname = usePathname();
 	const { theme, setTheme } = useTheme();
+	const { locale, setLocale, t } = useI18n();
 	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => setMounted(true), []);
@@ -104,7 +109,7 @@ const Sidebar = () => {
 		.map((group) => ({
 			...group,
 			tools: group.tools.filter((tool) =>
-				tool.name.toLowerCase().includes(lowerQuery),
+				t(tool.nameKey).toLowerCase().includes(lowerQuery),
 			),
 		}))
 		.filter((group) => group.tools.length > 0);
@@ -129,47 +134,75 @@ const Sidebar = () => {
 				<Input
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
-					placeholder="FILTER UNITS"
+					placeholder={t("nav.filterPlaceholder")}
 					className="h-9 font-mono text-xs uppercase tracking-[0.08em]"
-					aria-label="Filter tools"
+					aria-label={t("nav.filterAria")}
 				/>
 			</div>
 
 			<div className="border-b border-ink p-3">
-				<div
-					role="radiogroup"
-					aria-label="Color theme"
-					className="grid grid-cols-3 border border-ink divide-x divide-ink"
-				>
-					{(["light", "system", "dark"] as const).map((mode) => {
-						const active = mounted && theme === mode;
-						return (
-							<button
-								key={mode}
-								type="button"
-								role="radio"
-								aria-checked={active}
-								onClick={() => setTheme(mode)}
-								className={cn(
-									"py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] transition-colors",
-									active
-										? "bg-ink text-paper"
-										: "text-muted-foreground hover:bg-muted hover:text-foreground",
-								)}
-							>
-								{mode}
-							</button>
-						);
-					})}
+				<div className="border border-ink divide-y divide-ink">
+					<div
+						role="radiogroup"
+						aria-label={t("nav.themeAria")}
+						className="grid grid-cols-3 divide-x divide-ink"
+					>
+						{(["system", "light", "dark"] as const).map((mode) => {
+							const active = mounted && theme === mode;
+							return (
+								<button
+									key={mode}
+									type="button"
+									role="radio"
+									aria-checked={active}
+									onClick={() => setTheme(mode)}
+									className={cn(
+										"py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] transition-colors",
+										active
+											? "bg-ink text-paper"
+											: "text-muted-foreground hover:bg-muted hover:text-foreground",
+									)}
+								>
+									{mode}
+								</button>
+							);
+						})}
+					</div>
+					<div
+						role="radiogroup"
+						aria-label={t("nav.languageAria")}
+						className="grid grid-cols-2 divide-x divide-ink"
+					>
+						{(["en", "ko"] as const).map((l) => {
+							const active = mounted && locale === l;
+							return (
+								<button
+									key={l}
+									type="button"
+									role="radio"
+									aria-checked={active}
+									onClick={() => setLocale(l)}
+									className={cn(
+										"py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] transition-colors",
+										active
+											? "bg-ink text-paper"
+											: "text-muted-foreground hover:bg-muted hover:text-foreground",
+									)}
+								>
+									{l === "en" ? "EN" : "한국어"}
+								</button>
+							);
+						})}
+					</div>
 				</div>
 			</div>
 
-			<nav className="flex-1 min-h-0 overflow-y-auto">
+			<nav className="sidebar-scroll flex-1 min-h-0 overflow-y-auto">
 				{hasResults ? (
 					filteredGroups.map((group) => (
-						<React.Fragment key={group.label}>
+						<React.Fragment key={group.labelKey}>
 							<div className="sticky top-0 bg-muted border-y border-ink px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] text-foreground">
-								{`/// ${group.label}`}
+								{`/// ${t(group.labelKey)}`}
 							</div>
 							{group.tools.map((tool) => {
 								const active = pathname === tool.href;
@@ -184,7 +217,7 @@ const Sidebar = () => {
 									>
 										<span>
 											{active && <span aria-hidden="true">&gt;&gt;&gt;&nbsp;</span>}
-											{tool.name}
+											{t(tool.nameKey)}
 										</span>
 										{active && <span aria-hidden="true">®</span>}
 									</Link>
@@ -194,17 +227,17 @@ const Sidebar = () => {
 					))
 				) : (
 					<p className="px-3 py-4 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ NO MATCH ]
+						{t("nav.noMatch")}
 					</p>
 				)}
 			</nav>
 
 			<div className="border-t-2 border-ink px-4 py-3">
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					© IXTJ / ALL PROCESSING LOCAL
+					{t("nav.footerLine1")}
 				</p>
 				<p className="mt-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					NO ACCOUNTS · NO TELEMETRY · UNIT D-01
+					{t("nav.footerLine2")}
 				</p>
 			</div>
 		</div>

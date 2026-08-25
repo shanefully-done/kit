@@ -13,6 +13,7 @@ import {
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { ListTree as ListTreeIcon } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 interface StatusCode {
 	code: number;
@@ -327,14 +328,15 @@ const STATUS_CODES: StatusCode[] = [
 ];
 
 const CLASSES = [
-	{ label: "1XX INFORMATIONAL", prefix: "1" },
-	{ label: "2XX SUCCESS", prefix: "2" },
-	{ label: "3XX REDIRECTION", prefix: "3" },
-	{ label: "4XX CLIENT ERROR", prefix: "4", error: true },
-	{ label: "5XX SERVER ERROR", prefix: "5", error: true },
+	{ labelKey: "tools.httpStatusCodes.class1xx" as const, prefix: "1" },
+	{ labelKey: "tools.httpStatusCodes.class2xx" as const, prefix: "2" },
+	{ labelKey: "tools.httpStatusCodes.class3xx" as const, prefix: "3" },
+	{ labelKey: "tools.httpStatusCodes.class4xx" as const, prefix: "4", error: true },
+	{ labelKey: "tools.httpStatusCodes.class5xx" as const, prefix: "5", error: true },
 ];
 
 export default function HttpStatusCodesPage() {
+	const { t } = useI18n();
 	const [searchTerm, setSearchTerm] = useState("");
 
 	const filtered = useMemo(() => {
@@ -363,14 +365,14 @@ export default function HttpStatusCodesPage() {
 	return (
 		<ToolPageLayout
 			header={
-				<ToolHeader icon={<ListTreeIcon aria-hidden />} title="HTTP Status Codes" />
+				<ToolHeader icon={<ListTreeIcon aria-hidden />} title={t("tools.httpStatusCodes.title")} />
 			}
 		>
 			<div className="space-y-0">
 				<div className="pb-3">
 					<Input
 						type="text"
-						placeholder="FILTER CODES"
+						placeholder={t("tools.httpStatusCodes.filterPlaceholder")}
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
 						className="font-mono"
@@ -386,7 +388,7 @@ export default function HttpStatusCodesPage() {
 								<div
 									className={`border-y border-ink bg-muted px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] ${cls.error ? "border-l-4 border-l-hazard" : ""}`}
 								>
-									<span className={cls.error ? "text-hazard-text" : ""}>{cls.label}</span>{" "}
+									<span className={cls.error ? "text-hazard-text" : ""}>{t(cls.labelKey)}</span>{" "}
 									<span className="text-muted-foreground">({items.length})</span>
 								</div>
 								<div className="border border-t-0 border-ink">
@@ -394,13 +396,13 @@ export default function HttpStatusCodesPage() {
 										<TableHeader>
 											<TableRow>
 												<TableHead className="w-[100px] font-mono text-[11px] uppercase tracking-[0.08em]">
-													Code
+													{t("tools.httpStatusCodes.headerCode")}
 												</TableHead>
 												<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
-													Name
+													{t("tools.httpStatusCodes.headerName")}
 												</TableHead>
 												<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
-													Description
+													{t("tools.httpStatusCodes.headerDescription")}
 												</TableHead>
 											</TableRow>
 										</TableHeader>
@@ -415,7 +417,7 @@ export default function HttpStatusCodesPage() {
 														{s.description}
 													</TableCell>
 												</TableRow>
-											))}
+										))}
 										</TableBody>
 									</Table>
 								</div>
@@ -424,7 +426,7 @@ export default function HttpStatusCodesPage() {
 					})
 				) : (
 					<div className="border-y border-ink bg-muted/40 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ NO MATCH ]
+						{t("tools.httpStatusCodes.noMatch")}
 					</div>
 				)}
 			</div>

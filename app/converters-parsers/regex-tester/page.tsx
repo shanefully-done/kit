@@ -17,6 +17,7 @@ import {
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
 import { SettingsIcon } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 // matches the { g, i, m } state shape
 const isFlags = (v: unknown): v is { g: boolean; i: boolean; m: boolean } =>
@@ -26,6 +27,7 @@ const isFlags = (v: unknown): v is { g: boolean; i: boolean; m: boolean } =>
 		(k) => typeof (v as Record<string, unknown>)[k] === "boolean",
 	);
 export default function RegexTesterPage() {
+	const { t } = useI18n();
 	const [regexPattern, setRegexPattern] = useState("");
 	const [testString, setTestString] = useState("");
 	const [flags, setFlags] = usePersistentState(
@@ -80,7 +82,7 @@ export default function RegexTesterPage() {
 			setMatches(newMatches);
 			setError("");
 		} catch (e: unknown) {
-			setError(e instanceof Error ? e.message : "An unknown error occurred");
+			setError(e instanceof Error ? e.message : t("tools.regexTester.unknownError"));
 			setMatches([]);
 		}
 	};
@@ -88,7 +90,7 @@ export default function RegexTesterPage() {
 	return (
 		<ToolPageLayout
 			header={
-				<ToolHeader icon={<SettingsIcon aria-hidden />} title="Regex Tester" />
+				<ToolHeader icon={<SettingsIcon aria-hidden />} title={t("tools.regexTester.title")} />
 			}
 		>
 			<div className="space-y-4">
@@ -97,13 +99,13 @@ export default function RegexTesterPage() {
 						type="text"
 						value={regexPattern}
 						onChange={handleRegexChange}
-						placeholder="Enter regex pattern"
+						placeholder={t("tools.regexTester.patternPlaceholder")}
 						className="font-mono"
-						aria-label="Regex pattern"
+						aria-label={t("tools.regexTester.patternAria")}
 					/>
 
 					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-						FLAGS
+						{t("tools.regexTester.flagsLabel")}
 					</p>
 					<div className="flex flex-wrap gap-2">
 						<Badge
@@ -111,31 +113,31 @@ export default function RegexTesterPage() {
 							onClick={() => handleFlagChange("g")}
 							className="cursor-pointer"
 						>
-							g (global)
+							{t("tools.regexTester.flagGlobal")}
 						</Badge>
 						<Badge
 							variant={flags.i ? "default" : "outline"}
 							onClick={() => handleFlagChange("i")}
 							className="cursor-pointer"
 						>
-							i (case-insensitive)
+							{t("tools.regexTester.flagCaseInsensitive")}
 						</Badge>
 						<Badge
 							variant={flags.m ? "default" : "outline"}
 							onClick={() => handleFlagChange("m")}
 							className="cursor-pointer"
 						>
-							m (multiline)
+							{t("tools.regexTester.flagMultiline")}
 						</Badge>
 					</div>
 
 					<Textarea
 						value={testString}
 						onChange={handleTestStringChange}
-						placeholder="Enter string to test against"
+						placeholder={t("tools.regexTester.testPlaceholder")}
 						rows={10}
 						className="font-mono"
-						aria-label="Test string"
+						aria-label={t("tools.regexTester.testAria")}
 					/>
 				</div>
 
@@ -145,17 +147,17 @@ export default function RegexTesterPage() {
 					</div>
 				) : matches.length === 0 && regexPattern && testString ? (
 					<div className="border border-hazard px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard-text">
-						[ NO MATCH ]
+						{t("tools.regexTester.noMatch")}
 					</div>
 				) : (
 					<div className="border border-ink px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ {matches.length} MATCHES ]
+						{t("tools.regexTester.matchesCount", { count: matches.length })}
 					</div>
 				)}
 
 				<div className="space-y-4">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ HIGHLIGHTED MATCHES ]
+						{t("tools.regexTester.highlightedMatches")}
 					</p>
 					<div className="border border-ink bg-muted/40 p-3 font-mono text-sm whitespace-pre-wrap">
 						{testString && regexPattern ? (
@@ -172,18 +174,18 @@ export default function RegexTesterPage() {
 
 					<div className="border-t border-ink pt-4" />
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ MATCH DETAILS ]
+						{t("tools.regexTester.matchDetails")}
 					</p>
 					{matches.length === 0 ? (
 						<div className="border border-ink bg-muted/40 p-3 font-mono text-sm text-muted-foreground">
-							No matches found.
+							{t("tools.regexTester.noMatchesFound")}
 						</div>
 					) : (
 						<Table>
 							<TableHeader>
 								<TableRow>
-									<TableHead>Match</TableHead>
-									<TableHead>Index</TableHead>
+									<TableHead>{t("tools.regexTester.matchHeader")}</TableHead>
+									<TableHead>{t("tools.regexTester.indexHeader")}</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>

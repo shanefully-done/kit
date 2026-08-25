@@ -15,8 +15,10 @@ import { Copy, SettingsIcon } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 export default function UrlParserPage() {
+	const { t } = useI18n();
 	const [urlInput, setUrlInput] = useState("");
 	const [parsedUrl, setParsedUrl] = useState<URL | null>(null);
 	const [error, setError] = useState<string | null>(null);
@@ -31,7 +33,7 @@ export default function UrlParserPage() {
 			if (e instanceof Error) {
 				setError(e.message);
 			} else {
-				setError("An unknown error occurred.");
+				setError(t("tools.urlParser.unknownError"));
 			}
 		}
 	};
@@ -39,7 +41,7 @@ export default function UrlParserPage() {
 	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(text);
 		toast({
-			title: "Copied to clipboard",
+			title: t("common.copied"),
 			description: text,
 		});
 	};
@@ -47,20 +49,20 @@ export default function UrlParserPage() {
 	return (
 		<ToolPageLayout
 			header={
-				<ToolHeader icon={<SettingsIcon aria-hidden />} title="URL Parser" />
+				<ToolHeader icon={<SettingsIcon aria-hidden />} title={t("tools.urlParser.title")} />
 			}
 		>
 			<div className="space-y-4">
 				<div className="flex gap-2">
 					<Input
 						type="text"
-						placeholder="Enter URL to parse"
+						placeholder={t("tools.urlParser.placeholder")}
 						value={urlInput}
 						onChange={(e) => setUrlInput(e.target.value)}
 						className="flex-grow font-mono"
-						aria-label="URL to parse"
+						aria-label={t("tools.urlParser.inputAria")}
 					/>
-					<Button onClick={handleParseUrl}>Parse URL</Button>
+					<Button onClick={handleParseUrl}>{t("tools.urlParser.parseButton")}</Button>
 				</div>
 
 				<div>
@@ -74,19 +76,19 @@ export default function UrlParserPage() {
 				{parsedUrl && (
 					<>
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ PARSED COMPONENTS ]
+							[ {t("tools.urlParser.parsedComponents")} ]
 						</p>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div className="flex items-center justify-between">
 								<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-									Protocol
+									{t("tools.urlParser.protocol")}
 								</span>
 								<div className="flex items-center gap-2">
 									<span className="font-mono break-all">{parsedUrl.protocol}</span>
 									<Button
 										variant="outline"
 										size="icon"
-										aria-label="Copy protocol"
+										aria-label={t("tools.urlParser.copyProtocol")}
 										onClick={() => copyToClipboard(parsedUrl.protocol)}
 									>
 										<Copy className="h-4 w-4" />
@@ -96,14 +98,14 @@ export default function UrlParserPage() {
 
 							<div className="flex items-center justify-between">
 								<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-									Hostname
+									{t("tools.urlParser.hostname")}
 								</span>
 								<div className="flex items-center gap-2">
 									<span className="font-mono break-all">{parsedUrl.hostname}</span>
 									<Button
 										variant="outline"
 										size="icon"
-										aria-label="Copy hostname"
+										aria-label={t("tools.urlParser.copyHostname")}
 										onClick={() => copyToClipboard(parsedUrl.hostname)}
 									>
 										<Copy className="h-4 w-4" />
@@ -113,14 +115,14 @@ export default function UrlParserPage() {
 
 							<div className="flex items-center justify-between">
 								<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-									Port
+									{t("tools.urlParser.port")}
 								</span>
 								<div className="flex items-center gap-2">
 									<span className="font-mono">{parsedUrl.port || "N/A"}</span>
 									<Button
 										variant="outline"
 										size="icon"
-										aria-label="Copy port"
+										aria-label={t("tools.urlParser.copyPort")}
 										onClick={() => copyToClipboard(parsedUrl.port)}
 									>
 										<Copy className="h-4 w-4" />
@@ -130,14 +132,14 @@ export default function UrlParserPage() {
 
 							<div className="flex items-center justify-between">
 								<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-									Path
+									{t("tools.urlParser.path")}
 								</span>
 								<div className="flex items-center gap-2">
 									<span className="font-mono break-all">{parsedUrl.pathname}</span>
 									<Button
 										variant="outline"
 										size="icon"
-										aria-label="Copy path"
+										aria-label={t("tools.urlParser.copyPath")}
 										onClick={() => copyToClipboard(parsedUrl.pathname)}
 									>
 										<Copy className="h-4 w-4" />
@@ -147,14 +149,14 @@ export default function UrlParserPage() {
 
 							<div className="flex items-center justify-between">
 								<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-									Fragment
+									{t("tools.urlParser.fragment")}
 								</span>
 								<div className="flex items-center gap-2">
 									<span className="font-mono break-all">{parsedUrl.hash || "N/A"}</span>
 									<Button
 										variant="outline"
 										size="icon"
-										aria-label="Copy fragment"
+										aria-label={t("tools.urlParser.copyFragment")}
 										onClick={() => copyToClipboard(parsedUrl.hash)}
 									>
 										<Copy className="h-4 w-4" />
@@ -166,15 +168,15 @@ export default function UrlParserPage() {
 						{parsedUrl.searchParams.toString() && (
 							<>
 								<div className="border-t border-ink pt-4 mt-4" />
-								<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-									[ QUERY PARAMETERS ]
+<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+									[ {t("tools.urlParser.queryParameters")} ]
 								</p>
 								<Table>
 									<TableHeader>
 										<TableRow>
-											<TableHead>Key</TableHead>
-											<TableHead>Value</TableHead>
-											<TableHead className="w-[50px]">Copy</TableHead>
+											<TableHead>{t("tools.urlParser.tableKey")}</TableHead>
+											<TableHead>{t("tools.urlParser.tableValue")}</TableHead>
+											<TableHead className="w-[50px]">{t("common.copy")}</TableHead>
 										</TableRow>
 									</TableHeader>
 									<TableBody>
@@ -186,7 +188,7 @@ export default function UrlParserPage() {
 													<Button
 														variant="outline"
 														size="icon"
-														aria-label={`Copy value for ${key}`}
+														aria-label={t("tools.urlParser.copyValueFor", { key })}
 														onClick={() => copyToClipboard(value)}
 													>
 														<Copy className="h-4 w-4" />

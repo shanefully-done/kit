@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { CopyIcon, SettingsIcon } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 const base64UrlDecode = (str: string) => {
 	try {
@@ -22,9 +23,8 @@ const base64UrlDecode = (str: string) => {
 				})
 				.join(""),
 		);
-	} catch (error) {
-		console.error("Base64 URL decode error:", error);
-		return null;
+	} catch {
+		return "";
 	}
 };
 
@@ -37,6 +37,7 @@ const formatJson = (jsonString: string) => {
 };
 
 const JwtDecoderPage = () => {
+	const { t } = useI18n();
 	const [jwtToken, setJwtToken] = useState("");
 	const [header, setHeader] = useState("");
 	const [payload, setPayload] = useState("");
@@ -55,9 +56,9 @@ const JwtDecoderPage = () => {
 		const parts = jwtToken.split(".");
 		if (parts.length !== 3) {
 			setIsValid(false);
-			setHeader("Invalid JWT format");
-			setPayload("Invalid JWT format");
-			setSignature("Invalid JWT format");
+			setHeader(t("tools.jwtDecoder.invalidJwtFormat"));
+			setPayload(t("tools.jwtDecoder.invalidJwtFormat"));
+			setSignature(t("tools.jwtDecoder.invalidJwtFormat"));
 			return;
 		}
 
@@ -66,10 +67,10 @@ const JwtDecoderPage = () => {
 		const decodedPayload = base64UrlDecode(parts[1]);
 		const decodedSignature = parts[2];
 
-		setHeader(decodedHeader ? formatJson(decodedHeader) : "Invalid Header");
-		setPayload(decodedPayload ? formatJson(decodedPayload) : "Invalid Payload");
-		setSignature(decodedSignature || "Invalid Signature");
-	}, [jwtToken]);
+		setHeader(decodedHeader ? formatJson(decodedHeader) : t("tools.jwtDecoder.invalidHeader"));
+		setPayload(decodedPayload ? formatJson(decodedPayload) : t("tools.jwtDecoder.invalidPayload"));
+		setSignature(decodedSignature || t("tools.jwtDecoder.invalidSignature"));
+	}, [jwtToken, t]);
 
 	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(text);
@@ -78,7 +79,7 @@ const JwtDecoderPage = () => {
 	return (
 		<ToolPageLayout
 			header={
-				<ToolHeader icon={<SettingsIcon aria-hidden />} title="JWT Decoder" />
+				<ToolHeader icon={<SettingsIcon aria-hidden />} title={t("tools.jwtDecoder.title")} />
 			}
 		>
 			<div className="space-y-4">
@@ -87,11 +88,11 @@ const JwtDecoderPage = () => {
 						htmlFor="jwt-input"
 						className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground"
 					>
-						[ ENCODED TOKEN ]
+						{t("tools.jwtDecoder.encodedTokenLabel")}
 					</label>
 					<Textarea
 						id="jwt-input"
-						placeholder="Enter JWT token here"
+						placeholder={t("tools.jwtDecoder.placeholder")}
 						value={jwtToken}
 						onChange={(e) => setJwtToken(e.target.value)}
 						rows={10}
@@ -101,7 +102,7 @@ const JwtDecoderPage = () => {
 
 				{!isValid && (
 					<div className="flex items-center gap-2 border border-hazard px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard-text">
-						[ MALFORMED JWT TOKEN ]
+						{t("tools.jwtDecoder.malformedToken")}
 					</div>
 				)}
 
@@ -109,11 +110,11 @@ const JwtDecoderPage = () => {
 					<div className="space-y-4">
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-								<CardTitle>Header</CardTitle>
+								<CardTitle>{t("tools.jwtDecoder.header")}</CardTitle>
 								<Button
 									variant="outline"
 									size="sm"
-									aria-label="Copy header"
+									aria-label={t("tools.jwtDecoder.copyHeaderAria")}
 									onClick={() => copyToClipboard(header)}
 								>
 									<CopyIcon className="h-4 w-4" />
@@ -128,11 +129,11 @@ const JwtDecoderPage = () => {
 
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-								<CardTitle>Signature</CardTitle>
+								<CardTitle>{t("tools.jwtDecoder.signature")}</CardTitle>
 								<Button
 									variant="outline"
 									size="sm"
-									aria-label="Copy signature"
+									aria-label={t("tools.jwtDecoder.copySignatureAria")}
 									onClick={() => copyToClipboard(signature)}
 								>
 									<CopyIcon className="h-4 w-4" />
@@ -149,11 +150,11 @@ const JwtDecoderPage = () => {
 					<div className="space-y-4">
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-								<CardTitle>Payload</CardTitle>
+								<CardTitle>{t("tools.jwtDecoder.payload")}</CardTitle>
 								<Button
 									variant="outline"
 									size="sm"
-									aria-label="Copy payload"
+									aria-label={t("tools.jwtDecoder.copyPayloadAria")}
 									onClick={() => copyToClipboard(payload)}
 								>
 									<CopyIcon className="h-4 w-4" />
@@ -167,7 +168,7 @@ const JwtDecoderPage = () => {
 						</Card>
 
 						<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-							Note: Signature verification status is not checked by this decoder.
+							{t("tools.jwtDecoder.verificationNote")}
 						</p>
 					</div>
 				</div>

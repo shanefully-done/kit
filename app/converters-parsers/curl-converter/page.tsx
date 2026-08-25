@@ -8,6 +8,7 @@ import { Copy, Terminal as TerminalIcon } from "lucide-react";
 import { toast } from "sonner";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 type Token = string;
 
@@ -261,6 +262,7 @@ function buildFetchSnippet(req: CurlRequest): string {
 }
 
 export default function CurlConverterPage() {
+	const { t } = useI18n();
 	const [curlInput, setCurlInput] = useState("");
 
 	const parsed = useMemo(() => parseCurl(curlInput), [curlInput]);
@@ -276,14 +278,14 @@ export default function CurlConverterPage() {
 			header={
 				<ToolHeader
 					icon={<TerminalIcon aria-hidden className="h-5 w-5" />}
-					title="curl to fetch"
+					title={t("tools.curlConverter.title")}
 				/>
 			}
 		>
 			<div className="space-y-6">
 				<section className="space-y-3">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ CURL COMMAND ]
+						{t("tools.curlConverter.curlCommandLabel")}
 					</p>
 					<Textarea
 						value={curlInput}
@@ -298,34 +300,39 @@ export default function CurlConverterPage() {
 
 				{!snippet ? (
 					<p className="border border-ink bg-muted/40 px-3 py-2 font-mono text-sm text-muted-foreground">
-						[ AWAITING INPUT ]
+						{t("tools.curlConverter.awaitingInput")}
 					</p>
 				) : (
 					<section className="space-y-3">
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-							[ FETCH SNIPPET ]
+							{t("tools.curlConverter.fetchSnippetLabel")}
 						</p>
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em]">
 							<span>
-								[{" "}
-								{(parsed?.method || (hasBody && !parsed?.getFlag ? "POST" : "GET")) +
-									" / " +
-									(parsed?.headers.length ?? 0) +
-									" HEADERS / BODY: " +
-									(hasBody ? "YES" : "NO")}
+								{t("tools.curlConverter.requestInfo", {
+									method:
+										parsed?.method ||
+										(hasBody && !parsed?.getFlag ? "POST" : "GET"),
+									count: String(parsed?.headers.length ?? 0),
+									headers: t("tools.curlConverter.headersLabel"),
+									body: t("tools.curlConverter.bodyLabel"),
+									status: hasBody
+										? t("tools.curlConverter.yes")
+										: t("tools.curlConverter.no"),
+								})}
 							</span>
 							<Button
 								variant="outline"
 								size="sm"
 								onClick={() =>
 									navigator.clipboard.writeText(snippet).then(
-										() => toast.success("COPIED"),
-										() => toast.error("COPY FAILED"),
+										() => toast.success(t("tools.curlConverter.copied")),
+										() => toast.error(t("tools.curlConverter.copyFailed")),
 									)
 								}
 							>
 								<Copy aria-hidden className="h-3.5 w-3.5" />
-								COPY
+								{t("common.copy")}
 							</Button>
 						</div>
 						<div className="border border-ink bg-muted/40 p-3 font-mono text-sm whitespace-pre-wrap break-all">

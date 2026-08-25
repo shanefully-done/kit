@@ -10,8 +10,10 @@ import toStartCase from "@stdlib/string/startcase";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Braces as SettingsIcon } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 const TextCaseConverterPage = () => {
+	const { t } = useI18n();
 	const [inputText, setInputText] = useState("");
 	const [outputText, setOutputText] = useState("");
 
@@ -51,13 +53,13 @@ const TextCaseConverterPage = () => {
 			header={
 				<ToolHeader
 					icon={<SettingsIcon aria-hidden />}
-					title="Text Case Converter"
+					title={t("tools.textCase.title")}
 				/>
 			}
 		>
 			<div className="space-y-4">
 				<Textarea
-					placeholder="Enter your text here..."
+					placeholder={t("tools.textCase.inputPlaceholder")}
 					value={inputText}
 					onChange={(e) => setInputText(e.target.value)}
 					className="min-h-[160px] resize-y font-mono"
@@ -65,35 +67,35 @@ const TextCaseConverterPage = () => {
 
 				<div className="grid grid-cols-2 md:grid-cols-4 border border-ink divide-x divide-y divide-ink">
 					<Button variant="outline" onClick={() => handleConvert("UPPERCASE")}>
-						UPPERCASE
+						{t("tools.textCase.uppercaseBtn")}
 					</Button>
 					<Button variant="outline" onClick={() => handleConvert("lowercase")}>
-						LOWERCASE
+						{t("tools.textCase.lowercaseBtn")}
 					</Button>
 					<Button variant="outline" onClick={() => handleConvert("Title Case")}>
-						TITLE CASE
+						{t("tools.textCase.titleCaseBtn")}
 					</Button>
 					<Button variant="outline" onClick={() => handleConvert("camelCase")}>
-						CAMELCASE
+						{t("tools.textCase.camelCaseBtn")}
 					</Button>
 					<Button variant="outline" onClick={() => handleConvert("snake_case")}>
-						SNAKE_CASE
+						{t("tools.textCase.snakeCaseBtn")}
 					</Button>
 					<Button variant="outline" onClick={() => handleConvert("kebab-case")}>
-						KEBAB-CASE
+						{t("tools.textCase.kebabCaseBtn")}
 					</Button>
 					<Button variant="outline" onClick={handleCopy}>
-						COPY
+						{t("common.copy")}
 					</Button>
 				</div>
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-					[ OUTPUT ]
+					{t("tools.textCase.outputLabel")}
 				</p>
 				<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[160px]">
 					{outputText || (
 						<span className="text-muted-foreground">
-							Converted text will appear here...
+							{t("tools.textCase.outputEmpty")}
 						</span>
 					)}
 				</div>

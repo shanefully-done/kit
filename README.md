@@ -67,7 +67,7 @@ One archetype per substrate — the theme toggle (sidebar, next to the filter) s
 - **Substrate** — paper `#F2F1EB`, panel `#FCFCFA`, muted paper `#E9E8E2`
 - **Ink** — `#1C1B18` for text, borders, and structural rules (1px internal, 2px outer panels)
 - **Hazard red** — `#E61919`, the single accent. Vital data, errors, selection, focus. Never decoration.
-- **Typography** — Inter Black for macro headings (uppercase, `-0.04em` tracking, compressed leading); IBM Plex Mono at weight 500 for everything data-adjacent. Labels and chrome are uppercase micro type; user data stays verbatim.
+- **Typography** — Inter Black for macro headings (uppercase, `-0.04em` tracking, compressed leading); IBM Plex Mono at weight 500 for everything data-adjacent. Korean glyphs fall through to Pretendard Variable in both stacks (per-glyph fallback). Labels and chrome are uppercase micro type; user data stays verbatim.
 - **Geometry** — square corners everywhere. No gradients, no backdrop blur, no soft shadows. Floating layers (dialogs, popovers, toasts) get a hard `4px 4px 0` offset shadow instead.
 
 **Dark — Tactical Telemetry / CRT** (`class="dark"`, LIGHT / SYSTEM / DARK toggle):
@@ -106,7 +106,7 @@ Change order: **edit → lint → build → commit**. No test runner is configur
 
 ```
 app/
-  layout.tsx                      # Shell: sidebar, mobile nav, fonts, ThemeProvider, toasters
+  layout.tsx                      # Shell: sidebar, mobile nav, fonts, I18nProvider, ThemeProvider, toasters
   page.tsx                        # Homepage: spec-sheet index of all tools
   globals.css                     # Design tokens + base layer
   manifest.ts, icon.png, ...      # PWA manifest + app icons
@@ -125,10 +125,21 @@ hooks/
 data/
   api-list.json                   # Static dataset for the API Directory
 lib/utils.ts                      # cn() helper
+lib/i18n/                         # en.ts (source of truth) + ko.ts (typed Dictionary) + provider/hook
 public/                           # Static files
 ```
 
 All tool pages are client components (`"use client"`). There are no server components with data fetching, no API routes, and no server actions anywhere in the app.
+
+## Localization
+
+English + Korean, no URL routing, no middleware — the app stays fully static.
+
+- **Dictionaries** — `lib/i18n/en.ts` is the source of truth (fully commented for translators); `lib/i18n/ko.ts` is typed `Dictionary = typeof en`, so a missing Korean key is a compile error (`bunx tsc --noEmit` is the parity gate). No JSON message files, no i18n runtime deps.
+- **Usage** — `const { t, locale } = useI18n()` then `t("tools.<camelCaseFolder>.<key>", vars)`; `{var}` placeholders interpolate at runtime.
+- **Detection** — client-side post-mount: stored explicit choice (`localStorage["devkit:locale"]`, JSON-encoded) > browser languages > English. Only explicit toggles persist; auto-detected values are never written.
+- **Switcher** — second row inside the sidebar theme box (`EN | 한국어`), theme buttons ordered System / Light / Dark.
+- **Untranslated by design** — metadata/OG tags, technical tokens (`JSON`, `SHA-256`, `chmod`…), tool outputs, and decorative literals.
 
 ## Adding a Tool
 

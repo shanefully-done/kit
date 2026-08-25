@@ -10,6 +10,7 @@ import { Copy, Palette as PaletteIcon } from "lucide-react";
 import { toast } from "sonner";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { useI18n } from "@/lib/i18n";
 
 type Rgb = { r: number; g: number; b: number };
 
@@ -134,6 +135,7 @@ function copyText(value: string) {
 const isHex = (v: unknown): v is string =>
 	typeof v === "string" && /^#[0-9a-fA-F]{3,8}$/.test(v);
 export default function ColorConverterPage() {
+	const { t } = useI18n();
 	const [hexInput, setHexInput] = usePersistentState(
 		"color-converter:hexInput",
 		"#0A0A0A",
@@ -168,10 +170,10 @@ export default function ColorConverterPage() {
 	const ratio = useMemo(() => contrastRatio(fgRgb, bgRgb), [fgRgb, bgRgb]);
 
 	const checks = [
-		{ label: "AA NORMAL", threshold: 4.5 },
-		{ label: "AA LARGE", threshold: 3 },
-		{ label: "AAA NORMAL", threshold: 7 },
-		{ label: "AAA LARGE", threshold: 4.5 },
+		{ label: t("tools.colorConverter.aaNormal"), threshold: 4.5 },
+		{ label: t("tools.colorConverter.aaLarge"), threshold: 3 },
+		{ label: t("tools.colorConverter.aaaNormal"), threshold: 7 },
+		{ label: t("tools.colorConverter.aaaLarge"), threshold: 4.5 },
 	];
 
 	return (
@@ -179,7 +181,7 @@ export default function ColorConverterPage() {
 			header={
 				<ToolHeader
 					icon={<PaletteIcon aria-hidden className="h-5 w-5" />}
-					title="Color Converter"
+				title={t("tools.colorConverter.title")}
 				/>
 			}
 		>
@@ -187,14 +189,14 @@ export default function ColorConverterPage() {
 				{/* CONVERSION */}
 				<section className="space-y-3">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ CONVERSION ]
+					{t("tools.colorConverter.conversionLabel")}
 					</p>
 					<div className="flex items-center gap-3 border border-ink bg-muted/40 px-3 py-2">
 						<input
 							type="color"
 							value={normalized ?? "#000000"}
 							onChange={(e) => setHexInput(e.target.value.toUpperCase())}
-							aria-label="Pick color"
+						aria-label={t("tools.colorConverter.pickColorAria")}
 							className="h-8 w-12 cursor-pointer border border-ink bg-card p-0.5"
 						/>
 						<Input
@@ -205,7 +207,7 @@ export default function ColorConverterPage() {
 						/>
 						{!normalized && (
 							<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-hazard-text">
-								[ INVALID HEX ]
+							{t("tools.colorConverter.invalidHexError")}
 							</span>
 						)}
 					</div>
@@ -222,7 +224,7 @@ export default function ColorConverterPage() {
 							</div>
 							<Button variant="outline" size="sm" onClick={() => copyText(row.value)}>
 								<Copy aria-hidden className="h-3.5 w-3.5" />
-								COPY
+							{t("common.copy")}
 							</Button>
 						</div>
 					))}
@@ -231,13 +233,13 @@ export default function ColorConverterPage() {
 				{/* CONTRAST CHECK */}
 				<section className="space-y-3">
 					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-						[ CONTRAST CHECK ]
+					{t("tools.colorConverter.contrastCheckLabel")}
 					</p>
 
 					<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 							<span className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								FOREGROUND
+							{t("tools.colorConverter.foregroundLabel")}
 							</span>
 							<div className="flex items-center gap-2">
 								<Input
@@ -249,14 +251,14 @@ export default function ColorConverterPage() {
 									type="color"
 									value={normalizeHex(fgHex) ?? "#000000"}
 									onChange={(e) => setFgHex(e.target.value.toUpperCase())}
-									aria-label="Foreground color"
+								aria-label={t("tools.colorConverter.foregroundAria")}
 									className="h-8 w-12 cursor-pointer border border-ink bg-card p-0.5"
 								/>
 							</div>
 						</div>
 						<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
 							<span className="font-mono text-[11px] uppercase tracking-[0.08em]">
-								BACKGROUND
+							{t("tools.colorConverter.backgroundLabel")}
 							</span>
 							<div className="flex items-center gap-2">
 								<Input
@@ -268,7 +270,7 @@ export default function ColorConverterPage() {
 									type="color"
 									value={normalizeHex(bgHex) ?? "#FFFFFF"}
 									onChange={(e) => setBgHex(e.target.value.toUpperCase())}
-									aria-label="Background color"
+								aria-label={t("tools.colorConverter.backgroundAria")}
 									className="h-8 w-12 cursor-pointer border border-ink bg-card p-0.5"
 								/>
 							</div>
@@ -277,7 +279,7 @@ export default function ColorConverterPage() {
 
 					<div className="border border-ink bg-muted/40 px-3 py-3">
 						<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
-							CONTRAST RATIO
+						{t("tools.colorConverter.contrastRatioLabel")}
 						</p>
 						<p className="font-mono text-2xl">{ratio.toFixed(2)} : 1</p>
 					</div>
@@ -309,7 +311,9 @@ export default function ColorConverterPage() {
 										variant={pass ? "secondary" : "destructive"}
 										className="w-fit font-mono"
 									>
-										{pass ? "PASS" : "FAIL"}
+									{pass
+										? t("tools.colorConverter.pass")
+										: t("tools.colorConverter.fail")}
 									</Badge>
 								</div>
 							);
