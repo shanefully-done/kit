@@ -28,6 +28,11 @@
  *     pinned qrcode dep) are uploaded to the file-gated tools (qr-code
  *     decode, image metadata, base64 image) followed by a click sweep —
  *     exercising FileReader/EXIF/jsqr paths no other pass reaches.
+ *  5. Korean + dark pass: seeds devkit:locale="ko" and theme="dark" via
+ *     localStorage, then interactively sweeps every route — exercising ko
+ *     dictionary paths and dark-mode rendering, asserting per route that
+ *     html.dark is present and documentElement.lang === "ko".
+ *
  * Determinism: fixed route order, fixed locale/timezone/reduced-motion,
  * fixed sample inputs, fixed click budget, localhost-only network.
  *
@@ -526,6 +531,67 @@ async function browserAudit(routes) {
 		}
 		await f4page.close();
 
+		// ---- pass 5: Korean locale + dark theme, interactive ----
+		// Exercises ko dictionary paths and dark-mode rendering, which no
+		// other pass reaches, and asserts both actually apply per route.
+		let koDarkRoutes = 0;
+		const f5 = { record: null };
+		const f5page = await friendly.newPage();
+		await f5page.setViewport({ width: 1440, height: 900 });
+		makeCollectors(f5page, f5);
+
+		// Seed preferences (same-origin storage; shared across the context).
+		if (await loadRoute(f5page, "/")) {
+			await f5page.evaluate(() => {
+				localStorage.setItem("devkit:locale", JSON.stringify("ko"));
+				localStorage.setItem("theme", "dark");
+			});
+		}
+		for (const route of routes) {
+			f5.record = newRecord();
+			if (await loadRoute(f5page, route)) {
+				await sleep(SETTLE_MS);
+				const applied = await f5page
+					.evaluate(() => ({
+						dark: document.documentElement.classList.contains("dark"),
+						lang: document.documentElement.lang,
+					}))
+					.catch(() => ({ dark: false, lang: "" }));
+				if (!applied.dark) {
+					const sig = `theme|${route}`;
+					if (!audit.signatures.has(sig)) {
+						audit.signatures.add(sig);
+						audit.findings.push({
+							kind: "theme",
+							route,
+							detail: "dark theme not applied (html.dark missing)",
+						});
+					}
+				}
+				if (applied.lang !== "ko") {
+					const sig = `locale|${route}`;
+					if (!audit.signatures.has(sig)) {
+						audit.signatures.add(sig);
+						audit.findings.push({
+							kind: "locale",
+							route,
+							detail: `documentElement.lang is "${applied.lang}", expected "ko"`,
+						});
+					}
+				}
+				f5.record.overlay = await hasOverlay(f5page);
+				await typeIntoFields(f5page);
+				await interactUntrusted(f5page);
+				await sleep(SETTLE_MS);
+				koDarkRoutes += 1;
+			} else {
+				f5.record.timedOut = true;
+			}
+			flush(audit, route, f5.record);
+			f5.record = null;
+		}
+		await f5page.close();
+
 		const consoleErrors = [...audit.signatures].filter((s) => s.startsWith("console|")).length;
 		const pageErrors = [...audit.signatures].filter((s) => s.startsWith("pageerror|")).length;
 		const failedRoutes = [...audit.signatures].filter((s) => s.startsWith("failed|")).length;
@@ -538,6 +604,7 @@ async function browserAudit(routes) {
 			overlayRoutes,
 			overflowRoutes: audit.overflowRoutes.size,
 			uploadRoutes,
+			koDarkRoutes,
 		};
 	} finally {
 		await browser.close().catch(() => {});
@@ -552,12 +619,14 @@ await makeFixtures();
 const audit = await browserAudit(routes);
 
 const allFindings = [...navFindings, ...audit.findings];
+const themeLocaleBugs = allFindings.filter((f) => f.kind === "theme" || f.kind === "locale").length;
 const uiBugs =
 	audit.consoleErrors +
 	audit.pageErrors +
 	audit.failedRoutes +
 	audit.overlayRoutes +
 	audit.overflowRoutes +
+	themeLocaleBugs +
 	navFindings.length;
 
 for (const f of allFindings) {
@@ -570,6 +639,7 @@ console.log(`METRIC console_errors=${audit.consoleErrors}`);
 console.log(`METRIC page_errors=${audit.pageErrors}`);
 console.log(`METRIC failed_routes=${audit.failedRoutes}`);
 console.log(`METRIC overlay_routes=${audit.overlayRoutes}`);
+console.log(`METRIC ko_dark_routes=${audit.koDarkRoutes}`);
 console.log(`METRIC overflow_routes=${audit.overflowRoutes}`);
 console.log(`METRIC nav_mismatches=${navFindings.length}`);
 console.log(`METRIC upload_routes=${audit.uploadRoutes}`);
