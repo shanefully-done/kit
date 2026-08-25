@@ -96,7 +96,7 @@ export default function URLEncoderDecoderPage() {
 							className={`min-h-[150px] font-mono ${decodeError ? "border-hazard" : ""}`}
 						/>
 						{decodeError && (
-							<p className="text-hazard font-mono text-sm">{decodeError}</p>
+							<p className="text-hazard-text font-mono text-sm">{decodeError}</p>
 						)}
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
 							[ DECODED OUTPUT ]

@@ -221,7 +221,7 @@ export default function Base64EncoderDecoderPage() {
 								<Button onClick={handleDecode}>Decode</Button>
 							</div>
 							{decodeError && (
-								<p className="font-mono text-xs text-hazard break-all border border-hazard px-3 py-2">
+								<p className="font-mono text-xs text-hazard-text break-all border border-hazard px-3 py-2">
 									{decodeError}
 								</p>
 							)}

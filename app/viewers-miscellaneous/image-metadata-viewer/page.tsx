@@ -106,7 +106,7 @@ const ImageMetadataViewerPage = () => {
 					</div>
 				)}
 
-				{error && <p className="font-mono text-sm text-hazard mt-2">{error}</p>}
+				{error && <p className="font-mono text-sm text-hazard-text mt-2">{error}</p>}
 
 				{/* EXIF Data */}
 				{exifData && (

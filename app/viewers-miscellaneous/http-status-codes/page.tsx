@@ -386,7 +386,7 @@ export default function HttpStatusCodesPage() {
 								<div
 									className={`border-y border-ink bg-muted px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] ${cls.error ? "border-l-4 border-l-hazard" : ""}`}
 								>
-									<span className={cls.error ? "text-hazard" : ""}>{cls.label}</span>{" "}
+									<span className={cls.error ? "text-hazard-text" : ""}>{cls.label}</span>{" "}
 									<span className="text-muted-foreground">({items.length})</span>
 								</div>
 								<div className="border border-t-0 border-ink">

@@ -268,10 +268,10 @@ export default function DataConverterPage() {
 					</Select>
 					{result.error ? (
 						<>
-							<div className="border border-hazard text-hazard font-mono text-xs px-3 py-2">
+							<div className="border border-hazard text-hazard-text font-mono text-xs px-3 py-2">
 								[ PARSE ERROR ]
 							</div>
-							<div className="border border-hazard bg-muted/40 p-3 font-mono text-xs text-hazard break-all min-h-40">
+							<div className="border border-hazard bg-muted/40 p-3 font-mono text-xs text-hazard-text break-all min-h-40">
 								{result.error}
 							</div>
 						</>

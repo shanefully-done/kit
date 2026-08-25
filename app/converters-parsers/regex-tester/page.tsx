@@ -132,11 +132,11 @@ export default function RegexTesterPage() {
 				</div>
 
 				{error ? (
-					<div className="border border-hazard bg-muted/40 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard">
+					<div className="border border-hazard bg-muted/40 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard-text">
 						ERROR: {error}
 					</div>
 				) : matches.length === 0 && regexPattern && testString ? (
-					<div className="border border-hazard px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard">
+					<div className="border border-hazard px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard-text">
 						[ NO MATCH ]
 					</div>
 				) : (

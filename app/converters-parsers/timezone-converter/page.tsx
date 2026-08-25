@@ -230,7 +230,7 @@ export default function TimezoneConverterPage() {
 								<span
 									className={cn(
 										"font-mono text-lg md:text-xl break-all",
-										convertedTime === "Invalid Timezone or Date" && "text-hazard",
+										convertedTime === "Invalid Timezone or Date" && "text-hazard-text",
 									)}
 								>
 									{convertedTime || "—"}

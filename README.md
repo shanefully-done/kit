@@ -60,25 +60,24 @@ Live at [kit.ixtj.dev](https://kit.ixtj.dev).
 
 ## Design System
 
-One archetype per substrate — the theme toggle (sidebar, next to the filter) switches wholesale between two fully-committed modes; substrates are never mixed within a mode.
+One archetype per substrate — the theme toggle (sidebar, next to the filter) switches wholesale between two fully-committed modes; substrates are never mixed within a mode. Both palettes are tuned for legibility (astigmatism-friendly): softened substrate extremes, borders below text luminance, no overlay textures, mono text at weight 500, and red never used as small text on dark.
 
 **Light — Swiss Industrial Print** (default):
 
-- **Substrate** — paper `#F4F4F0`, panel `#FCFCFA`, muted paper `#E9E8E2`
-- **Ink** — `#0A0A0A` for text, borders, and structural rules (1px internal, 2px outer panels)
+- **Substrate** — paper `#F2F1EB`, panel `#FCFCFA`, muted paper `#E9E8E2`
+- **Ink** — `#1C1B18` for text, borders, and structural rules (1px internal, 2px outer panels)
 - **Hazard red** — `#E61919`, the single accent. Vital data, errors, selection, focus. Never decoration.
-- **Typography** — Inter Black for macro headings (uppercase, `-0.04em` tracking, compressed leading); IBM Plex Mono for everything data-adjacent. Labels and chrome are uppercase micro type; user data stays verbatim.
+- **Typography** — Inter Black for macro headings (uppercase, `-0.04em` tracking, compressed leading); IBM Plex Mono at weight 500 for everything data-adjacent. Labels and chrome are uppercase micro type; user data stays verbatim.
 - **Geometry** — square corners everywhere. No gradients, no backdrop blur, no soft shadows. Floating layers (dialogs, popovers, toasts) get a hard `4px 4px 0` offset shadow instead.
-- **Texture** — global low-opacity SVG noise grain.
 
 **Dark — Tactical Telemetry / CRT** (`class="dark"`, LIGHT / SYSTEM / DARK toggle):
 
-- **Substrate** — deactivated CRT `#0A0A0A` background, `#111110` panels, `#1A1A18` muted
-- **Phosphor** — `#EAEAEA` as text, borders, and inverted-action fills (`--ink` flips to phosphor, `--paper` to CRT — every primitive inverts with the token)
-- **Hazard red** — same `#E61919`, same rules, both modes
-- **Texture** — CRT scanlines layered over the noise grain (dark mode only)
+- **Substrate** — deactivated CRT `#131312` background, `#181816` panels, `#22221F` muted
+- **Phosphor** — warm `#D8D5CD` as text and inverted-action fills (`--ink` flips to phosphor, `--paper` to CRT — every primitive inverts with the token); structural borders sit below text luminance (`#8E8C85`) so the grid doesn't vibrate against glyphs
+- **Hazard red** — fills stay `#E61919`; red-as-text lightens to `#FF6B5E` in dark (`--hazard-text`)
+- **No texture overlays** — noise grain and scanlines are omitted for readability
 
-Tokens live in `app/globals.css` (`--ink`, `--paper`, `--hazard` and the shadcn token set); all 40+ primitives in `components/ui/` implement the system, so new tools inherit it by using them.
+Tokens live in `app/globals.css` (`--ink`, `--paper`, `--hazard`, `--hazard-text` and the shadcn token set); all 40+ primitives in `components/ui/` implement the system, so new tools inherit it by using them.
 
 ## Getting Started
 
@@ -108,7 +107,7 @@ Change order: **edit → lint → build → commit**. No test runner is configur
 ```
 app/
   page.tsx                        # Homepage: spec-sheet index of all tools
-  layout.tsx                      # Shell: sidebar, fonts, toasters, noise overlay
+  layout.tsx                      # Shell: sidebar, fonts, toasters
   globals.css                     # Design tokens + base layer
   converters-parsers/<tool>/      # Client-side tool pages
   generators/<tool>/

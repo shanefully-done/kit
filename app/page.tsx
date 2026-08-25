@@ -124,7 +124,7 @@ export default function HomePage() {
 					+
 				</span>
 				<h1 className="font-sans font-black uppercase tracking-[-0.05em] leading-[0.85] text-[clamp(5rem,16vw,13rem)]">
-					KIT<span className="text-hazard">.</span>
+					KIT<span className="text-hazard-text">.</span>
 				</h1>
 				<div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
 					<span>{String(totalUnits).padStart(2, "0")} UNITS / 03 SECTIONS</span>
@@ -158,7 +158,7 @@ export default function HomePage() {
 							</span>
 							<span
 								aria-hidden="true"
-								className="font-mono text-xs tracking-[0.08em] text-muted-foreground group-hover:text-hazard"
+								className="font-mono text-xs tracking-[0.08em] text-muted-foreground group-hover:text-hazard-text"
 							>
 								&gt;&gt;&gt;
 							</span>
@@ -173,7 +173,7 @@ export default function HomePage() {
 					href="https://www.ixtj.dev/"
 					target="_blank"
 					rel="noopener noreferrer"
-					className="transition-colors hover:text-hazard"
+					className="transition-colors hover:text-hazard-text"
 				>
 					© 2026 IXTJ
 				</a>

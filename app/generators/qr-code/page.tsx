@@ -248,7 +248,7 @@ export default function QRCodePage() {
 								[ DECODED ]
 							</p>
 							{decodedText === "No QR code found." ? (
-								<p className="font-mono text-sm text-hazard">No QR code found.</p>
+								<p className="font-mono text-sm text-hazard-text">No QR code found.</p>
 							) : (
 								<>
 									<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all">

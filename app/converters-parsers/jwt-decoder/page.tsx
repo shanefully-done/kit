@@ -100,7 +100,7 @@ const JwtDecoderPage = () => {
 				</div>
 
 				{!isValid && (
-					<div className="flex items-center gap-2 border border-hazard px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard">
+					<div className="flex items-center gap-2 border border-hazard px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard-text">
 						[ MALFORMED JWT TOKEN ]
 					</div>
 				)}

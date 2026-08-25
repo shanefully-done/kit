@@ -342,7 +342,7 @@ export default function ChmodCalculatorPage() {
 						className="w-32 font-mono"
 					/>
 					{!parsedInputOk && (
-						<p className="border border-hazard bg-muted/40 px-3 py-2 font-mono text-sm text-hazard">
+						<p className="border border-hazard bg-muted/40 px-3 py-2 font-mono text-sm text-hazard-text">
 							[ INVALID OCTAL ]
 						</p>
 					)}

@@ -74,7 +74,6 @@ export default function RootLayout({
 						</main>
 					</div>
 				</ThemeProvider>
-				<div className="noise-overlay" aria-hidden="true" />
 				<Toaster />
 				<SonnerToaster />
 			</body>

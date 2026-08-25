@@ -118,7 +118,7 @@ const Sidebar = () => {
 					href="/"
 					className="font-sans font-black uppercase tracking-[-0.04em] leading-[0.9] text-3xl"
 				>
-					KIT<span className="text-hazard">.</span>
+					KIT<span className="text-hazard-text">.</span>
 				</Link>
 				<p className="mt-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
 					REV 2.6 / SWISS SERIES ®
@@ -135,7 +135,7 @@ const Sidebar = () => {
 				/>
 			</div>
 
-			<div className="border-b border-ink px-3 pb-3">
+			<div className="border-b border-ink p-3">
 				<div
 					role="radiogroup"
 					aria-label="Color theme"

@@ -184,7 +184,7 @@ export default function TotpGeneratorPage() {
 				)}
 
 				{error && (
-					<div className="border border-hazard text-hazard bg-muted/40 px-3 py-3 font-mono text-sm">
+					<div className="border border-hazard text-hazard-text bg-muted/40 px-3 py-3 font-mono text-sm">
 						[ {error} ]
 					</div>
 				)}

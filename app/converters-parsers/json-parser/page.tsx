@@ -29,7 +29,7 @@ class ErrorBoundary extends React.Component<
 	render() {
 		if (this.state.hasError) {
 			return (
-				<div className="text-hazard p-3 border border-hazard font-mono text-xs">
+				<div className="text-hazard-text p-3 border border-hazard font-mono text-xs">
 					<h4 className="font-mono text-[11px] uppercase tracking-[0.08em] mb-2">
 						[ RENDER ERROR ]
 					</h4>
@@ -96,14 +96,14 @@ export default function JsonParserPage() {
 					className={`flex items-center gap-2 border px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] ${
 						isValidJson
 							? "border-ink text-muted-foreground"
-							: "border-hazard text-hazard"
+							: "border-hazard text-hazard-text"
 					}`}
 				>
 					{isValidJson ? <span>[ VALID JSON ]</span> : <span>[ PARSE ERROR ]</span>}
 				</div>
 
 				{!isValidJson && errorMessage && (
-					<p className="font-mono text-xs text-hazard break-all">{errorMessage}</p>
+					<p className="font-mono text-xs text-hazard-text break-all">{errorMessage}</p>
 				)}
 
 				<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">

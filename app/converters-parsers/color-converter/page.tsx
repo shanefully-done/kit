@@ -189,7 +189,7 @@ export default function ColorConverterPage() {
 							className="w-32 font-mono"
 						/>
 						{!normalized && (
-							<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-hazard">
+							<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-hazard-text">
 								[ INVALID HEX ]
 							</span>
 						)}

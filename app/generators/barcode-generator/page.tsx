@@ -204,7 +204,7 @@ export default function BarcodeGeneratorPage() {
 				{/* Preview */}
 				<div className="border border-ink bg-card p-4 grid place-items-center min-h-[120px]">
 					{error ? (
-						<div className="border border-hazard text-hazard font-mono text-[11px] uppercase tracking-[0.08em] px-3 py-2">
+						<div className="border border-hazard text-hazard-text font-mono text-[11px] uppercase tracking-[0.08em] px-3 py-2">
 							[ {error} ]
 						</div>
 					) : (

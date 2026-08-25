@@ -188,7 +188,7 @@ function CalendarDayButton({
 			data-range-end={modifiers.range_end}
 			data-range-middle={modifiers.range_middle}
 			className={cn(
-				"relative flex aspect-square size-auto w-full min-w-(--cell-size) flex-col items-center justify-center gap-1 border border-transparent font-mono text-sm leading-none font-normal text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hazard data-[selected-single=true]:bg-ink data-[selected-single=true]:text-paper data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-middle=true]:bg-muted aria-selected:bg-ink aria-selected:text-paper data-[today=true]:font-semibold data-[today=true]:text-hazard [&>span]:text-xs [&>span]:opacity-70",
+				"relative flex aspect-square size-auto w-full min-w-(--cell-size) flex-col items-center justify-center gap-1 border border-transparent font-mono text-sm leading-none font-normal text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hazard data-[selected-single=true]:bg-ink data-[selected-single=true]:text-paper data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-middle=true]:bg-muted aria-selected:bg-ink aria-selected:text-paper data-[today=true]:font-semibold data-[today=true]:text-hazard-text [&>span]:text-xs [&>span]:opacity-70",
 				defaultClassNames.day,
 				className,
 			)}

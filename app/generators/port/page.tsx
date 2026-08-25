@@ -164,7 +164,7 @@ export default function PortGeneratorPage() {
 				</div>
 
 				{avoidReserved && (
-					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-hazard">
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-hazard-text">
 						Reserved ports (0–1023) excluded from generation range.
 					</p>
 				)}

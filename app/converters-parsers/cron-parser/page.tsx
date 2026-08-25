@@ -118,7 +118,7 @@ export default function CronParserPage() {
 						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
 							[ ERROR ]
 						</p>
-						<p className="font-mono text-sm text-hazard">{error}</p>
+						<p className="font-mono text-sm text-hazard-text">{error}</p>
 					</>
 				)}
 			</div>

@@ -65,7 +65,7 @@ export default function UrlParserPage() {
 
 				<div>
 					{error && (
-						<div className="border border-hazard bg-muted/40 p-3 font-mono text-sm text-hazard">
+						<div className="border border-hazard bg-muted/40 p-3 font-mono text-sm text-hazard-text">
 							<p>{error}</p>
 						</div>
 					)}

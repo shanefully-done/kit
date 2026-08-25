@@ -132,7 +132,7 @@ const TimestampConverterPage = () => {
 						onChange={handleUnixTimestampChange}
 					/>
 					{timestampError && (
-						<p className="font-mono text-sm text-hazard">{timestampError}</p>
+						<p className="font-mono text-sm text-hazard-text">{timestampError}</p>
 					)}
 				</div>
 
@@ -152,7 +152,7 @@ const TimestampConverterPage = () => {
 						value={humanReadableDate}
 						onChange={handleHumanReadableDateChange}
 					/>
-					{dateError && <p className="font-mono text-sm text-hazard">{dateError}</p>}
+					{dateError && <p className="font-mono text-sm text-hazard-text">{dateError}</p>}
 				</div>
 
 				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">

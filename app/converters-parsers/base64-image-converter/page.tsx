@@ -311,7 +311,7 @@ export default function Base64ImageConverterPage() {
 							)}
 
 							{uploadError && (
-								<p className="font-mono text-xs text-hazard break-all border border-hazard px-3 py-2">
+								<p className="font-mono text-xs text-hazard-text break-all border border-hazard px-3 py-2">
 									{uploadError}
 								</p>
 							)}
@@ -358,7 +358,7 @@ export default function Base64ImageConverterPage() {
 							)}
 
 							{decodeError && (
-								<p className="font-mono text-xs text-hazard break-all border border-hazard px-3 py-2">
+								<p className="font-mono text-xs text-hazard-text break-all border border-hazard px-3 py-2">
 									{decodeError}
 								</p>
 							)}

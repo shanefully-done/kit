@@ -196,7 +196,7 @@ const UnitConverterPage = () => {
 							/>
 						</div>
 
-						{error && <p className="font-mono text-sm text-hazard">{error}</p>}
+						{error && <p className="font-mono text-sm text-hazard-text">{error}</p>}
 
 						{convertedValue && (
 							<>
