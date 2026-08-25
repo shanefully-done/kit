@@ -56,10 +56,13 @@ const groups: {
 		labelKey: "nav.categories.generators",
 		tools: [
 			{ nameKey: "tools.barcodeGenerator.title", href: "/generators/barcode-generator" },
+			{ nameKey: "tools.emojiResizer.title", href: "/generators/emoji-resizer" },
+			{ nameKey: "tools.fancyText.title", href: "/generators/fancy-text" },
 			{ nameKey: "tools.gradient.title", href: "/generators/gradient" },
 			{ nameKey: "tools.hash.title", href: "/generators/hash" },
 			{ nameKey: "tools.hmacGenerator.title", href: "/generators/hmac-generator" },
 			{ nameKey: "tools.idGenerator.title", href: "/generators/id-generator" },
+			{ nameKey: "tools.invisibleText.title", href: "/generators/invisible-text" },
 			{ nameKey: "tools.loremGenerator.title", href: "/generators/lorem-generator" },
 			{ nameKey: "tools.password.title", href: "/generators/password" },
 			{ nameKey: "tools.port.title", href: "/generators/port" },
@@ -73,10 +76,35 @@ const groups: {
 		],
 	},
 	{
+		labelKey: "nav.categories.discordMessages",
+		tools: [
+			{ nameKey: "tools.discordTimestamp.title", href: "/discord/timestamp" },
+			{ nameKey: "tools.discordMarkdown.title", href: "/discord/markdown" },
+			{ nameKey: "tools.discordAnsi.title", href: "/discord/ansi" },
+			{ nameKey: "tools.discordSplitter.title", href: "/discord/splitter" },
+			{ nameKey: "tools.discordCharCounter.title", href: "/discord/char-counter" },
+		],
+	},
+	{
+		labelKey: "nav.categories.discordDevelopers",
+		tools: [
+			{ nameKey: "tools.discordSnowflake.title", href: "/discord/snowflake" },
+			{ nameKey: "tools.discordPermissions.title", href: "/discord/permissions" },
+			{ nameKey: "tools.discordIntents.title", href: "/discord/intents" },
+			{ nameKey: "tools.discordEmbed.title", href: "/discord/embed" },
+			{ nameKey: "tools.discordInvite.title", href: "/discord/invite" },
+			{ nameKey: "tools.discordWebhook.title", href: "/discord/webhook" },
+			{ nameKey: "tools.discordMentions.title", href: "/discord/mentions" },
+			{ nameKey: "tools.discordCdn.title", href: "/discord/cdn" },
+			{ nameKey: "tools.discordMessageLink.title", href: "/discord/message-link" },
+		],
+	},
+	{
 		labelKey: "nav.categories.viewers",
 		tools: [
 			{ nameKey: "tools.apiDirectory.title", href: "/viewers-miscellaneous/api-directory" },
 			{ nameKey: "tools.diffViewer.title", href: "/viewers-miscellaneous/diff-viewer" },
+			{ nameKey: "tools.discordLimits.title", href: "/viewers-miscellaneous/discord-limits" },
 			{
 				nameKey: "tools.httpStatusCodes.title",
 				href: "/viewers-miscellaneous/http-status-codes",

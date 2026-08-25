@@ -59,6 +59,10 @@ export const en = {
 			generators: "Generators",
 			/** Route group /viewers-miscellaneous */
 			viewers: "Viewers & Misc",
+			/** Sidebar + homepage section heading for Discord message tools */
+			discordMessages: "Discord · Messages",
+			/** Sidebar + homepage section heading for Discord developer tools */
+			discordDevelopers: "Discord · Developers",
 		},
 	},
 	home: {
@@ -1172,7 +1176,771 @@ export const en = {
 		unescape: "Unescape",
 		/** Output section label */
 		outputLabel: "Output",
-	}
+		},
+	// ─── Discord Timestamp (/discord/timestamp) ──
+	discordTimestamp: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Discord Timestamp",
+		/** Placeholder text inside the natural-language input */
+		naturalPlaceholder: "in 2 hours · tomorrow 9am · next friday",
+		/** Note below timezone select explaining output renders per-reader */
+		timezoneNote: "The timestamp tag renders in every reader's local timezone.",
+		/** Label prefix for the relative-distance badge, followed by the offset value */
+		targetLabel: "TARGET: {offset}",
+		/** Hazard error shown when natural-language input cannot be parsed */
+		parseError: "COULD NOT PARSE",
+		/** Hazard error shown when unix input is NaN or negative */
+		invalidUnix: "INVALID UNIX TIMESTAMP",
+		/** {what} param for common.copiedType toast when copying a timestamp tag */
+		copiedTag: "timestamp tag",
+		/** Quick chip: set date to now */
+		chipNow: "NOW",
+		/** Quick chip: add 1 hour */
+		chipPlus1h: "+1H",
+		/** Quick chip: add 1 day */
+		chipPlus1d: "+1D",
+		/** Quick chip: set to tomorrow 9:00 */
+		chipTomorrow9: "TOMORROW 9:00",
+		/** Table column header: style letter */
+		colStyle: "STYLE",
+		/** Table column header: syntax output */
+		colSyntax: "SYNTAX",
+		/** Table column header: rendered preview */
+		colPreview: "RENDERED PREVIEW",
+		/** Display name for style 't' — short time e.g. 16:20 */
+		styleShortTime: "Short Time",
+		/** Display name for style 'T' — long time e.g. 16:20:30 */
+		styleLongTime: "Long Time",
+		/** Display name for style 'd' — short date e.g. 20/01/2024 */
+		styleShortDate: "Short Date",
+		/** Display name for style 'D' — long date e.g. 20 January 2024 */
+		styleLongDate: "Long Date",
+		/** Display name for style 'f' — short date+time e.g. 20 January 2024 16:20 */
+		styleShortDateTime: "Short Date/Time",
+		/** Display name for style 'F' — full date+time e.g. Saturday, 20 January 2024 16:20 */
+		styleFull: "Full",
+		/** Display name for style 'R' — relative e.g. in 2 hours */
+		styleRelative: "Relative",
+		/** sr-only aria-label on the per-row copy button */
+		copyRowAria: "Copy {style} syntax",
+	},
+	// ─── Snowflake Decoder (/discord/snowflake) ──
+	discordSnowflake: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Snowflake Decoder",
+		/** First tab trigger */
+		decodeTab: "DECODE",
+		/** Second tab trigger */
+		buildTab: "BUILD",
+		/** Third tab trigger */
+		bulkTab: "BULK",
+		/** Placeholder in the Decode tab's snowflake ID input */
+		decodePlaceholder: "Enter a snowflake ID...",
+		/** Hazard error when input fails isValidSnowflake */
+		invalidSnowflake: "INVALID SNOWFLAKE",
+		/** Hazard text in bulk table for an invalid row */
+		invalidRow: "INVALID",
+		/** Label for the computed snowflake output on the Build tab */
+		computedIdLabel: "SNOWFLAKE ID",
+		/** Button label to copy the computed snowflake ID */
+		copyId: "COPY",
+		/** Button label to generate a random snowflake */
+		randomButton: "RANDOM",
+		/** {what} param for common.copiedType toast when copying a snowflake ID */
+		copiedId: "snowflake ID",
+		/** {what} param for common.copiedType toast when copying bulk JSON */
+		copiedJson: "JSON results",
+		/** Button label to copy bulk results as JSON */
+		copyAsJson: "COPY AS JSON",
+		/** Placeholder in the Bulk tab's textarea */
+		bulkPlaceholder: "Paste snowflake IDs, one per line or comma-separated...",
+		/** Results table column header: snowflake ID */
+		colId: "ID",
+		/** Results table column header: local creation datetime */
+		colCreatedLocal: "CREATED (LOCAL)",
+		/** Results table column header: UTC creation datetime */
+		colCreatedUtc: "CREATED (UTC)",
+		/** Results table column header: relative age */
+		colAge: "AGE",
+		/** Results table column header: worker ID */
+		colWorker: "WORKER",
+		/** Results table column header: process ID */
+		colProcess: "PROCESS",
+		/** Results table column header: increment */
+		colIncrement: "INCREMENT",
+		/** Legend label: timestamp bits 63–22 */
+		legendTimestamp: "Timestamp",
+		/** Legend label: worker bits 21–17 */
+		legendWorker: "Worker",
+		/** Legend label: process bits 16–12 */
+		legendProcess: "Process",
+		/** Legend label: increment bits 11–0 */
+		legendIncrement: "Increment",
+		/** Label for the worker number input on the Build tab */
+		workerLabel: "Worker",
+		/** Label for the process number input on the Build tab */
+		processLabel: "Process",
+		/** Label for the increment number input on the Build tab */
+		incrementLabel: "Increment",
+		/** Tooltip on binary grid cell hover; {index} = bit position */
+		bitTooltip: "Bit {index}",
+		/** sr-only aria-label on a per-row copy button */
+		copyRowAria: "Copy {field}",
+	},
+	// ─── Permissions Calculator (/discord/permissions) ──
+	discordPermissions: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Permissions Calculator",
+		/** Placeholder in the bitfield input */
+		bitfieldPlaceholder: "Decimal or 0x hex...",
+		/** Preset option: Administrator */
+		presetAdministrator: "Administrator",
+		/** Preset option: Basic Member */
+		presetBasicMember: "Basic Member",
+		/** Preset option: Moderator */
+		presetModerator: "Moderator",
+		/** Preset option: Read Only */
+		presetReadOnly: "Read Only",
+		/** {what} param for common.copiedType toast when copying bitfield */
+		copiedBitfield: "bitfield",
+		/** Label for the output readout section */
+		outputLabel: "OUTPUT",
+		/** Label for the decimal value in the output readout */
+		decimalLabel: "DEC",
+		/** Label for the hex value in the output readout */
+		hexLabel: "HEX",
+		/** Banner shown when Administrator bit is set */
+		adminBanner: "ADMINISTRATOR IMPLIES ALL PERMISSIONS",
+		/** Hazard row for unknown bits; {hex} is the hex string of unknown bits */
+		unknownBits: "UNKNOWN BITS: {hex}",
+		/** Placeholder in the search/filter input */
+		searchPlaceholder: "Filter permissions...",
+		/** Collapsible group header: general */
+		groupGeneral: "GENERAL",
+		/** Collapsible group header: membership */
+		groupMembership: "MEMBERSHIP",
+		/** Collapsible group header: text */
+		groupText: "TEXT",
+		/** Collapsible group header: voice */
+		groupVoice: "VOICE",
+		/** Collapsible group header: advanced */
+		groupAdvanced: "ADVANCED",
+		/** Label for the presets dropdown */
+		presetsLabel: "PRESETS",
+		/** Footer hint text linking to the Invite URL Builder tool */
+		footerHint: "Build an invite URL with permissions → Invite URL Builder",
+		/** sr-only aria-label on a copy button */
+		copyAria: "Copy {value}",
+	},
+	// ─── Intents Calculator (/discord/intents) ──
+	discordIntents: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Intents Calculator",
+		/** Placeholder in the bitfield input */
+		bitfieldPlaceholder: "Decimal or 0x hex...",
+		/** {what} param for common.copiedType toast when copying bitfield */
+		copiedBitfield: "bitfield",
+		/** {what} param for common.copiedType toast when copying code snippet */
+		copiedSnippet: "code snippet",
+		/** Label for the output readout section */
+		outputLabel: "OUTPUT",
+		/** Label for the decimal value in the output readout */
+		decimalLabel: "DEC",
+		/** Label for the hex value in the output readout */
+		hexLabel: "HEX",
+		/** Badge text shown next to privileged intents */
+		privilegedBadge: "PRIVILEGED — ENABLE IN DEV PORTAL",
+		/** Tab trigger for discord.js code snippet */
+		discordJsTab: "DISCORD.JS",
+		/** Tab trigger for discord.py code snippet */
+		discordPyTab: "DISCORD.PY",
+		/** Group header: guild-related intents */
+		groupGuild: "GUILD",
+		/** Group header: message-related intents */
+		groupMessages: "MESSAGES & REACTIONS",
+		/** Group header: direct message intents */
+		groupDirectMessages: "DIRECT MESSAGES",
+		/** Group header: scheduling and automod intents */
+		groupScheduling: "SCHEDULING & AUTOMOD",
+		/** sr-only aria-label on a copy button */
+		copyAria: "Copy {value}",
+	},
+	// ─── Embed Builder (/discord/embed) ──
+	discordEmbed: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Embed Builder",
+		/** sr-only description of the tab group */
+		srTabsDescription: "Embed preview, JSON output, and import",
+		/** First tab trigger */
+		previewTab: "PREVIEW",
+		/** Second tab trigger */
+		jsonTab: "JSON",
+		/** Third tab trigger */
+		importTab: "IMPORT",
+		/** Label for the Title input */
+		titleLabel: "TITLE",
+		/** Label for the Description textarea */
+		descriptionLabel: "DESCRIPTION",
+		/** Label for the URL input */
+		urlLabel: "URL",
+		/** Label for the COLOR controls row */
+		colorLabel: "COLOR",
+		/** Label for the AUTHOR section */
+		authorLabel: "AUTHOR",
+		/** Label for the Author name input */
+		authorNameLabel: "NAME",
+		/** Label for the Author URL input */
+		authorUrlLabel: "URL",
+		/** Label for the Author icon URL input */
+		authorIconLabel: "ICON URL",
+		/** Label for the FIELDS section */
+		fieldsLabel: "FIELDS",
+		/** Label for the field name input inside a field row */
+		fieldNameLabel: "NAME",
+		/** Label for the field value textarea inside a field row */
+		fieldValueLabel: "VALUE",
+		/** Label for the field inline switch */
+		fieldInlineLabel: "INLINE",
+		/** Button to add a new embed field */
+		addFieldButton: "ADD FIELD",
+		/** sr-only aria-label on the remove-field button */
+		removeFieldAria: "Remove field",
+		/** sr-only aria-label on the move-field-up button */
+		moveFieldUpAria: "Move field up",
+		/** sr-only aria-label on the move-field-down button */
+		moveFieldDownAria: "Move field down",
+		/** Label for the IMAGE url input */
+		imageLabel: "IMAGE",
+		/** Label for the THUMBNAIL url input */
+		thumbnailLabel: "THUMBNAIL",
+		/** Label for the FOOTER section */
+		footerLabel: "FOOTER",
+		/** Label for the footer text input */
+		footerTextLabel: "TEXT",
+		/** Label for the footer icon URL input */
+		footerIconLabel: "ICON URL",
+		/** Label for the TIMESTAMP switch */
+		timestampLabel: "TIMESTAMP",
+		/** Label for the COPY button on the JSON tab */
+		copyJsonButton: "COPY",
+		/** Label for the MINIFIED toggle button on the JSON tab */
+		minifiedButton: "MINIFIED",
+		/** Label for the VALIDATION panel heading */
+		validationLabel: "VALIDATION",
+		/** Validation message when a field exceeds its limit; {field} and {current}/{max} */
+		overBudget: "{field}: {current}/{max}",
+		/** Validation message when fields count exceeds 25; {count} */
+		tooManyFields: "{count} fields (max 25)",
+		/** Validation message for total embed budget; {current}/{max} */
+		totalBudget: "Total: {current}/{max}",
+		/** Label for the IMPORT button on the Import tab */
+		importButton: "IMPORT",
+		/** Placeholder in the import textarea */
+		importPlaceholder: "Paste embed JSON here...",
+		/** Muted text shown when the preview has no content */
+		emptyPreview: "Fill in fields to see a preview",
+		/** Footer link text pointing to the webhook sender */
+		footerSendIt: "SEND IT → WEBHOOK SENDER",
+		/** {what} for common.copiedType toast after copying JSON */
+		jsonOutput: "Embed JSON",
+	},
+	// ─── Invite URL Builder (/discord/invite) ──
+	discordInvite: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Invite URL Builder",
+		/** sr-only description of the tab group */
+		srTabsDescription: "Build or parse Discord OAuth2 invite URLs",
+		/** First tab trigger */
+		buildTab: "BUILD",
+		/** Second tab trigger */
+		parseTab: "PARSE",
+		/** Label for the CLIENT ID input */
+		clientIdLabel: "CLIENT ID",
+		/** Muted hint when client ID is a valid snowflake; {date} is formatted creation date */
+		snowflakeCreated: "CREATED {date}",
+		/** Hazard warning when client ID is not a valid snowflake */
+		invalidSnowflake: "Invalid snowflake ID",
+		/** Label for the SCOPES checkbox group */
+		scopesLabel: "SCOPES",
+		/** Label for the PERMISSIONS input */
+		permissionsLabel: "PERMISSIONS",
+		/** Placeholder for the permissions preset select */
+		presetPlaceholder: "Presets",
+		/** Inline link text to open the permissions calculator */
+		openPermissionsCalc: "OPEN PERMISSIONS CALCULATOR →",
+		/** Label for the GUILD ID input */
+		guildIdLabel: "GUILD ID",
+		/** Label for the DISABLE GUILD SELECT switch */
+		disableGuildSelectLabel: "DISABLE GUILD SELECT",
+		/** Label for the REDIRECT URI input */
+		redirectUriLabel: "REDIRECT URI",
+		/** Label for the RESPONSE TYPE select */
+		responseTypeLabel: "RESPONSE TYPE",
+		/** Label for the COPY button */
+		copyButton: "COPY",
+		/** Label for the OPEN button */
+		openButton: "OPEN",
+		/** Label for the PARSE button on the Parse tab */
+		parseButton: "PARSE",
+		/** Placeholder in the parse textarea */
+		parsePlaceholder: "Paste a Discord OAuth2 authorize URL here...",
+		/** Heading for unknown query params found during parse */
+		unknownParamsLabel: "UNKNOWN PARAMS",
+		/** {what} for common.copiedType toast after copying URL */
+		inviteUrl: "Invite URL",
+	},
+	// ─── Webhook Sender (/discord/webhook) ──
+	discordWebhook: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Webhook Sender",
+		/** Label for the webhook URL input */
+		urlLabel: "WEBHOOK URL",
+		/** Hazard error when webhook URL does not match the expected pattern */
+		invalidWebhookUrl: "Invalid webhook URL format",
+		/** Explicit notice that the URL is not stored; rendered as mono uppercase */
+		urlNotice: "URL STAYS IN THIS TAB — NOTHING IS STORED",
+		/** Label for the INSPECT button */
+		inspectButton: "INSPECT",
+		/** Label for the CONTENT textarea */
+		contentLabel: "CONTENT",
+		/** Label for the USERNAME input */
+		usernameLabel: "USERNAME",
+		/** Label for the AVATAR URL input */
+		avatarUrlLabel: "AVATAR URL",
+		/** Label for the EMBEDS JSON textarea */
+		embedsLabel: "EMBEDS JSON",
+		/** Validation error: embeds textarea does not contain valid JSON */
+		embedsInvalidJson: "Invalid JSON",
+		/** Validation error: parsed JSON is not an array */
+		embedsNotArray: "Embeds must be a JSON array",
+		/** Validation error: too many embeds; {count} is the actual number */
+		embedsTooMany: "{count} embeds (max 10)",
+		/** Label for the SEND button */
+		sendButton: "SEND",
+		/** AlertDialog title before sending */
+		confirmTitle: "Send to Webhook",
+		/** AlertDialog description before sending */
+		confirmDescription: "This will send a message to the webhook URL above. Continue?",
+		/** AlertDialog cancel button next to the send confirmation */
+		cancelButton: "Cancel",
+		/** Sonner success toast after 204 response */
+		sent: "SENT",
+		/** Error row when rate-limited; {seconds} is retry_after from Discord */
+		rateLimited: "RATE LIMITED — retry after {seconds}s",
+		/** Error row prefix for non-429 errors; {code} and {message} from Discord response */
+		errorResponse: "{code}: {message}",
+		/** Label shown next to the webhook name in the inspect result */
+		inspectName: "NAME",
+		/** Label shown next to the channel ID in the inspect result */
+		inspectChannel: "CHANNEL ID",
+		/** Label shown next to the avatar URL in the inspect result */
+		inspectAvatar: "AVATAR",
+	},
+	// ─── Mention Builder (/discord/mentions) ──
+	discordMentions: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Mention Builder",
+		/** sr-only description of the tab group */
+		srTabsDescription: "Build or extract Discord mention strings",
+		/** First tab trigger */
+		buildTab: "BUILD",
+		/** Second tab trigger */
+		extractTab: "EXTRACT",
+		/** Label for the TYPE radio group */
+		typeLabel: "TYPE",
+		/** Radio option label for User mention */
+		typeUser: "User",
+		/** Radio option label for Role mention */
+		typeRole: "Role",
+		/** Radio option label for Channel mention */
+		typeChannel: "Channel",
+		/** Radio option label for Slash command mention */
+		typeSlash: "Slash command",
+		/** Radio option label for Custom emoji mention */
+		typeEmoji: "Custom emoji",
+		/** Label for timestamp-type rows in the extract table */
+		typeTimestamp: "Timestamp",
+		/** Label for the ID input */
+		idLabel: "ID",
+		/** Label for the NAME input (visible for slash + emoji) */
+		nameLabel: "NAME",
+		/** Label for the ANIMATED switch (visible for emoji) */
+		animatedLabel: "ANIMATED",
+		/** Label for the COPY button on the Build tab */
+		copyButton: "COPY",
+		/** Placeholder in the extract textarea */
+		extractPlaceholder: "Paste text containing mentions here...",
+		/** Table column header: mention type */
+		colType: "TYPE",
+		/** Table column header: raw mention string */
+		colRaw: "RAW",
+		/** Table column header: snowflake ID */
+		colId: "ID",
+		/** Table column header: display name (when present) */
+		colName: "NAME",
+		/** Table column header: creation date from snowflake */
+		colCreated: "CREATED",
+		/** sr-only aria-label on the per-row COPY ID button */
+		copyIdAria: "Copy ID",
+		/** Inline link text per row linking to snowflake decoder */
+		decodeLink: "DECODE →",
+		/** Muted text shown when no mentions are found in the extract textarea */
+		noMentionsFound: "NO MENTIONS FOUND",
+		/** {what} for common.copiedType toast after copying mention string */
+		mentionString: "Mention string",
+		/** {what} for common.copiedType toast after copying an ID */
+		mentionId: "Mention ID",
+	},
+	// ─── CDN Link Builder (/discord/cdn) ──
+	discordCdn: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "CDN Link Builder",
+		/** EMOJI tab trigger label */
+		tabEmoji: "Emoji",
+		/** AVATAR tab trigger label */
+		tabAvatar: "Avatar",
+		/** DEFAULT AVATAR tab trigger label */
+		tabDefaultAvatar: "Default Avatar",
+		/** BANNER tab trigger label */
+		tabBanner: "Banner",
+		/** GUILD ICON tab trigger label */
+		tabGuildIcon: "Guild Icon",
+		/** STICKER tab trigger label */
+		tabSticker: "Sticker",
+		/** Label above the primary emoji input */
+		emojiInputLabel: "Emoji",
+		/** Placeholder in the primary emoji input */
+		emojiInputPlaceholder: "<:name:id> or emoji ID",
+		/** Label above the NAME input (editable fallback when plain ID given) */
+		emojiNameLabel: "Name",
+		/** Label above the FORMAT select (emoji tab) */
+		formatLabel: "Format",
+		/** Label above the SIZE select */
+		sizeLabel: "Size",
+		/** Error shown when emoji input is not a valid mention or numeric ID */
+		emojiParseError: "Enter a valid emoji mention (<:name:id>) or numeric ID",
+		/** Label above USER ID input (avatar, banner, default avatar tabs) */
+		userIdLabel: "User ID",
+		/** Label above AVATAR HASH input */
+		avatarHashLabel: "Avatar Hash",
+		/** Error shown when user ID is empty */
+		userIdRequired: "User ID is required",
+		/** Error shown when hash is empty */
+		hashRequired: "Hash is required",
+		/** Generic error for invalid input producing empty URL */
+		invalidInput: "Invalid input",
+		/** Note below default avatar output warning it changes */
+		defaultAvatarNote: "CHANGES WHEN USER CHANGES AVATAR",
+		/** Label above GUILD ID input */
+		guildIdLabel: "Guild ID",
+		/** Label above HASH input (banner, guild icon tabs) */
+		hashLabel: "Hash",
+		/** Label above STICKER ID input */
+		stickerIdLabel: "Sticker ID",
+		/** aria-label on the COPY button */
+		copyAria: "Copy CDN URL",
+		/** aria-label on the OPEN link */
+		openAria: "Open CDN URL in new tab",
+		/** Hint label above the chat-usable markdown badge (emoji tab) */
+		chatMarkdownHint: "Use in chat",
+	},
+	// ─── Message Link Parser (/discord/message-link) ──
+	discordMessageLink: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Message Link Parser",
+		/** PARSE tab trigger label */
+		tabParse: "Parse",
+		/** BUILD tab trigger label */
+		tabBuild: "Build",
+		/** Placeholder in the parse input */
+		parsePlaceholder: "Paste a Discord message or invite URL...",
+		/** Error shown when input matches neither message nor invite pattern */
+		parseError: "Not a valid Discord message or invite URL",
+		/** Row label for the guild ID in parse results */
+		guildLabel: "GUILD",
+		/** Row label for the channel ID in parse results */
+		channelLabel: "CHANNEL",
+		/** Row label for the message ID in parse results */
+		messageLabel: "MESSAGE",
+		/** Row label for the decoded creation date */
+		createdLabel: "CREATED",
+		/** Row label for the canonical URL */
+		canonicalUrlLabel: "CANONICAL URL",
+		/** Text shown when guild is @me (DM) in parse results */
+		dmLabel: "DM — @me",
+		/** Link text to navigate to Snowflake Decoder */
+		decodeLink: "DECODE →",
+		/** Row label for invite code */
+		codeLabel: "CODE",
+		/** Label above GUILD ID input in build tab */
+		buildGuildLabel: "Guild ID",
+		/** Placeholder for guild ID input */
+		buildGuildPlaceholder: "Optional — defaults to @me",
+		/** Label above CHANNEL ID input in build tab */
+		buildChannelLabel: "Channel ID",
+		/** Label above MESSAGE ID input in build tab */
+		buildMessageLabel: "Message ID",
+		/** Error when channel ID is empty in build tab */
+		channelIdRequired: "Channel ID is required",
+		/** Error when message ID is non-numeric in build tab */
+		messageIdNumeric: "Message ID must be numeric",
+		/** aria-label on COPY button in parse results */
+		copyAria: "Copy value",
+		/** aria-label on OPEN link */
+		openAria: "Open link in new tab",
+	},
+	// ─── Discord Markdown (/discord/markdown) ──
+	discordMarkdown: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Discord Markdown",
+		/** PREVIEW tab trigger label */
+		tabPreview: "Preview",
+		/** ESCAPED tab trigger label */
+		tabEscaped: "Escaped",
+		/** Placeholder text in the editor textarea */
+		editorPlaceholder: "Type Discord markdown here...",
+		/** aria-label on Bold toolbar button */
+		boldAria: "Bold",
+		/** aria-label on Italic toolbar button */
+		italicAria: "Italic",
+		/** aria-label on Underline toolbar button */
+		underlineAria: "Underline",
+		/** aria-label on Strikethrough toolbar button */
+		strikeAria: "Strikethrough",
+		/** aria-label on Spoiler toolbar button */
+		spoilerAria: "Spoiler",
+		/** aria-label on Inline Code toolbar button */
+		inlineCodeAria: "Inline Code",
+		/** aria-label on Code Block toolbar button */
+		codeBlockAria: "Code Block",
+		/** aria-label on Quote toolbar button */
+		quoteAria: "Block Quote",
+		/** aria-label on List toolbar button */
+		listAria: "List",
+		/** aria-label on Link toolbar button */
+		linkAria: "Link",
+		/** aria-label on COPY button in escaped tab */
+		copyEscapedAria: "Copy escaped text",
+		/** Hint text shown at the bottom of the editor zone */
+		syntaxHint: "Supports bold, italic, underline, strikethrough, spoiler, inline code, code blocks, headings, block quotes, lists, and links",
+	},
+	// ─── ANSI Colors (/discord/ansi) ──
+	discordAnsi: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "ANSI Colors",
+		/** BUILD tab trigger label */
+		tabBuild: "Build",
+		/** PARSE tab trigger label */
+		tabParse: "Parse",
+		/** Placeholder in segment text input */
+		segmentTextPlaceholder: "Text",
+		/** Label for the BOLD switch */
+		boldLabel: "B",
+		/** Label for the UNDERLINE switch */
+		underlineLabel: "U",
+		/** aria-label on the REMOVE segment button */
+		removeSegmentAria: "Remove segment",
+		/** Label on the ADD SEGMENT button */
+		addSegmentButton: "Add Segment",
+		/** aria-label on the COPY button in the output panel */
+		copyOutputAria: "Copy ANSI block",
+		/** Placeholder in the parse textarea */
+		parsePlaceholder: "Paste an ANSI code block here...",
+		/** Label on the parse button */
+		parseButton: "Parse",
+		/** Error shown when parsed ANSI content yields no segments */
+		parseError: "No ANSI sequences found in the input",
+		/** Label for the PREVIEW section heading */
+		previewLabel: "Preview",
+		/** Label for the OUTPUT section heading */
+		outputLabel: "Output",
+		/** Label for the FG select */
+		fgLabel: "FG",
+		/** Label for the BG select */
+		bgLabel: "BG",
+	},
+	// ─── Message Splitter (/discord/splitter) ──
+	discordSplitter: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Message Splitter",
+		/** Bracketed micro label above the input textarea; keep brackets */
+		inputLabel: "[ INPUT ]",
+		/** Textarea placeholder */
+		inputPlaceholder: "Paste the long message to split...",
+		/** Bracketed micro label above the options row; keep brackets */
+		optionsLabel: "[ OPTIONS ]",
+		/** Mono label in front of the limit select */
+		limitLabel: "LIMIT",
+		/** Select option — regular 2000-char message limit */
+		limit2000: "2000",
+		/** Select option — Nitro 4000-char message limit */
+		limit4000: "4000",
+		/** Select option revealing the custom numeric input */
+		limitCustom: "CUSTOM",
+		/** Placeholder + aria-label of the numeric custom-limit input */
+		customLimitPlaceholder: "100 – 3800",
+		/** Mono label in front of the NUMBER PARTS switch */
+		numberPartsLabel: "NUMBER PARTS",
+		/** sr-only aria-label on the NUMBER PARTS switch */
+		numberPartsAria: "Prefix each part with its position n/N",
+		/** Stats line under options; {n} = part count, {x} = longest part length, {limit} = active limit */
+		statsLine: "{n} PARTS · LONGEST {x}/{limit}",
+		/** Bracketed micro label above the output list; keep brackets */
+		outputLabel: "[ OUTPUT ]",
+		/** Chunk card header; {n} = part index, {total} = part count, {len} = length incl. prefix, {limit} = active limit */
+		partHeader: "PART {n}/{total} · {len}/{limit}",
+		/** Hazard badge in a card header when that part came from a mid-line hard split */
+		longLineChip: "LONG LINE SPLIT",
+		/** Button expanding a truncated chunk body */
+		expandButton: "EXPAND",
+		/** Button collapsing an expanded chunk body */
+		collapseButton: "COLLAPSE",
+		/** Label on the per-chunk Copy button */
+		copyButton: "COPY",
+		/** sr-only aria-label on the per-chunk Copy button; {n} = part index */
+		copyAria: "Copy part {n}",
+		/** {what} for common.copiedType toast after copying a part; {n} = part index */
+		partName: "Part {n}",
+		/** Empty-state hint in the output zone when there is nothing to split */
+		emptyHint: "Parts will appear here once you paste text...",
+	},
+	// ─── Character Counter (/discord/char-counter) ──
+	discordCharCounter: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Character Counter",
+		/** Bracketed micro label above the input textarea; keep brackets */
+		inputLabel: "[ INPUT ]",
+		/** Textarea placeholder */
+		inputPlaceholder: "Type or paste text to measure...",
+		/** Summary chip showing the Unicode code-point count; {n} = count */
+		codePointsChip: "CODE POINTS {n}",
+		/** Summary chip showing the UTF-16 code-unit count; {n} = count */
+		utf16Chip: "UTF-16 UNITS {n}",
+		/** title tooltip on the UTF-16 chip explaining the divergence */
+		unitsTitle: "Astral characters (most emoji, styled letters) cost 2 UTF-16 units but 1 code point. Discord counts roughly per UTF-16 unit.",
+		/** First filter tab — show all meter groups */
+		tabAll: "ALL",
+		/** Second filter tab — message-length meters */
+		tabMessages: "MESSAGES",
+		/** Third filter tab — embed meters */
+		tabEmbeds: "EMBEDS",
+		/** Fourth filter tab — name/profile meters */
+		tabNames: "NAMES",
+		/** Muted chip shown on a meter row whose count is within the limit */
+		fitsChip: "FITS",
+		/** sr-only aria-label describing a meter row; {name} = English limit name, {n} = count, {limit} = display limit */
+		meterAria: "{name}: {n} of {limit}",
+		/** Muted footnote under the meters about counting semantics */
+		footnote: "Meters use code points. Discord counts roughly per UTF-16 unit — compare the UTF-16 UNITS chip when your text is emoji-heavy.",
+	},
+	// ─── Fancy Text (/generators/fancy-text) ──
+	fancyText: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Fancy Text",
+		/** Label shown above the text input */
+		inputLabel: "[ INPUT ]",
+		/** Placeholder inside the text input */
+		inputPlaceholder: "Type something...",
+		/** Sample text shown in style previews when input is empty */
+		sampleText: "Kit Devkit",
+		/** Toast {what} value after copying a styled text; {style} = style name */
+		copiedStyle: "{style} text",
+		/** sr-only aria-label on each card's Copy button; {style} = style name */
+		copyStyleAria: "Copy {style} text",
+		/** Footer accessibility warning about screen readers */
+		accessibilityNote: "Screen readers may read styled text as individual symbols",
+	},
+	// ─── Invisible Text (/generators/invisible-text) ──
+	invisibleText: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Invisible Text",
+		/** COPY tab trigger label */
+		copyTab: "COPY",
+		/** INSPECT tab trigger label */
+		inspectTab: "INSPECT",
+		/** Placeholder inside the inspect textarea */
+		inspectPlaceholder: "Paste text here to inspect for invisible characters...",
+		/** Label above the found-characters list in inspect results */
+		foundLabel: "[ FOUND ]",
+		/** {what} for toast after copying a single invisible char; {name} = char name */
+		copiedChar: "{name}",
+		/** sr-only aria-label on the Copy ×1 button; {name} = char name */
+		copyCharAria: "Copy {name}",
+		/** sr-only aria-label on the Copy ×5 button; {name} = char name */
+		copyChar5Aria: "Copy {name} ×5",
+		/** Label on the STRIP button in inspect results */
+		stripButton: "STRIP",
+		/** Label above the cleaned output panel */
+		cleanedLabel: "[ CLEANED OUTPUT ]",
+		/** {what} for toast after copying cleaned text */
+		cleanedText: "Cleaned text",
+		/** sr-only aria-label on the copy-cleaned button */
+		copyCleanedAria: "Copy cleaned text",
+		/** Muted message when no invisible characters are found in inspect */
+		noneFound: "NO INVISIBLE CHARACTERS FOUND",
+		/** Footer moderation/accessibility warning */
+		footerWarning: "Invisible text can break screen readers and moderation tools — use sparingly",
+	},
+	// ─── Emoji Resizer (/generators/emoji-resizer) ──
+	emojiResizer: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Emoji Resizer",
+		/** Bracketed micro label above the drop zone; keep brackets */
+		uploadLabel: "[ UPLOAD ]",
+		/** Bracketed micro label above the resize options row; keep brackets */
+		optionsLabel: "[ OPTIONS ]",
+		/** Dropzone text in idle state */
+		dropOrClick: "Drag 'n' drop an image here, or click to select",
+		/** Dropzone text while a file is dragged over */
+		dropHere: "Drop the image here ...",
+		/** sr-only aria-label on the clickable drop zone */
+		uploadFileAria: "Upload an image to resize",
+		/** Hazard toast when the dropped file is not an image */
+		invalidFile: "Please drop a valid image file.",
+		/** Mono label in front of the mode tabs */
+		modeLabel: "MODE",
+		/** First mode tab — emoji constraints */
+		modeEmoji: "EMOJI",
+		/** Second mode tab — sticker constraints */
+		modeSticker: "STICKER",
+		/** Mono label in front of the FIT select */
+		fitLabel: "FIT",
+		/** FIT option — fit whole image inside the square (letterbox) */
+		fitContain: "CONTAIN",
+		/** FIT option — fill the square, cropping overflow */
+		fitCover: "COVER",
+		/** Mono label in front of the FORMAT select */
+		formatLabel: "FORMAT",
+		/** sr-only aria-label describing the FIT select */
+		fitAria: "How the image fills the square",
+		/** sr-only aria-label describing the FORMAT select */
+		formatAria: "Output encoding format",
+		/** Mono label in front of the quality slider */
+		qualityLabel: "QUALITY",
+		/** sr-only aria-label on the quality slider */
+		qualityAria: "Encoding quality, 50 to 100",
+		/** Bracketed micro label above the preview area; keep brackets */
+		previewLabel: "[ PREVIEW ]",
+		/** Verdict chip when the output meets the size budget */
+		withinLimit: "WITHIN LIMIT",
+		/** Hazard verdict chip when the output exceeds the size budget */
+		overBudget: "OVER BUDGET — TRY LOWER QUALITY",
+		/** Muted note under the preview explaining JPEG transparency handling */
+		jpegNote: "JPEG has no transparency — transparent areas are filled white.",
+		/** Label on the download button */
+		downloadButton: "DOWNLOAD",
+		/** sr-only aria-label on the download button; {filename} = generated file name */
+		downloadAria: "Download resized image as {filename}",
+	},
+	// ─── Discord Limits (/viewers-miscellaneous/discord-limits) ──
+	discordLimits: {
+		/** ToolHeader title; sidebar + homepage card use the same key */
+		title: "Discord Limits",
+		/** Search input placeholder */
+		filterPlaceholder: "FILTER LIMITS",
+		/** sr-only aria-label on the search input */
+		filterAria: "Filter limits by name or group",
+	},
 	},
 };
 export type Dictionary = typeof en;

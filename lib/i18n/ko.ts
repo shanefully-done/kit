@@ -61,6 +61,10 @@ export const ko: Dictionary = {
 			generators: "생성기",
 			/** Route group /viewers-miscellaneous */
 			viewers: "뷰어 & 기타",
+			/** Sidebar + homepage section heading for Discord message tools */
+			discordMessages: "디스코드 · 메시지",
+			/** Sidebar + homepage section heading for Discord developer tools */
+			discordDevelopers: "디스코드 · 개발자",
 		},
 	},
 	home: {
@@ -1175,6 +1179,770 @@ export const ko: Dictionary = {
 			unescape: "이스케이프 해제",
 			/** Output section label */
 			outputLabel: "출력",
+		},
+		// ─── Discord Timestamp (/discord/timestamp) ──
+		discordTimestamp: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "디스코드 타임스탬프",
+			/** Placeholder text inside the natural-language input */
+			naturalPlaceholder: "in 2 hours · tomorrow 9am · next friday",
+			/** Note below timezone select explaining output renders per-reader */
+			timezoneNote: "타임스탬프 태그는 각 읽는 사람의 로컬 시간대로 렌더링됩니다.",
+			/** Label prefix for the relative-distance badge, followed by the offset value */
+			targetLabel: "TARGET: {offset}",
+			/** Hazard error shown when natural-language input cannot be parsed */
+			parseError: "파싱 실패",
+			/** Hazard error shown when unix input is NaN or negative */
+			invalidUnix: "잘못된 UNIX 타임스탬프",
+			/** {what} param for common.copiedType toast when copying a timestamp tag */
+			copiedTag: "타임스탬프 태그",
+			/** Quick chip: set date to now */
+			chipNow: "NOW",
+			/** Quick chip: add 1 hour */
+			chipPlus1h: "+1H",
+			/** Quick chip: add 1 day */
+			chipPlus1d: "+1D",
+			/** Quick chip: set to tomorrow 9:00 */
+			chipTomorrow9: "내일 9:00",
+			/** Table column header: style letter */
+			colStyle: "STYLE",
+			/** Table column header: syntax output */
+			colSyntax: "SYNTAX",
+			/** Table column header: rendered preview */
+			colPreview: "RENDERED PREVIEW",
+			/** Display name for style 't' — short time e.g. 16:20 */
+			styleShortTime: "짧은 시간",
+			/** Display name for style 'T' — long time e.g. 16:20:30 */
+			styleLongTime: "긴 시간",
+			/** Display name for style 'd' — short date e.g. 20/01/2024 */
+			styleShortDate: "짧은 날짜",
+			/** Display name for style 'D' — long date e.g. 20 January 2024 */
+			styleLongDate: "긴 날짜",
+			/** Display name for style 'f' — short date+time e.g. 20 January 2024 16:20 */
+			styleShortDateTime: "짧은 날짜/시간",
+			/** Display name for style 'F' — full date+time e.g. Saturday, 20 January 2024 16:20 */
+			styleFull: "전체",
+			/** Display name for style 'R' — relative e.g. in 2 hours */
+			styleRelative: "상대적",
+			/** sr-only aria-label on the per-row copy button */
+			copyRowAria: "Copy {style} syntax",
+		},
+		// ─── Snowflake Decoder (/discord/snowflake) ──
+		discordSnowflake: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "스노우플레이크 디코더",
+			/** First tab trigger */
+			decodeTab: "DECODE",
+			/** Second tab trigger */
+			buildTab: "BUILD",
+			/** Third tab trigger */
+			bulkTab: "BULK",
+			/** Placeholder in the Decode tab's snowflake ID input */
+			decodePlaceholder: "스노우플레이크 ID를 입력하세요...",
+			/** Hazard error when input fails isValidSnowflake */
+			invalidSnowflake: "잘못된 스노우플레이크",
+			/** Hazard text in bulk table for an invalid row */
+			invalidRow: "잘못됨",
+			/** Label for the computed snowflake output on the Build tab */
+			computedIdLabel: "SNOWFLAKE ID",
+			/** Button label to copy the computed snowflake ID */
+			copyId: "COPY",
+			/** Button label to generate a random snowflake */
+			randomButton: "RANDOM",
+			/** {what} param for common.copiedType toast when copying a snowflake ID */
+			copiedId: "스노우플레이크 ID",
+			/** {what} param for common.copiedType toast when copying bulk JSON */
+			copiedJson: "JSON 결과",
+			/** Button label to copy bulk results as JSON */
+			copyAsJson: "COPY AS JSON",
+			/** Placeholder in the Bulk tab's textarea */
+			bulkPlaceholder: "스노우플레이크 ID를 여기에 붙여넣기 (줄바꿈 또는 쉼표로 구분)...",
+			/** Results table column header: snowflake ID */
+			colId: "ID",
+			/** Results table column header: local creation datetime */
+			colCreatedLocal: "CREATED (LOCAL)",
+			/** Results table column header: UTC creation datetime */
+			colCreatedUtc: "CREATED (UTC)",
+			/** Results table column header: relative age */
+			colAge: "AGE",
+			/** Results table column header: worker ID */
+			colWorker: "WORKER",
+			/** Results table column header: process ID */
+			colProcess: "PROCESS",
+			/** Results table column header: increment */
+			colIncrement: "INCREMENT",
+			/** Legend label: timestamp bits 63–22 */
+			legendTimestamp: "Timestamp",
+			/** Legend label: worker bits 21–17 */
+			legendWorker: "Worker",
+			/** Legend label: process bits 16–12 */
+			legendProcess: "Process",
+			/** Legend label: increment bits 11–0 */
+			legendIncrement: "Increment",
+			/** Label for the worker number input on the Build tab */
+			workerLabel: "Worker",
+			/** Label for the process number input on the Build tab */
+			processLabel: "Process",
+			/** Label for the increment number input on the Build tab */
+			incrementLabel: "Increment",
+			/** Tooltip on binary grid cell hover; {index} = bit position */
+			bitTooltip: "Bit {index}",
+			/** sr-only aria-label on a per-row copy button */
+			copyRowAria: "Copy {field}",
+		},
+		// ─── Permissions Calculator (/discord/permissions) ──
+		discordPermissions: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "권한 계산기",
+			/** Placeholder in the bitfield input */
+			bitfieldPlaceholder: "10진수 또는 0x 16진수...",
+			/** Preset option: Administrator */
+			presetAdministrator: "Administrator",
+			/** Preset option: Basic Member */
+			presetBasicMember: "Basic Member",
+			/** Preset option: Moderator */
+			presetModerator: "Moderator",
+			/** Preset option: Read Only */
+			presetReadOnly: "Read Only",
+			/** {what} param for common.copiedType toast when copying bitfield */
+			copiedBitfield: "비트필드",
+			/** Label for the output readout section */
+			outputLabel: "OUTPUT",
+			/** Label for the decimal value in the output readout */
+			decimalLabel: "DEC",
+			/** Label for the hex value in the output readout */
+			hexLabel: "HEX",
+			/** Banner shown when Administrator bit is set */
+			adminBanner: "ADMINISTRATOR는 모든 권한을 포함합니다",
+			/** Hazard row for unknown bits; {hex} is the hex string of unknown bits */
+			unknownBits: "알 수 없는 비트: {hex}",
+			/** Placeholder in the search/filter input */
+			searchPlaceholder: "권한 필터...",
+			/** Collapsible group header: general */
+			groupGeneral: "GENERAL",
+			/** Collapsible group header: membership */
+			groupMembership: "MEMBERSHIP",
+			/** Collapsible group header: text */
+			groupText: "TEXT",
+			/** Collapsible group header: voice */
+			groupVoice: "VOICE",
+			/** Collapsible group header: advanced */
+			groupAdvanced: "ADVANCED",
+			/** Label for the presets dropdown */
+			presetsLabel: "PRESETS",
+			/** Footer hint text linking to the Invite URL Builder tool */
+			footerHint: "권한이 포함된 초대 URL 생성 → Invite URL Builder",
+			/** sr-only aria-label on a copy button */
+			copyAria: "Copy {value}",
+		},
+		// ─── Intents Calculator (/discord/intents) ──
+		discordIntents: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "인텐트 계산기",
+			/** Placeholder in the bitfield input */
+			bitfieldPlaceholder: "10진수 또는 0x 16진수...",
+			/** {what} param for common.copiedType toast when copying bitfield */
+			copiedBitfield: "비트필드",
+			/** {what} param for common.copiedType toast when copying code snippet */
+			copiedSnippet: "코드 스니펫",
+			/** Label for the output readout section */
+			outputLabel: "OUTPUT",
+			/** Label for the decimal value in the output readout */
+			decimalLabel: "DEC",
+			/** Label for the hex value in the output readout */
+			hexLabel: "HEX",
+			/** Badge text shown next to privileged intents */
+			privilegedBadge: "PRIVILEGED — 개발 포털에서 활성화 필요",
+			/** Tab trigger for discord.js code snippet */
+			discordJsTab: "DISCORD.JS",
+			/** Tab trigger for discord.py code snippet */
+			discordPyTab: "DISCORD.PY",
+			/** Group header: guild-related intents */
+			groupGuild: "GUILD",
+			/** Group header: message-related intents */
+			groupMessages: "MESSAGES & REACTIONS",
+			/** Group header: direct message intents */
+			groupDirectMessages: "DIRECT MESSAGES",
+			/** Group header: scheduling and automod intents */
+			groupScheduling: "SCHEDULING & AUTOMOD",
+			/** sr-only aria-label on a copy button */
+			copyAria: "Copy {value}",
+		},
+		// ─── Embed Builder (/discord/embed) ──
+		discordEmbed: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "임베드 빌더",
+			/** sr-only description of the tab group */
+			srTabsDescription: "임베드 미리보기, JSON 출력, 가져오기",
+			/** First tab trigger */
+			previewTab: "PREVIEW",
+			/** Second tab trigger */
+			jsonTab: "JSON",
+			/** Third tab trigger */
+			importTab: "IMPORT",
+			/** Label for the Title input */
+			titleLabel: "TITLE",
+			/** Label for the Description textarea */
+			descriptionLabel: "DESCRIPTION",
+			/** Label for the URL input */
+			urlLabel: "URL",
+			/** Label for the COLOR controls row */
+			colorLabel: "COLOR",
+			/** Label for the AUTHOR section */
+			authorLabel: "AUTHOR",
+			/** Label for the Author name input */
+			authorNameLabel: "NAME",
+			/** Label for the Author URL input */
+			authorUrlLabel: "URL",
+			/** Label for the Author icon URL input */
+			authorIconLabel: "ICON URL",
+			/** Label for the FIELDS section */
+			fieldsLabel: "FIELDS",
+			/** Label for the field name input inside a field row */
+			fieldNameLabel: "NAME",
+			/** Label for the field value textarea inside a field row */
+			fieldValueLabel: "VALUE",
+			/** Label for the field inline switch */
+			fieldInlineLabel: "INLINE",
+			/** Button to add a new embed field */
+			addFieldButton: "ADD FIELD",
+			/** sr-only aria-label on the remove-field button */
+			removeFieldAria: "필드 제거",
+			/** sr-only aria-label on the move-field-up button */
+			moveFieldUpAria: "필드 위로 이동",
+			/** sr-only aria-label on the move-field-down button */
+			moveFieldDownAria: "필드 아래로 이동",
+			/** Label for the IMAGE url input */
+			imageLabel: "IMAGE",
+			/** Label for the THUMBNAIL url input */
+			thumbnailLabel: "THUMBNAIL",
+			/** Label for the FOOTER section */
+			footerLabel: "FOOTER",
+			/** Label for the footer text input */
+			footerTextLabel: "TEXT",
+			/** Label for the footer icon URL input */
+			footerIconLabel: "ICON URL",
+			/** Label for the TIMESTAMP switch */
+			timestampLabel: "TIMESTAMP",
+			/** Label for the COPY button on the JSON tab */
+			copyJsonButton: "COPY",
+			/** Label for the MINIFIED toggle button on the JSON tab */
+			minifiedButton: "MINIFIED",
+			/** Label for the VALIDATION panel heading */
+			validationLabel: "VALIDATION",
+			/** Validation message when a field exceeds its limit; {field} and {current}/{max} */
+			overBudget: "{field}: {current}/{max}",
+			/** Validation message when fields count exceeds 25; {count} */
+			tooManyFields: "{count}개 필드 (최대 25)",
+			/** Validation message for total embed budget; {current}/{max} */
+			totalBudget: "합계: {current}/{max}",
+			/** Label for the IMPORT button on the Import tab */
+			importButton: "IMPORT",
+			/** Placeholder in the import textarea */
+			importPlaceholder: "임베드 JSON을 여기에 붙여넣기...",
+			/** Muted text shown when the preview has no content */
+			emptyPreview: "미리보기를 보려면 필드를 채우세요",
+			/** Footer link text pointing to the webhook sender */
+			footerSendIt: "SEND IT → WEBHOOK SENDER",
+			/** {what} for common.copiedType toast after copying JSON */
+			jsonOutput: "임베드 JSON",
+		},
+		// ─── Invite URL Builder (/discord/invite) ──
+		discordInvite: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "초대 URL 빌더",
+			/** sr-only description of the tab group */
+			srTabsDescription: "디스코드 OAuth2 초대 URL 빌드 또는 파싱",
+			/** First tab trigger */
+			buildTab: "BUILD",
+			/** Second tab trigger */
+			parseTab: "PARSE",
+			/** Label for the CLIENT ID input */
+			clientIdLabel: "CLIENT ID",
+			/** Muted hint when client ID is a valid snowflake; {date} is formatted creation date */
+			snowflakeCreated: "CREATED {date}",
+			/** Hazard warning when client ID is not a valid snowflake */
+			invalidSnowflake: "잘못된 스노우플레이크 ID",
+			/** Label for the SCOPES checkbox group */
+			scopesLabel: "SCOPES",
+			/** Label for the PERMISSIONS input */
+			permissionsLabel: "PERMISSIONS",
+			/** Placeholder for the permissions preset select */
+			presetPlaceholder: "Presets",
+			/** Inline link text to open the permissions calculator */
+			openPermissionsCalc: "OPEN PERMISSIONS CALCULATOR →",
+			/** Label for the GUILD ID input */
+			guildIdLabel: "GUILD ID",
+			/** Label for the DISABLE GUILD SELECT switch */
+			disableGuildSelectLabel: "DISABLE GUILD SELECT",
+			/** Label for the REDIRECT URI input */
+			redirectUriLabel: "REDIRECT URI",
+			/** Label for the RESPONSE TYPE select */
+			responseTypeLabel: "RESPONSE TYPE",
+			/** Label for the COPY button */
+			copyButton: "COPY",
+			/** Label for the OPEN button */
+			openButton: "OPEN",
+			/** Label for the PARSE button on the Parse tab */
+			parseButton: "PARSE",
+			/** Placeholder in the parse textarea */
+			parsePlaceholder: "디스코드 OAuth2 authorize URL을 여기에 붙여넣기...",
+			/** Heading for unknown query params found during parse */
+			unknownParamsLabel: "UNKNOWN PARAMS",
+			/** {what} for common.copiedType toast after copying URL */
+			inviteUrl: "초대 URL",
+		},
+		// ─── Webhook Sender (/discord/webhook) ──
+		discordWebhook: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "웹훅 전송",
+			/** Label for the webhook URL input */
+			urlLabel: "WEBHOOK URL",
+			/** Hazard error when webhook URL does not match the expected pattern */
+			invalidWebhookUrl: "잘못된 웹훅 URL 형식",
+			/** Explicit notice that the URL is not stored; rendered as mono uppercase */
+			urlNotice: "URL은 이 탭에만 유지됩니다 — 아무것도 저장되지 않습니다",
+			/** Label for the INSPECT button */
+			inspectButton: "INSPECT",
+			/** Label for the CONTENT textarea */
+			contentLabel: "CONTENT",
+			/** Label for the USERNAME input */
+			usernameLabel: "USERNAME",
+			/** Label for the AVATAR URL input */
+			avatarUrlLabel: "AVATAR URL",
+			/** Label for the EMBEDS JSON textarea */
+			embedsLabel: "EMBEDS JSON",
+			/** Validation error: embeds textarea does not contain valid JSON */
+			embedsInvalidJson: "잘못된 JSON",
+			/** Validation error: parsed JSON is not an array */
+			embedsNotArray: "임베드는 JSON 배열이어야 합니다",
+			/** Validation error: too many embeds; {count} is the actual number */
+			embedsTooMany: "{count}개 임베드 (최대 10)",
+			/** Label for the SEND button */
+			sendButton: "SEND",
+			/** AlertDialog title before sending */
+			confirmTitle: "웹훅으로 전송",
+			/** AlertDialog description before sending */
+			confirmDescription: "위 웹훅 URL로 메시지를 전송합니다. 계속하시겠습니까?",
+			/** AlertDialog cancel button next to the send confirmation */
+			cancelButton: "취소",
+			/** Sonner success toast after 204 response */
+			sent: "전송됨",
+			/** Error row when rate-limited; {seconds} is retry_after from Discord */
+			rateLimited: "RATE LIMITED — {seconds}초 후 재시도",
+			/** Error row prefix for non-429 errors; {code} and {message} from Discord response */
+			errorResponse: "{code}: {message}",
+			/** Label shown next to the webhook name in the inspect result */
+			inspectName: "NAME",
+			/** Label shown next to the channel ID in the inspect result */
+			inspectChannel: "CHANNEL ID",
+			/** Label shown next to the avatar URL in the inspect result */
+			inspectAvatar: "AVATAR",
+		},
+		// ─── Mention Builder (/discord/mentions) ──
+		discordMentions: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "멘션 빌더",
+			/** sr-only description of the tab group */
+			srTabsDescription: "디스코드 멘션 문자열 빌드 또는 추출",
+			/** First tab trigger */
+			buildTab: "BUILD",
+			/** Second tab trigger */
+			extractTab: "EXTRACT",
+			/** Label for the TYPE radio group */
+			typeLabel: "TYPE",
+			/** Radio option label for User mention */
+			typeUser: "User",
+			/** Radio option label for Role mention */
+			typeRole: "Role",
+			/** Radio option label for Channel mention */
+			typeChannel: "Channel",
+			/** Radio option label for Slash command mention */
+			typeSlash: "Slash command",
+			/** Radio option label for Custom emoji mention */
+			typeEmoji: "Custom emoji",
+			/** Label for timestamp-type rows in the extract table */
+			typeTimestamp: "타임스탬프",
+			/** Label for the ID input */
+			idLabel: "ID",
+			/** Label for the NAME input (visible for slash + emoji) */
+			nameLabel: "NAME",
+			/** Label for the ANIMATED switch (visible for emoji) */
+			animatedLabel: "ANIMATED",
+			/** Label for the COPY button on the Build tab */
+			copyButton: "COPY",
+			/** Placeholder in the extract textarea */
+			extractPlaceholder: "멘션이 포함된 텍스트를 여기에 붙여넣기...",
+			/** Table column header: mention type */
+			colType: "TYPE",
+			/** Table column header: raw mention string */
+			colRaw: "RAW",
+			/** Table column header: snowflake ID */
+			colId: "ID",
+			/** Table column header: display name (when present) */
+			colName: "NAME",
+			/** Table column header: creation date from snowflake */
+			colCreated: "CREATED",
+			/** sr-only aria-label on the per-row COPY ID button */
+			copyIdAria: "ID 복사",
+			/** Inline link text per row linking to snowflake decoder */
+			decodeLink: "DECODE →",
+			/** Muted text shown when no mentions are found in the extract textarea */
+			noMentionsFound: "멘션을 찾을 수 없습니다",
+			/** {what} for common.copiedType toast after copying mention string */
+			mentionString: "멘션 문자열",
+			/** {what} for common.copiedType toast after copying an ID */
+			mentionId: "멘션 ID",
+		},
+		// ─── CDN Link Builder (/discord/cdn) ──
+		discordCdn: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "CDN 링크 빌더",
+			/** EMOJI tab trigger label */
+			tabEmoji: "Emoji",
+			/** AVATAR tab trigger label */
+			tabAvatar: "Avatar",
+			/** DEFAULT AVATAR tab trigger label */
+			tabDefaultAvatar: "Default Avatar",
+			/** BANNER tab trigger label */
+			tabBanner: "Banner",
+			/** GUILD ICON tab trigger label */
+			tabGuildIcon: "Guild Icon",
+			/** STICKER tab trigger label */
+			tabSticker: "Sticker",
+			/** Label above the primary emoji input */
+			emojiInputLabel: "Emoji",
+			/** Placeholder in the primary emoji input */
+			emojiInputPlaceholder: "<:name:id> 또는 emoji ID",
+			/** Label above the NAME input (editable fallback when plain ID given) */
+			emojiNameLabel: "Name",
+			/** Label above the FORMAT select (emoji tab) */
+			formatLabel: "Format",
+			/** Label above the SIZE select */
+			sizeLabel: "Size",
+			/** Error shown when emoji input is not a valid mention or numeric ID */
+			emojiParseError: "유효한 이모지 멘션 (<:name:id>) 또는 숫자 ID를 입력하세요",
+			/** Label above USER ID input (avatar, banner, default avatar tabs) */
+			userIdLabel: "User ID",
+			/** Label above AVATAR HASH input */
+			avatarHashLabel: "Avatar Hash",
+			/** Error shown when user ID is empty */
+			userIdRequired: "User ID가 필요합니다",
+			/** Error shown when hash is empty */
+			hashRequired: "Hash가 필요합니다",
+			/** Generic error for invalid input producing empty URL */
+			invalidInput: "잘못된 입력",
+			/** Note below default avatar output warning it changes */
+			defaultAvatarNote: "아바타 변경 시 함께 변경됩니다",
+			/** Label above GUILD ID input */
+			guildIdLabel: "Guild ID",
+			/** Label above HASH input (banner, guild icon tabs) */
+			hashLabel: "Hash",
+			/** Label above STICKER ID input */
+			stickerIdLabel: "Sticker ID",
+			/** aria-label on the COPY button */
+			copyAria: "CDN URL 복사",
+			/** aria-label on the OPEN link */
+			openAria: "새 탭에서 CDN URL 열기",
+			/** Hint label above the chat-usable markdown badge (emoji tab) */
+			chatMarkdownHint: "채팅에서 사용",
+		},
+		// ─── Message Link Parser (/discord/message-link) ──
+		discordMessageLink: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "메시지 링크 파서",
+			/** PARSE tab trigger label */
+			tabParse: "Parse",
+			/** BUILD tab trigger label */
+			tabBuild: "Build",
+			/** Placeholder in the parse input */
+			parsePlaceholder: "디스코드 메시지 또는 초대 URL을 여기에 붙여넣기...",
+			/** Error shown when input matches neither message nor invite pattern */
+			parseError: "유효한 디스코드 메시지 또는 초대 URL이 아닙니다",
+			/** Row label for the guild ID in parse results */
+			guildLabel: "GUILD",
+			/** Row label for the channel ID in parse results */
+			channelLabel: "CHANNEL",
+			/** Row label for the message ID in parse results */
+			messageLabel: "MESSAGE",
+			/** Row label for the decoded creation date */
+			createdLabel: "CREATED",
+			/** Row label for the canonical URL */
+			canonicalUrlLabel: "CANONICAL URL",
+			/** Text shown when guild is @me (DM) in parse results */
+			dmLabel: "DM — @me",
+			/** Link text to navigate to Snowflake Decoder */
+			decodeLink: "DECODE →",
+			/** Row label for invite code */
+			codeLabel: "CODE",
+			/** Label above GUILD ID input in build tab */
+			buildGuildLabel: "Guild ID",
+			/** Placeholder for guild ID input */
+			buildGuildPlaceholder: "선택사항 — 기본값 @me",
+			/** Label above CHANNEL ID input in build tab */
+			buildChannelLabel: "Channel ID",
+			/** Label above MESSAGE ID input in build tab */
+			buildMessageLabel: "Message ID",
+			/** Error when channel ID is empty in build tab */
+			channelIdRequired: "Channel ID가 필요합니다",
+			/** Error when message ID is non-numeric in build tab */
+			messageIdNumeric: "Message ID는 숫자여야 합니다",
+			/** aria-label on COPY button in parse results */
+			copyAria: "값 복사",
+			/** aria-label on OPEN link */
+			openAria: "새 탭에서 링크 열기",
+		},
+		// ─── Discord Markdown (/discord/markdown) ──
+		discordMarkdown: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "디스코드 마크다운",
+			/** PREVIEW tab trigger label */
+			tabPreview: "Preview",
+			/** ESCAPED tab trigger label */
+			tabEscaped: "Escaped",
+			/** Placeholder text in the editor textarea */
+			editorPlaceholder: "디스코드 마크다운을 입력하세요...",
+			/** aria-label on Bold toolbar button */
+			boldAria: "Bold",
+			/** aria-label on Italic toolbar button */
+			italicAria: "Italic",
+			/** aria-label on Underline toolbar button */
+			underlineAria: "Underline",
+			/** aria-label on Strikethrough toolbar button */
+			strikeAria: "Strikethrough",
+			/** aria-label on Spoiler toolbar button */
+			spoilerAria: "Spoiler",
+			/** aria-label on Inline Code toolbar button */
+			inlineCodeAria: "Inline Code",
+			/** aria-label on Code Block toolbar button */
+			codeBlockAria: "Code Block",
+			/** aria-label on Quote toolbar button */
+			quoteAria: "Block Quote",
+			/** aria-label on List toolbar button */
+			listAria: "List",
+			/** aria-label on Link toolbar button */
+			linkAria: "Link",
+			/** aria-label on COPY button in escaped tab */
+			copyEscapedAria: "이스케이프된 텍스트 복사",
+			/** Hint text shown at the bottom of the editor zone */
+			syntaxHint: "Bold, italic, underline, strikethrough, spoiler, inline code, code blocks, headings, block quotes, lists, links 지원",
+		},
+		// ─── ANSI Colors (/discord/ansi) ──
+		discordAnsi: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "ANSI 색상",
+			/** BUILD tab trigger label */
+			tabBuild: "Build",
+			/** PARSE tab trigger label */
+			tabParse: "Parse",
+			/** Placeholder in segment text input */
+			segmentTextPlaceholder: "Text",
+			/** Label for the BOLD switch */
+			boldLabel: "B",
+			/** Label for the UNDERLINE switch */
+			underlineLabel: "U",
+			/** aria-label on the REMOVE segment button */
+			removeSegmentAria: "세그먼트 제거",
+			/** Label on the ADD SEGMENT button */
+			addSegmentButton: "세그먼트 추가",
+			/** aria-label on the COPY button in the output panel */
+			copyOutputAria: "ANSI 블록 복사",
+			/** Placeholder in the parse textarea */
+			parsePlaceholder: "ANSI 코드 블록을 여기에 붙여넣기...",
+			/** Label on the parse button */
+			parseButton: "Parse",
+			/** Error shown when parsed ANSI content yields no segments */
+			parseError: "입력에서 ANSI 시퀀스를 찾을 수 없습니다",
+			/** Label for the PREVIEW section heading */
+			previewLabel: "Preview",
+			/** Label for the OUTPUT section heading */
+			outputLabel: "Output",
+			/** Label for the FG select */
+			fgLabel: "FG",
+			/** Label for the BG select */
+			bgLabel: "BG",
+		},
+		// ─── Message Splitter (/discord/splitter) ──
+		discordSplitter: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "메시지 분할기",
+			/** Bracketed micro label above the input textarea; keep brackets */
+			inputLabel: "[ INPUT ]",
+			/** Textarea placeholder */
+			inputPlaceholder: "분할할 긴 메시지를 여기에 붙여넣기...",
+			/** Bracketed micro label above the options row; keep brackets */
+			optionsLabel: "[ OPTIONS ]",
+			/** Mono label in front of the limit select */
+			limitLabel: "LIMIT",
+			/** Select option — regular 2000-char message limit */
+			limit2000: "2000",
+			/** Select option — Nitro 4000-char message limit */
+			limit4000: "4000",
+			/** Select option revealing the custom numeric input */
+			limitCustom: "CUSTOM",
+			/** Placeholder + aria-label of the numeric custom-limit input */
+			customLimitPlaceholder: "100 – 3800",
+			/** Mono label in front of the NUMBER PARTS switch */
+			numberPartsLabel: "NUMBER PARTS",
+			/** sr-only aria-label on the NUMBER PARTS switch */
+			numberPartsAria: "각 파트에 n/N 위치 접두어 추가",
+			/** Stats line under options; {n} = part count, {x} = longest part length, {limit} = active limit */
+			statsLine: "{n} PARTS · LONGEST {x}/{limit}",
+			/** Bracketed micro label above the output list; keep brackets */
+			outputLabel: "[ OUTPUT ]",
+			/** Chunk card header; {n} = part index, {total} = part count, {len} = length incl. prefix, {limit} = active limit */
+			partHeader: "PART {n}/{total} · {len}/{limit}",
+			/** Hazard badge in a card header when that part came from a mid-line hard split */
+			longLineChip: "LONG LINE SPLIT",
+			/** Button expanding a truncated chunk body */
+			expandButton: "EXPAND",
+			/** Button collapsing an expanded chunk body */
+			collapseButton: "COLLAPSE",
+			/** Label on the per-chunk Copy button */
+			copyButton: "COPY",
+			/** sr-only aria-label on the per-chunk Copy button; {n} = part index */
+			copyAria: "Copy part {n}",
+			/** {what} for common.copiedType toast after copying a part; {n} = part index */
+			partName: "Part {n}",
+			/** Empty-state hint in the output zone when there is nothing to split */
+			emptyHint: "텍스트를 붙여넣으면 파트가 여기에 나타납니다...",
+		},
+		// ─── Character Counter (/discord/char-counter) ──
+		discordCharCounter: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "문자 수 계산기",
+			/** Bracketed micro label above the input textarea; keep brackets */
+			inputLabel: "[ INPUT ]",
+			/** Textarea placeholder */
+			inputPlaceholder: "측정할 텍스트를 입력하거나 붙여넣기...",
+			/** Summary chip showing the Unicode code-point count; {n} = count */
+			codePointsChip: "CODE POINTS {n}",
+			/** Summary chip showing the UTF-16 code-unit count; {n} = count */
+			utf16Chip: "UTF-16 UNITS {n}",
+			/** title tooltip on the UTF-16 chip explaining the divergence */
+			unitsTitle: "Astral 문자 (대부분의 이모지, 스타일 문자)는 1개의 코드 포인트에 2개의 UTF-16 유닛을 사용합니다. 디스코드는 대략 UTF-16 유닛 단위로 계산합니다.",
+			/** First filter tab — show all meter groups */
+			tabAll: "ALL",
+			/** Second filter tab — message-length meters */
+			tabMessages: "MESSAGES",
+			/** Third filter tab — embed meters */
+			tabEmbeds: "EMBEDS",
+			/** Fourth filter tab — name/profile meters */
+			tabNames: "NAMES",
+			/** Muted chip shown on a meter row whose count is within the limit */
+			fitsChip: "FITS",
+			/** sr-only aria-label describing a meter row; {name} = English limit name, {n} = count, {limit} = display limit */
+			meterAria: "{name}: {n} / {limit}",
+			/** Muted footnote under the meters about counting semantics */
+			footnote: "미터는 코드 포인트를 사용합니다. 디스코드는 대략 UTF-16 유닛 단위로 계산합니다 — 이모지가 많은 텍스트의 경우 UTF-16 UNITS 칩을 비교하세요.",
+		},
+		// ─── Fancy Text (/generators/fancy-text) ──
+		fancyText: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "팬시 텍스트",
+			/** Label shown above the text input */
+			inputLabel: "[ INPUT ]",
+			/** Placeholder inside the text input */
+			inputPlaceholder: "텍스트를 입력하세요...",
+			/** Sample text shown in style previews when input is empty */
+			sampleText: "Kit Devkit",
+			/** Toast {what} value after copying a styled text; {style} = style name */
+			copiedStyle: "{style} 텍스트",
+			/** sr-only aria-label on each card's Copy button; {style} = style name */
+			copyStyleAria: "Copy {style} text",
+			/** Footer accessibility warning about screen readers */
+			accessibilityNote: "스크린 리더가 스타일 텍스트를 개별 기호로 읽을 수 있습니다",
+		},
+		// ─── Invisible Text (/generators/invisible-text) ──
+		invisibleText: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "보이지 않는 텍스트",
+			/** COPY tab trigger label */
+			copyTab: "COPY",
+			/** INSPECT tab trigger label */
+			inspectTab: "INSPECT",
+			/** Placeholder inside the inspect textarea */
+			inspectPlaceholder: "보이지 않는 문자를 검사할 텍스트를 여기에 붙여넣기...",
+			/** Label above the found-characters list in inspect results */
+			foundLabel: "[ FOUND ]",
+			/** {what} for toast after copying a single invisible char; {name} = char name */
+			copiedChar: "{name}",
+			/** sr-only aria-label on the Copy ×1 button; {name} = char name */
+			copyCharAria: "Copy {name}",
+			/** sr-only aria-label on the Copy ×5 button; {name} = char name */
+			copyChar5Aria: "Copy {name} ×5",
+			/** Label on the STRIP button in inspect results */
+			stripButton: "STRIP",
+			/** Label above the cleaned output panel */
+			cleanedLabel: "[ CLEANED OUTPUT ]",
+			/** {what} for toast after copying cleaned text */
+			cleanedText: "정리된 텍스트",
+			/** sr-only aria-label on the copy-cleaned button */
+			copyCleanedAria: "정리된 텍스트 복사",
+			/** Muted message when no invisible characters are found in inspect */
+			noneFound: "보이지 않는 문자를 찾을 수 없습니다",
+			/** Footer moderation/accessibility warning */
+			footerWarning: "보이지 않는 텍스트는 스크린 리더와 모더레이션 도구를 중단시킬 수 있습니다 — 신중하게 사용하세요",
+		},
+		// ─── Emoji Resizer (/generators/emoji-resizer) ──
+		emojiResizer: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "이모지 리사이저",
+			/** Bracketed micro label above the drop zone; keep brackets */
+			uploadLabel: "[ UPLOAD ]",
+			/** Bracketed micro label above the resize options row; keep brackets */
+			optionsLabel: "[ 옵션 ]",
+			/** Dropzone text in idle state */
+			dropOrClick: "이미지를 드래그 앤 드롭하거나 클릭하여 선택",
+			/** Dropzone text while a file is dragged over */
+			dropHere: "이미지를 여기에 드롭...",
+			/** sr-only aria-label on the clickable drop zone */
+			uploadFileAria: "리사이즈할 이미지 업로드",
+			/** Hazard toast when the dropped file is not an image */
+			invalidFile: "유효한 이미지 파일을 드롭하세요.",
+			/** Mono label in front of the mode tabs */
+			modeLabel: "MODE",
+			/** First mode tab — emoji constraints */
+			modeEmoji: "EMOJI",
+			/** Second mode tab — sticker constraints */
+			modeSticker: "STICKER",
+			/** Mono label in front of the FIT select */
+			fitLabel: "FIT",
+			/** FIT option — fit whole image inside the square (letterbox) */
+			fitContain: "CONTAIN",
+			/** FIT option — fill the square, cropping overflow */
+			fitCover: "COVER",
+			/** Mono label in front of the FORMAT select */
+			formatLabel: "FORMAT",
+			/** sr-only aria-label describing the FIT select */
+			fitAria: "이미지가 정사각형을 채우는 방식",
+			/** sr-only aria-label describing the FORMAT select */
+			formatAria: "출력 인코딩 형식",
+			/** Mono label in front of the quality slider */
+			qualityLabel: "QUALITY",
+			/** sr-only aria-label on the quality slider */
+			qualityAria: "인코딩 품질, 50에서 100",
+			/** Bracketed micro label above the preview area; keep brackets */
+			previewLabel: "[ PREVIEW ]",
+			/** Verdict chip when the output meets the size budget */
+			withinLimit: "WITHIN LIMIT",
+			/** Hazard verdict chip when the output exceeds the size budget */
+			overBudget: "OVER BUDGET — 품질을 낮춰보세요",
+			/** Muted note under the preview explaining JPEG transparency handling */
+			jpegNote: "JPEG에는 투명도가 없습니다 — 투명한 영역은 흰색으로 채워집니다.",
+			/** Label on the download button */
+			downloadButton: "DOWNLOAD",
+			/** sr-only aria-label on the download button; {filename} = generated file name */
+			downloadAria: "Download resized image as {filename}",
+		},
+		// ─── Discord Limits (/viewers-miscellaneous/discord-limits) ──
+		discordLimits: {
+			/** ToolHeader title; sidebar + homepage card use the same key */
+			title: "디스코드 제한",
+			/** Search input placeholder */
+			filterPlaceholder: "FILTER LIMITS",
+			/** sr-only aria-label on the search input */
+			filterAria: "이름 또는 그룹으로 제한 필터",
 		},
 	},
 };
