@@ -50,6 +50,7 @@
 	--radius: 0rem;
 	--ink: #1c1b18;
 	--paper: #f2f1eb;
+	--hazard: #e61919;
 	--hazard-text: #e61919;
 	--background: #f2f1eb;
 	--foreground: #1c1b18;
@@ -89,6 +90,7 @@
 	--radius: 0rem;
 	--ink: #d8d5cd;
 	--paper: #131312;
+	--hazard: #e61919;
 	--hazard-text: #ff6b5e;
 	--background: #131312;
 	--foreground: #d8d5cd;
