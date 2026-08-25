@@ -24,6 +24,10 @@
  * Plus a static nav-consistency audit: filesystem routes vs sidebar hrefs vs
  * homepage hrefs (components/ui/sidebar.tsx, app/page.tsx).
  *
+ *  4. Upload pass: deterministic fixtures (1x1 PNG/JPEG, QR PNG from the
+ *     pinned qrcode dep) are uploaded to the file-gated tools (qr-code
+ *     decode, image metadata, base64 image) followed by a click sweep —
+ *     exercising FileReader/EXIF/jsqr paths no other pass reaches.
  * Determinism: fixed route order, fixed locale/timezone/reduced-motion,
  * fixed sample inputs, fixed click budget, localhost-only network.
  *
@@ -33,16 +37,18 @@
  */
 
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer from "puppeteer-core";
+import QRCode from "qrcode";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CATEGORIES = ["converters-parsers", "generators", "viewers-miscellaneous"];
 
 const SAMPLE_TEXTAREA = '{"name":"Ada","n":42,"ok":true}';
 const SAMPLE_INPUT = "hello world";
-const CLICK_BUDGET = 12;
+const CLICK_BUDGET = 18;
 const NAV_TIMEOUT_MS = 20_000;
 const SETTLE_MS = 250;
 // Handled clipboard failures: tool caught the rejection and logged it.
@@ -50,6 +56,42 @@ const SETTLE_MS = 250;
 // a copy action. Never matches arbitrary errors.
 function isHandledClipboardLog(msg) {
 	return /NotAllowedError/i.test(msg) && /(copy|clipboard)/i.test(msg);
+}
+
+
+// Deterministic upload fixtures, regenerated into a temp dir each run from
+// fixed inputs (qrcode version pinned by the lockfile -> byte-identical).
+const FIXTURE_DIR = path.join(os.tmpdir(), "kit-audit-fixtures");
+const UPLOADS = [
+	{ route: "/generators/qr-code", fixture: "qr.png" },
+	{ route: "/viewers-miscellaneous/image-metadata-viewer", fixture: "pixel.jpg" },
+	{ route: "/converters-parsers/base64-image-converter", fixture: "pixel.png" },
+];
+
+async function makeFixtures() {
+	await fs.promises.mkdir(FIXTURE_DIR, { recursive: true });
+	// Minimal 1x1 images (transparent PNG / grayscale JPEG).
+	await fs.promises.writeFile(
+		path.join(FIXTURE_DIR, "pixel.png"),
+		Buffer.from(
+			"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+			"base64",
+		),
+	);
+	await fs.promises.writeFile(
+		path.join(FIXTURE_DIR, "pixel.jpg"),
+		Buffer.from(
+			"/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwcJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPDIzNP/AABEIAAEAAQMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/aAAwDAQACEQMRAD8A/v4ooooA/9k=",
+			"base64",
+		),
+	);
+	// QR PNG with a fixed payload — exercises the jsqr decode path.
+	await QRCode.toFile(path.join(FIXTURE_DIR, "qr.png"), "KIT-AUDIT-QR-PAYLOAD", {
+		type: "png",
+		width: 256,
+		margin: 2,
+		errorCorrectionLevel: "M",
+	});
 }
 
 // ---------------------------------------------------------------- args
@@ -452,6 +494,38 @@ async function browserAudit(routes) {
 		}
 		await f3page.close();
 
+		// ---- pass 4: upload-gated tools (file decode/parse paths) ----
+		// These tools' real logic only runs after a file lands; without this
+		// pass their FileReader/EXIF/jsqr code is never exercised.
+		let uploadRoutes = 0;
+		const f4 = { record: null };
+		const f4page = await friendly.newPage();
+		await f4page.setViewport({ width: 1440, height: 900 });
+		makeCollectors(f4page, f4);
+
+		for (const { route, fixture } of UPLOADS) {
+			f4.record = newRecord();
+			if (await loadRoute(f4page, route)) {
+				await sleep(SETTLE_MS);
+				const fileInput = await f4page.$("input[type=file]");
+				if (fileInput) {
+					await fileInput.uploadFile(path.join(FIXTURE_DIR, fixture)).catch(() => {});
+					await sleep(750); // FileReader + image decode settle
+					f4.record.overlay = await hasOverlay(f4page);
+					await interactTrusted(f4page, route);
+					await sleep(SETTLE_MS);
+					uploadRoutes += 1;
+				} else {
+					f4.record.consoleErrors.add("no file input found for upload pass");
+				}
+			} else {
+				f4.record.timedOut = true;
+			}
+			flush(audit, route, f4.record);
+			f4.record = null;
+		}
+		await f4page.close();
+
 		const consoleErrors = [...audit.signatures].filter((s) => s.startsWith("console|")).length;
 		const pageErrors = [...audit.signatures].filter((s) => s.startsWith("pageerror|")).length;
 		const failedRoutes = [...audit.signatures].filter((s) => s.startsWith("failed|")).length;
@@ -463,6 +537,7 @@ async function browserAudit(routes) {
 			failedRoutes,
 			overlayRoutes,
 			overflowRoutes: audit.overflowRoutes.size,
+			uploadRoutes,
 		};
 	} finally {
 		await browser.close().catch(() => {});
@@ -473,6 +548,7 @@ async function browserAudit(routes) {
 
 const routes = filesystemRoutes();
 const navFindings = staticNavAudit(routes);
+await makeFixtures();
 const audit = await browserAudit(routes);
 
 const allFindings = [...navFindings, ...audit.findings];
@@ -496,4 +572,5 @@ console.log(`METRIC failed_routes=${audit.failedRoutes}`);
 console.log(`METRIC overlay_routes=${audit.overlayRoutes}`);
 console.log(`METRIC overflow_routes=${audit.overflowRoutes}`);
 console.log(`METRIC nav_mismatches=${navFindings.length}`);
+console.log(`METRIC upload_routes=${audit.uploadRoutes}`);
 console.log(`METRIC routes_audited=${routes.length}`);
