@@ -20,13 +20,15 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "kit.",
+	applicationName: "Kit.",
+	metadataBase: new URL("https://kit.ixtj.dev"),
+	title: "Kit.",
 	description: "A collection of developer tools.",
 	openGraph: {
-		title: "kit.",
+		title: "Kit.",
 		description: "A collection of developer tools.",
 		url: "https://kit.ixtj.dev",
-		siteName: "kit.",
+		siteName: "Kit.",
 		images: [
 			{
 				url: "/preview.png",

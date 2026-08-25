@@ -116,9 +116,9 @@ const Sidebar = () => {
 			<div className="border-b-2 border-ink px-4 py-4">
 				<Link
 					href="/"
-					className="font-sans font-black uppercase tracking-[-0.04em] leading-[0.9] text-3xl"
+					className="font-sans font-black tracking-[-0.04em] leading-[0.9] text-3xl"
 				>
-					KIT<span className="text-hazard-text">.</span>
+					Kit<span className="text-hazard-text">.</span>
 				</Link>
 				<p className="mt-1 font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
 					REV 2.6 / SWISS SERIES ®

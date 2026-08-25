@@ -123,8 +123,8 @@ export default function HomePage() {
 				>
 					+
 				</span>
-				<h1 className="font-sans font-black uppercase tracking-[-0.05em] leading-[0.85] text-[clamp(5rem,16vw,13rem)]">
-					KIT<span className="text-hazard-text">.</span>
+				<h1 className="font-sans font-black tracking-[-0.05em] leading-[0.85] text-[clamp(5rem,16vw,13rem)]">
+					Kit<span className="text-hazard-text">.</span>
 				</h1>
 				<div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
 					<span>{String(totalUnits).padStart(2, "0")} UNITS / 03 SECTIONS</span>

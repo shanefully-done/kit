@@ -1,4 +1,4 @@
-# kit.
+# Kit.
 
 A single-page developer toolkit — 35 instruments that run entirely in your browser. No API routes, no database, no auth, no telemetry: every route prerenders to static HTML and all computation (hashing, parsing, encoding, QR, EXIF) happens client-side.
 
