@@ -77,7 +77,7 @@ One archetype per substrate — the theme toggle (sidebar, next to the filter) s
 - **Hazard red** — fills stay `#E61919`; red-as-text lightens to `#FF6B5E` in dark (`--hazard-text`)
 - **No texture overlays** — noise grain and scanlines are omitted for readability
 
-Tokens live in `app/globals.css` (`--ink`, `--paper`, `--hazard`, `--hazard-text` and the shadcn token set); all 40+ primitives in `components/ui/` implement the system, so new tools inherit it by using them.
+Tokens live in `app/globals.css` (`--ink`, `--paper`, `--hazard-text` and the shadcn token set); all 50+ primitives in `components/ui/` implement the system, so new tools inherit it by using them.
 
 ## Getting Started
 
@@ -106,16 +106,22 @@ Change order: **edit → lint → build → commit**. No test runner is configur
 
 ```
 app/
+  layout.tsx                      # Shell: sidebar, mobile nav, fonts, ThemeProvider, toasters
   page.tsx                        # Homepage: spec-sheet index of all tools
-  layout.tsx                      # Shell: sidebar, fonts, toasters
   globals.css                     # Design tokens + base layer
-  converters-parsers/<tool>/      # Client-side tool pages
-  generators/<tool>/
-  viewers-miscellaneous/<tool>/
+  manifest.ts, icon.png, ...      # PWA manifest + app icons
+  converters-parsers/<tool>/      # Client-side tool pages (17 tools)
+  generators/<tool>/              # 12 tools
+  viewers-miscellaneous/<tool>/   # 6 tools
 components/
   ToolPageLayout.tsx              # Bordered panel wrapper for tool pages
   ToolHeader.tsx                  # Macro-typography header bar
+  theme-provider.tsx              # next-themes wrapper
+  MobileNavToggle.tsx             # Sheet trigger for the mobile nav
   ui/                             # shadcn/ui primitives, restyled to the system
+hooks/
+  use-mobile.ts                   # Viewport < 768px flag
+  use-persistent-state.ts         # useState persisted to localStorage (`devkit:` prefix)
 data/
   api-list.json                   # Static dataset for the API Directory
 lib/utils.ts                      # cn() helper
@@ -148,15 +154,15 @@ Three files:
    }
    ```
 
-2. **`components/ui/sidebar.tsx`** — add the entry to its category in the `groups` array.
+2. **`components/ui/sidebar.tsx`** — add the entry to its category in the `groups` array (labels are uppercase there: `"GENERATORS"`).
 
-3. **`app/page.tsx`** — add the tool to the matching section of the homepage data array.
+3. **`app/page.tsx`** — add it to the matching category in the `categories` array (titles are title-case there: `"Generators"`).
 
-Follow the design contract above: use the existing primitives, label compartments in mono uppercase, keep user data verbatim, and reserve red for things that matter.
+Follow the design contract above: use the existing primitives, label compartments in mono uppercase, keep user data verbatim, and reserve red for things that matter. The homepage unit count is computed from `categories`, so there is no counter to update.
 
 ## Deployment
 
-The production build is fully static — every route is prerendered. Deploy to [Vercel](https://vercel.com/new), or any host that can serve a Next.js build (or plain static files). Nothing to configure.
+The production build is fully static — every route is prerendered. Deploy to [Vercel](https://vercel.com/new), or any host that can run a Next.js build (`next start`). Nothing to configure.
 
 ## Credits
 
