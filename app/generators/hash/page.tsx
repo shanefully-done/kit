@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Textarea } from "@/components/ui/textarea";
 import {
 	Select,
@@ -17,7 +18,10 @@ import { HashIcon } from "lucide-react";
 
 const HashGeneratorPage = () => {
 	const [inputText, setInputText] = useState("");
-	const [selectedAlgorithm, setSelectedAlgorithm] = useState("MD5");
+	const [selectedAlgorithm, setSelectedAlgorithm] = usePersistentState(
+		"hash:selectedAlgorithm",
+		"MD5",
+	);
 	const [hashedOutput, setHashedOutput] = useState("");
 
 	useEffect(() => {

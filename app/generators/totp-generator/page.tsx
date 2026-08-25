@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { TOTP, Secret, URI } from "otpauth";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -28,8 +29,8 @@ type ParsedUri = {
 
 export default function TotpGeneratorPage() {
 	const [input, setInput] = useState("");
-	const [digits, setDigits] = useState("6");
-	const [period, setPeriod] = useState("30");
+	const [digits, setDigits] = usePersistentState("totp-generator:digits", "6");
+	const [period, setPeriod] = usePersistentState("totp-generator:period", "30");
 	const [error, setError] = useState("");
 	const [totp, setTotp] = useState<TOTP | null>(null);
 	const [meta, setMeta] = useState<ParsedUri | null>(null);

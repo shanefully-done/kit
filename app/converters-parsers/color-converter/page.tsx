@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -130,10 +131,24 @@ function copyText(value: string) {
 	);
 }
 
+const isHex = (v: unknown): v is string =>
+	typeof v === "string" && /^#[0-9a-fA-F]{3,8}$/.test(v);
 export default function ColorConverterPage() {
-	const [hexInput, setHexInput] = useState("#0A0A0A");
-	const [fgHex, setFgHex] = useState("#0A0A0A");
-	const [bgHex, setBgHex] = useState("#F4F4F0");
+	const [hexInput, setHexInput] = usePersistentState(
+		"color-converter:hexInput",
+		"#0A0A0A",
+		isHex,
+	);
+	const [fgHex, setFgHex] = usePersistentState(
+		"color-converter:fgHex",
+		"#0A0A0A",
+		isHex,
+	);
+	const [bgHex, setBgHex] = usePersistentState(
+		"color-converter:bgHex",
+		"#F4F4F0",
+		isHex,
+	);
 
 	const normalized = normalizeHex(hexInput);
 

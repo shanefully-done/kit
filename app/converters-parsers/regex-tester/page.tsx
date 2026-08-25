@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -17,14 +18,21 @@ import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
 import { SettingsIcon } from "lucide-react";
 
+// matches the { g, i, m } state shape
+const isFlags = (v: unknown): v is { g: boolean; i: boolean; m: boolean } =>
+	typeof v === "object" &&
+	v !== null &&
+	["g", "i", "m"].every(
+		(k) => typeof (v as Record<string, unknown>)[k] === "boolean",
+	);
 export default function RegexTesterPage() {
 	const [regexPattern, setRegexPattern] = useState("");
 	const [testString, setTestString] = useState("");
-	const [flags, setFlags] = useState({
-		g: false,
-		i: false,
-		m: false,
-	});
+	const [flags, setFlags] = usePersistentState(
+		"regex-tester:flags",
+		{ g: false, i: false, m: false },
+		isFlags,
+	);
 	const [matches, setMatches] = useState<string[]>([]);
 	const [error, setError] = useState<string>("");
 

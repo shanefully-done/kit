@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,26 +61,48 @@ function copyText(value: string) {
 	);
 }
 
+const isPerm = (v: unknown): v is Perm =>
+	typeof v === "object" &&
+	v !== null &&
+	["read", "write", "execute"].every(
+		(k) => typeof (v as Record<string, unknown>)[k] === "boolean",
+	);
+
+const isOctal = (v: unknown): v is string =>
+	typeof v === "string" && /^[0-7]{3,4}$/.test(v);
 export default function ChmodCalculatorPage() {
-	const [owner, setOwner] = useState<Perm>({
-		read: true,
-		write: true,
-		execute: true,
-	});
-	const [group, setGroup] = useState<Perm>({
-		read: true,
-		write: false,
-		execute: true,
-	});
-	const [other, setOther] = useState<Perm>({
-		read: true,
-		write: false,
-		execute: true,
-	});
-	const [setuid, setSetuid] = useState(false);
-	const [setgid, setSetgid] = useState(false);
-	const [sticky, setSticky] = useState(false);
-	const [octalInput, setOctalInput] = useState("0755");
+	const [owner, setOwner] = usePersistentState<Perm>(
+		"chmod-calculator:owner",
+		{ read: true, write: true, execute: true },
+		isPerm,
+	);
+	const [group, setGroup] = usePersistentState<Perm>(
+		"chmod-calculator:group",
+		{ read: true, write: false, execute: true },
+		isPerm,
+	);
+	const [other, setOther] = usePersistentState<Perm>(
+		"chmod-calculator:other",
+		{ read: true, write: false, execute: true },
+		isPerm,
+	);
+	const [setuid, setSetuid] = usePersistentState(
+		"chmod-calculator:setuid",
+		false,
+	);
+	const [setgid, setSetgid] = usePersistentState(
+		"chmod-calculator:setgid",
+		false,
+	);
+	const [sticky, setSticky] = usePersistentState(
+		"chmod-calculator:sticky",
+		false,
+	);
+	const [octalInput, setOctalInput] = usePersistentState(
+		"chmod-calculator:octalInput",
+		"0755",
+		isOctal,
+	);
 
 	const classes: Array<{
 		key: "owner" | "group" | "other";

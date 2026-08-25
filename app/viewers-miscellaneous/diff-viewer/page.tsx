@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { diffLines } from "diff";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -17,8 +18,14 @@ type DiffRow = {
 export default function DiffViewerPage() {
 	const [source, setSource] = useState("");
 	const [target, setTarget] = useState("");
-	const [ignoreCase, setIgnoreCase] = useState(false);
-	const [trimWhitespace, setTrimWhitespace] = useState(false);
+	const [ignoreCase, setIgnoreCase] = usePersistentState(
+		"diff-viewer:ignoreCase",
+		false,
+	);
+	const [trimWhitespace, setTrimWhitespace] = usePersistentState(
+		"diff-viewer:trimWhitespace",
+		false,
+	);
 
 	const { rows, adds, dels } = useMemo(() => {
 		if (!source && !target) return { rows: [], adds: 0, dels: 0 };

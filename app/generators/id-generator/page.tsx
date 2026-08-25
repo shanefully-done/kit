@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { v4 as uuidv4, v7 as uuidv7 } from "uuid";
 import { ulid } from "ulid";
 import { nanoid } from "nanoid";
@@ -15,12 +16,21 @@ import { ToolHeader } from "@/components/ToolHeader";
 import { ScanLine } from "lucide-react";
 
 export default function IdGeneratorPage() {
-	const [tab, setTab] = useState("uuid-v4");
-	const [count, setCount] = useState(5);
-	const [uppercase, setUppercase] = useState(false);
-	const [hyphens, setHyphens] = useState(true);
-	const [ulidUppercase, setUlidUppercase] = useState(false);
-	const [nanoSize, setNanoSize] = useState(21);
+	const [tab, setTab] = usePersistentState("id-generator:tab", "uuid-v4");
+	const [count, setCount] = usePersistentState("id-generator:count", 5);
+	const [uppercase, setUppercase] = usePersistentState(
+		"id-generator:uppercase",
+		false,
+	);
+	const [hyphens, setHyphens] = usePersistentState("id-generator:hyphens", true);
+	const [ulidUppercase, setUlidUppercase] = usePersistentState(
+		"id-generator:ulidUppercase",
+		false,
+	);
+	const [nanoSize, setNanoSize] = usePersistentState(
+		"id-generator:nanoSize",
+		21,
+	);
 	const [ids, setIds] = useState<string[]>([]);
 
 	const generate = useCallback(() => {

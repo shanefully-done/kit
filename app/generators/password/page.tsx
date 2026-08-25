@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -13,11 +14,23 @@ import { Lock as LockIcon } from "lucide-react";
 
 const PasswordGeneratorPage = () => {
 	const [password, setPassword] = useState("");
-	const [length, setLength] = useState(30);
-	const [includeUppercase, setIncludeUppercase] = useState(true);
-	const [includeLowercase, setIncludeLowercase] = useState(true);
-	const [includeNumbers, setIncludeNumbers] = useState(true);
-	const [includeSymbols, setIncludeSymbols] = useState(true);
+	const [length, setLength] = usePersistentState("password:length", 30);
+	const [includeUppercase, setIncludeUppercase] = usePersistentState(
+		"password:includeUppercase",
+		true,
+	);
+	const [includeLowercase, setIncludeLowercase] = usePersistentState(
+		"password:includeLowercase",
+		true,
+	);
+	const [includeNumbers, setIncludeNumbers] = usePersistentState(
+		"password:includeNumbers",
+		true,
+	);
+	const [includeSymbols, setIncludeSymbols] = usePersistentState(
+		"password:includeSymbols",
+		true,
+	);
 	const [strength, setStrength] = useState(0);
 
 	const calculateStrength = useCallback(

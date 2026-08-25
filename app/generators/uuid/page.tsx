@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -10,7 +11,7 @@ import { ToolHeader } from "@/components/ToolHeader";
 import { Fingerprint as FingerprintIcon } from "lucide-react";
 
 export default function UUIDGeneratorPage() {
-	const [numUUIDs, setNumUUIDs] = useState(1);
+	const [numUUIDs, setNumUUIDs] = usePersistentState("uuid:numUUIDs", 1);
 	const [generatedUUIDs, setGeneratedUUIDs] = useState("");
 	const [copyStatus, setCopyStatus] = useState("Copy");
 

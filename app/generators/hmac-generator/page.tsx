@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import CryptoJS from "crypto-js";
 import {
 	Select,
@@ -71,7 +72,10 @@ function hmac(
 export default function HmacGeneratorPage() {
 	const [message, setMessage] = useState("");
 	const [secret, setSecret] = useState("");
-	const [algorithm, setAlgorithm] = useState("SHA256");
+	const [algorithm, setAlgorithm] = usePersistentState(
+		"hmac-generator:algorithm",
+		"SHA256",
+	);
 	const [showSecret, setShowSecret] = useState(false);
 
 	const result = useMemo(() => {

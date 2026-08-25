@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,10 @@ export default function Base64EncoderDecoderPage() {
 	const [decodeInput, setDecodeInput] = useState("");
 	const [encodeOutput, setEncodeOutput] = useState("");
 	const [decodeOutput, setDecodeOutput] = useState("");
-	const [isUrlSafe, setIsUrlSafe] = useState(false);
+	const [isUrlSafe, setIsUrlSafe] = usePersistentState(
+		"base64-encoder-decoder:isUrlSafe",
+		false,
+	);
 	const [decodeError, setDecodeError] = useState("");
 
 	const { toast } = useToast();

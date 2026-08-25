@@ -2,6 +2,8 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 
+import { usePersistentState } from "@/hooks/use-persistent-state";
+
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -29,11 +31,26 @@ const BG_COLORS: Record<BgColor, { bg: string; fg: string; label: string }> = {
 };
 
 export default function SvgPlaceholderGeneratorPage() {
-	const [width, setWidth] = useState(400);
-	const [height, setHeight] = useState(300);
-	const [bgColor, setBgColor] = useState<BgColor>("muted");
-	const [showDimensions, setShowDimensions] = useState(true);
-	const [outputTab, setOutputTab] = useState("preview");
+	const [width, setWidth] = usePersistentState(
+		"svg-placeholder-generator:width",
+		400,
+	);
+	const [height, setHeight] = usePersistentState(
+		"svg-placeholder-generator:height",
+		300,
+	);
+	const [bgColor, setBgColor] = usePersistentState<BgColor>(
+		"svg-placeholder-generator:bgColor",
+		"muted",
+	);
+	const [showDimensions, setShowDimensions] = usePersistentState(
+		"svg-placeholder-generator:showDimensions",
+		true,
+	);
+	const [outputTab, setOutputTab] = usePersistentState(
+		"svg-placeholder-generator:outputTab",
+		"preview",
+	);
 	const [svgCode, setSvgCode] = useState("");
 
 	const generateSvg = useCallback(() => {

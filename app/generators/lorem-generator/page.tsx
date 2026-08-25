@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -117,12 +118,30 @@ function clampCount(v: string): number {
 }
 
 export default function LoremGeneratorPage() {
-	const [alphabetical, setAlphabetical] = useState(true);
-	const [korean, setKorean] = useState(false);
-	const [numerical, setNumerical] = useState(false);
-	const [wordsPerSentence, setWordsPerSentence] = useState(8);
-	const [sentencesPerParagraph, setSentencesPerParagraph] = useState(4);
-	const [paragraphCount, setParagraphCount] = useState(3);
+	const [alphabetical, setAlphabetical] = usePersistentState(
+		"lorem-generator:alphabetical",
+		true,
+	);
+	const [korean, setKorean] = usePersistentState(
+		"lorem-generator:korean",
+		false,
+	);
+	const [numerical, setNumerical] = usePersistentState(
+		"lorem-generator:numerical",
+		false,
+	);
+	const [wordsPerSentence, setWordsPerSentence] = usePersistentState(
+		"lorem-generator:wordsPerSentence",
+		8,
+	);
+	const [sentencesPerParagraph, setSentencesPerParagraph] = usePersistentState(
+		"lorem-generator:sentencesPerParagraph",
+		4,
+	);
+	const [paragraphCount, setParagraphCount] = usePersistentState(
+		"lorem-generator:paragraphCount",
+		3,
+	);
 	const [output, setOutput] = useState("");
 
 	const sets: CharSets = useMemo(

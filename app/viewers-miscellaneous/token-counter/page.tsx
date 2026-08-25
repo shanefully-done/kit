@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { getEncoding } from "js-tiktoken";
 import {
 	Select,
@@ -27,7 +28,10 @@ const MODEL_MAP = {
 type ModelKey = keyof typeof MODEL_MAP;
 
 export default function TokenCounterPage() {
-	const [model, setModel] = useState<ModelKey>("gpt-4o");
+	const [model, setModel] = usePersistentState<ModelKey>(
+		"token-counter:model",
+		"gpt-4o",
+	);
 	const [text, setText] = useState("");
 
 	const { tokens, chars, words, charsPerToken } = useMemo(() => {

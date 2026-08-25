@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import {
 	Select,
 	SelectContent,
@@ -17,9 +18,18 @@ import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
 
 const UnitConverterPage = () => {
-	const [unitType, setUnitType] = useState<Measure | "">("");
-	const [fromUnit, setFromUnit] = useState<Unit | "">("");
-	const [toUnit, setToUnit] = useState<Unit | "">("");
+	const [unitType, setUnitType] = usePersistentState<Measure | "">(
+		"unit-converter:unitType",
+		"",
+	);
+	const [fromUnit, setFromUnit] = usePersistentState<Unit | "">(
+		"unit-converter:fromUnit",
+		"",
+	);
+	const [toUnit, setToUnit] = usePersistentState<Unit | "">(
+		"unit-converter:toUnit",
+		"",
+	);
 	const [inputValue, setInputValue] = useState("");
 	const [convertedValue, setConvertedValue] = useState("");
 	const [error, setError] = useState("");
@@ -49,24 +59,23 @@ const UnitConverterPage = () => {
 		setToUnit(value as Unit);
 	};
 
+	const didMount = useRef(false);
 	useEffect(() => {
-		if (unitType) {
-			const units = getUnitsForType(unitType);
-			if (units.length > 0) {
-				setFromUnit(units[0]);
-				setToUnit(units[0]);
-			} else {
-				setFromUnit("");
-				setToUnit("");
-			}
-		} else {
-			setFromUnit("");
-			setToUnit("");
+		// Skip the mount run: persisted fromUnit/toUnit land right after and
+		// must not be blanked by the category-reset below.
+		if (!didMount.current) {
+			didMount.current = true;
+			return;
 		}
+		const units = unitType ? getUnitsForType(unitType) : [];
+		const firstUnit = units[0] ?? "";
+		const unitStrings: readonly string[] = units;
+		setFromUnit((prev) => (unitStrings.includes(prev) ? prev : firstUnit));
+		setToUnit((prev) => (unitStrings.includes(prev) ? prev : firstUnit));
 		setInputValue("");
 		setConvertedValue("");
 		setError("");
-	}, [unitType]);
+	}, [unitType, setFromUnit, setToUnit]);
 
 	useEffect(() => {
 		if (inputValue && fromUnit && toUnit && unitType) {

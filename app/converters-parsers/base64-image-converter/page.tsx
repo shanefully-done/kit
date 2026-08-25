@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,10 @@ export default function Base64ImageConverterPage() {
 	const [decodeInput, setDecodeInput] = useState("");
 	const [decodedImage, setDecodedImage] = useState<string | null>(null);
 	const [decodedMimeType, setDecodedMimeType] = useState("image/png");
-	const [includeDataUriPrefix, setIncludeDataUriPrefix] = useState(true);
+	const [includeDataUriPrefix, setIncludeDataUriPrefix] = usePersistentState(
+		"base64-image-converter:includeDataUriPrefix",
+		true,
+	);
 	const [uploadError, setUploadError] = useState("");
 	const [decodeError, setDecodeError] = useState("");
 	const [isDragging, setIsDragging] = useState(false);

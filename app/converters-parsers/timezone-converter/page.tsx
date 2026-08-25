@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { format } from "date-fns";
 import {
 	Calendar as CalendarIcon,
@@ -32,8 +33,14 @@ import ToolHeader from "@/components/ToolHeader";
 
 export default function TimezoneConverterPage() {
 	const [sourceTime, setSourceTime] = useState<Date | undefined>(new Date());
-	const [sourceTimezone, setSourceTimezone] = useState("UTC");
-	const [targetTimezone, setTargetTimezone] = useState("America/New_York");
+	const [sourceTimezone, setSourceTimezone] = usePersistentState(
+		"timezone-converter:sourceTimezone",
+		"UTC",
+	);
+	const [targetTimezone, setTargetTimezone] = usePersistentState(
+		"timezone-converter:targetTimezone",
+		"America/New_York",
+	);
 	const [convertedTime, setConvertedTime] = useState("");
 	const [timezones, setTimezones] = useState<string[]>([]);
 

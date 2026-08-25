@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,16 +20,43 @@ interface ColorStop {
 
 type GradientType = "linear" | "radial";
 
+const isRadialPosition = (v: unknown): v is { x: number; y: number } =>
+	typeof v === "object" &&
+	v !== null &&
+	typeof (v as { x?: unknown }).x === "number" &&
+	typeof (v as { y?: unknown }).y === "number";
+
+const isColorStops = (v: unknown): v is ColorStop[] =>
+	Array.isArray(v) &&
+	v.length > 0 &&
+	v.every(
+		(s) =>
+			typeof s === "object" &&
+			s !== null &&
+			typeof (s as ColorStop).id === "string" &&
+			typeof (s as ColorStop).color === "string" &&
+			typeof (s as ColorStop).position === "number",
+	);
+
 export default function GradientGeneratorPage() {
-	const [gradientType, setGradientType] = useState<GradientType>("linear");
-	const [angle, setAngle] = useState<number>(90); // For linear gradient
-	const [radialPosition, setRadialPosition] = useState<{ x: number; y: number }>(
+	const [gradientType, setGradientType] = usePersistentState<GradientType>(
+		"gradient:gradientType",
+		"linear",
+	);
+	const [angle, setAngle] = usePersistentState("gradient:angle", 90);
+	const [radialPosition, setRadialPosition] = usePersistentState(
+		"gradient:radialPosition",
 		{ x: 50, y: 50 },
-	); // For radial gradient
-	const [colorStops, setColorStops] = useState<ColorStop[]>([
-		{ id: "1", color: "#FF0000", position: 0 },
-		{ id: "2", color: "#0000FF", position: 100 },
-	]);
+		isRadialPosition,
+	);
+	const [colorStops, setColorStops] = usePersistentState<ColorStop[]>(
+		"gradient:colorStops",
+		[
+			{ id: "1", color: "#FF0000", position: 0 },
+			{ id: "2", color: "#0000FF", position: 100 },
+		],
+		isColorStops,
+	);
 	const [cssOutput, setCssOutput] = useState("");
 
 	const updateCssOutput = useCallback(() => {

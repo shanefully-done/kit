@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import JsBarcode from "jsbarcode";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -52,11 +53,23 @@ const FORMATS: BarcodeFormat[] = [
 ];
 
 export default function BarcodeGeneratorPage() {
-	const [format, setFormat] = useState<BarcodeFormat>("CODE128");
+	const [format, setFormat] = usePersistentState<BarcodeFormat>(
+		"barcode-generator:format",
+		"CODE128",
+	);
 	const [value, setValue] = useState(FORMAT_DEFAULTS.CODE128);
-	const [barWidth, setBarWidth] = useState(2);
-	const [barHeight, setBarHeight] = useState(60);
-	const [showText, setShowText] = useState(true);
+	const [barWidth, setBarWidth] = usePersistentState(
+		"barcode-generator:barWidth",
+		2,
+	);
+	const [barHeight, setBarHeight] = usePersistentState(
+		"barcode-generator:barHeight",
+		60,
+	);
+	const [showText, setShowText] = usePersistentState(
+		"barcode-generator:showText",
+		true,
+	);
 	const [error, setError] = useState<string | null>(null);
 
 	const svgRef = useRef<SVGSVGElement>(null);

@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Braces, Copy } from "lucide-react";
@@ -175,8 +176,14 @@ function serialize(
 }
 
 export default function DataConverterPage() {
-	const [fromFormat, setFromFormat] = useState<Format>("JSON");
-	const [toFormat, setToFormat] = useState<Format>("YAML");
+	const [fromFormat, setFromFormat] = usePersistentState<Format>(
+		"data-converter:fromFormat",
+		"JSON",
+	);
+	const [toFormat, setToFormat] = usePersistentState<Format>(
+		"data-converter:toFormat",
+		"YAML",
+	);
 	const [input, setInput] = useState(DEFAULT_INPUT);
 
 	const result = useMemo(() => {

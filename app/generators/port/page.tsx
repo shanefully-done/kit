@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -16,10 +17,16 @@ function getRandomPort(min: number, max: number): number {
 }
 
 export default function PortGeneratorPage() {
-	const [numPorts, setNumPorts] = useState(1);
-	const [minPort, setMinPort] = useState(RESERVED_PORT_CEILING);
-	const [maxPort, setMaxPort] = useState(65535);
-	const [avoidReserved, setAvoidReserved] = useState(true);
+	const [numPorts, setNumPorts] = usePersistentState("port:numPorts", 1);
+	const [minPort, setMinPort] = usePersistentState(
+		"port:minPort",
+		RESERVED_PORT_CEILING,
+	);
+	const [maxPort, setMaxPort] = usePersistentState("port:maxPort", 65535);
+	const [avoidReserved, setAvoidReserved] = usePersistentState(
+		"port:avoidReserved",
+		true,
+	);
 	const [generatedPorts, setGeneratedPorts] = useState("");
 	const [copyStatus, setCopyStatus] = useState("Copy");
 
