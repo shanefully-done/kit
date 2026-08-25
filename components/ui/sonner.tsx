@@ -1,11 +1,13 @@
 "use client";
 
 import { Toaster as Sonner, ToasterProps } from "sonner";
+import { useTheme } from "next-themes";
 
 const Toaster = ({ ...props }: ToasterProps) => {
+	const { resolvedTheme } = useTheme();
 	return (
 		<Sonner
-			theme="light"
+			theme={(resolvedTheme as "light" | "dark") ?? "light"}
 			className="toaster group"
 			style={
 				{

@@ -60,13 +60,23 @@ Live at [kit.ixtj.dev](https://kit.ixtj.dev).
 
 ## Design System
 
-One archetype, committed fully: **Swiss Industrial Print, light-only**. There is no dark mode.
+One archetype per substrate — the theme toggle (sidebar, next to the filter) switches wholesale between two fully-committed modes; substrates are never mixed within a mode.
+
+**Light — Swiss Industrial Print** (default):
 
 - **Substrate** — paper `#F4F4F0`, panel `#FCFCFA`, muted paper `#E9E8E2`
 - **Ink** — `#0A0A0A` for text, borders, and structural rules (1px internal, 2px outer panels)
 - **Hazard red** — `#E61919`, the single accent. Vital data, errors, selection, focus. Never decoration.
 - **Typography** — Inter Black for macro headings (uppercase, `-0.04em` tracking, compressed leading); IBM Plex Mono for everything data-adjacent. Labels and chrome are uppercase micro type; user data stays verbatim.
 - **Geometry** — square corners everywhere. No gradients, no backdrop blur, no soft shadows. Floating layers (dialogs, popovers, toasts) get a hard `4px 4px 0` offset shadow instead.
+- **Texture** — global low-opacity SVG noise grain.
+
+**Dark — Tactical Telemetry / CRT** (`class="dark"`, LIGHT / SYSTEM / DARK toggle):
+
+- **Substrate** — deactivated CRT `#0A0A0A` background, `#111110` panels, `#1A1A18` muted
+- **Phosphor** — `#EAEAEA` as text, borders, and inverted-action fills (`--ink` flips to phosphor, `--paper` to CRT — every primitive inverts with the token)
+- **Hazard red** — same `#E61919`, same rules, both modes
+- **Texture** — CRT scanlines layered over the noise grain (dark mode only)
 
 Tokens live in `app/globals.css` (`--ink`, `--paper`, `--hazard` and the shadcn token set); all 40+ primitives in `components/ui/` implement the system, so new tools inherit it by using them.
 

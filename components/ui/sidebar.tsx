@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 
 const groups = [
 	{
@@ -92,6 +93,10 @@ const groups = [
 const Sidebar = () => {
 	const [query, setQuery] = useState("");
 	const pathname = usePathname();
+	const { theme, setTheme } = useTheme();
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => setMounted(true), []);
 
 	const lowerQuery = query.toLowerCase();
 
@@ -128,6 +133,35 @@ const Sidebar = () => {
 					className="h-9 font-mono text-xs uppercase tracking-[0.08em]"
 					aria-label="Filter tools"
 				/>
+			</div>
+
+			<div className="border-b border-ink px-3 pb-3">
+				<div
+					role="radiogroup"
+					aria-label="Color theme"
+					className="grid grid-cols-3 border border-ink divide-x divide-ink"
+				>
+					{(["light", "system", "dark"] as const).map((mode) => {
+						const active = mounted && theme === mode;
+						return (
+							<button
+								key={mode}
+								type="button"
+								role="radio"
+								aria-checked={active}
+								onClick={() => setTheme(mode)}
+								className={cn(
+									"py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] transition-colors",
+									active
+										? "bg-ink text-paper"
+										: "text-muted-foreground hover:bg-muted hover:text-foreground",
+								)}
+							>
+								{mode}
+							</button>
+						);
+					})}
+				</div>
 			</div>
 
 			<nav className="flex-1 min-h-0 overflow-y-auto">
