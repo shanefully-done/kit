@@ -870,10 +870,6 @@ export const en = {
 		avoidReservedLabel: "Avoid Reserved (0–1023)",
 		/** Button to generate ports */
 		generateButton: "Generate",
-		/** Button text shown briefly after successful copy */
-		copiedStatus: "Copied!",
-		/** Button text shown on copy failure */
-		copyFailed: "Failed to copy!",
 		/** Generated ports output section heading; keep brackets */
 		generatedPortsLabel: "[ Generated Ports ]",
 		/** aria-label on the copy button */
@@ -998,12 +994,8 @@ export const en = {
 		countLabel: "Count",
 		/** Primary action button */
 		generate: "Generate",
-		/** Copy button resting state; doubles as the legacy copyStatus value — keep short */
+		/** Copy button resting state — keep short */
 		copy: "Copy",
-		/** Copy button state right after success */
-		copied: "Copied!",
-		/** Copy button state after a failed copy */
-		copyFailed: "Failed to copy!",
 		/** aria-label on the copy button */
 		ariaCopyGenerated: "Copy generated UUIDs",
 		/** Micro label above the generated UUID list; keep brackets */

@@ -9,13 +9,13 @@ import { Input } from "@/components/ui/input";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Fingerprint as FingerprintIcon } from "lucide-react";
+import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 
 export default function UUIDGeneratorPage() {
 	const { t } = useI18n();
 	const [numUUIDs, setNumUUIDs] = usePersistentState("uuid:numUUIDs", 1);
 	const [generatedUUIDs, setGeneratedUUIDs] = useState("");
-	const [copyStatus, setCopyStatus] = useState(() => t("tools.uuid.copy"));
 
 	const generateUUIDs = useCallback(() => {
 		const uuids: string[] = [];
@@ -23,24 +23,14 @@ export default function UUIDGeneratorPage() {
 			uuids.push(uuidv4());
 		}
 		setGeneratedUUIDs(uuids.join("\n"));
-		setCopyStatus(t("tools.uuid.copy"));
-	}, [numUUIDs, t]);
+	}, [numUUIDs]);
 
 	useEffect(() => {
 		generateUUIDs();
 	}, [generateUUIDs]);
 
 	const copyToClipboard = () => {
-		navigator.clipboard.writeText(generatedUUIDs).then(
-			() => {
-				setCopyStatus(t("tools.uuid.copied"));
-				setTimeout(() => setCopyStatus(t("tools.uuid.copy")), 2000);
-			},
-			(err) => {
-				setCopyStatus(t("tools.uuid.copyFailed"));
-				console.error("Could not copy text: ", err);
-			},
-		);
+		navigator.clipboard.writeText(generatedUUIDs).then(() => toast.success(t("common.copied"))).catch(() => toast.error(t("common.copyFailed")));
 	};
 
 	return (
@@ -78,7 +68,7 @@ export default function UUIDGeneratorPage() {
 						onClick={copyToClipboard}
 						aria-label={t("tools.uuid.ariaCopyGenerated")}
 					>
-						{copyStatus}
+						{t("tools.uuid.copy")}
 					</Button>
 				</div>
 

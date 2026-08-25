@@ -873,10 +873,6 @@ export const ko: Dictionary = {
 			avoidReservedLabel: "예약된 포트 제외 (0–1023)",
 			/** Button to generate ports */
 			generateButton: "생성",
-			/** Button text shown briefly after successful copy */
-			copiedStatus: "복사됨!",
-			/** Button text shown on copy failure */
-			copyFailed: "복사 실패!",
 			/** Generated ports output section heading; keep brackets */
 			generatedPortsLabel: "[ 생성된 포트 ]",
 			/** aria-label on the copy button */
@@ -1001,12 +997,8 @@ export const ko: Dictionary = {
 			countLabel: "개수",
 			/** Primary action button */
 			generate: "생성",
-			/** Copy button resting state; doubles as the legacy copyStatus value — keep short */
+			/** Copy button resting state — keep short */
 			copy: "복사",
-			/** Copy button state right after success */
-			copied: "복사됨!",
-			/** Copy button state after a failed copy */
-			copyFailed: "복사 실패!",
 			/** aria-label on the copy button */
 			ariaCopyGenerated: "생성된 UUID 복사",
 			/** Micro label above the generated UUID list; keep brackets */

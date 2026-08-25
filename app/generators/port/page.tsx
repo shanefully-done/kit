@@ -10,6 +10,7 @@ import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { useI18n } from "@/lib/i18n";
 import { EthernetPort as EthernetPortIcon } from "lucide-react";
+import { toast } from "sonner";
 
 const RESERVED_PORT_CEILING = 1024;
 
@@ -30,7 +31,6 @@ export default function PortGeneratorPage() {
 		true,
 	);
 	const [generatedPorts, setGeneratedPorts] = useState("");
-	const [copyStatus, setCopyStatus] = useState(t("common.copy"));
 
 	const effectiveMin = avoidReserved
 		? Math.max(minPort, RESERVED_PORT_CEILING)
@@ -47,8 +47,8 @@ export default function PortGeneratorPage() {
 			ports.push(getRandomPort(lo, hi));
 		}
 		setGeneratedPorts(ports.join("\n"));
-		setCopyStatus(t("common.copy"));
-	}, [effectiveMin, maxPort, numPorts, t]);
+
+	}, [effectiveMin, maxPort, numPorts]);
 
 	useEffect(() => {
 		generatePorts();
@@ -62,16 +62,7 @@ export default function PortGeneratorPage() {
 	};
 
 	const copyToClipboard = () => {
-		navigator.clipboard.writeText(generatedPorts).then(
-			() => {
-				setCopyStatus(t("tools.port.copiedStatus"));
-				setTimeout(() => setCopyStatus(t("common.copy")), 2000);
-			},
-			(err) => {
-				setCopyStatus(t("tools.port.copyFailed"));
-				console.error("Could not copy text: ", err);
-			},
-		);
+		navigator.clipboard.writeText(generatedPorts).then(() => toast.success(t("common.copied"))).catch(() => toast.error(t("common.copyFailed")));
 	};
 
 	return (
@@ -159,7 +150,7 @@ export default function PortGeneratorPage() {
 						onClick={copyToClipboard}
 						aria-label={t("tools.port.copyAriaLabel")}
 					>
-						{copyStatus}
+					{t("common.copy")}
 					</Button>
 				</div>
 
