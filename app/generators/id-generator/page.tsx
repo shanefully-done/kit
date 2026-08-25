@@ -73,8 +73,11 @@ export default function IdGeneratorPage() {
 	const allIds = useMemo(() => ids.join("\n"), [ids]);
 
 	const handleCopy = useCallback(() => {
-		navigator.clipboard.writeText(allIds);
-		toast.success(t("common.copied"));
+		navigator.clipboard.writeText(allIds).then(() => {
+			toast.success(t("common.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	}, [allIds, t]);
 
 	return (

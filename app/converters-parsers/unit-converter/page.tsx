@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import { Copy as CopyIcon, Ruler as RulerIcon } from "lucide-react";
+import { toast } from "sonner";
 import convert, { Measure, Unit } from "convert-units";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
@@ -128,7 +129,9 @@ const UnitConverterPage = () => {
 
 	const handleCopy = () => {
 		if (convertedValue) {
-			navigator.clipboard.writeText(convertedValue);
+			navigator.clipboard.writeText(convertedValue).catch(() => {
+				toast.error(t("common.copyFailed"));
+			});
 		}
 	};
 

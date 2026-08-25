@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/command";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
+import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 
 export default function TimezoneConverterPage() {
@@ -254,7 +255,11 @@ export default function TimezoneConverterPage() {
 									variant="outline"
 									size="icon"
 									aria-label={t("tools.timezoneConverter.copyConvertedAria")}
-									onClick={() => navigator.clipboard.writeText(convertedTime)}
+							onClick={() =>
+								navigator.clipboard.writeText(convertedTime).catch(() => {
+									toast.error(t("common.copyFailed"));
+								})
+							}
 									disabled={!convertedTime}
 								>
 									<CopyIcon className="h-4 w-4" aria-hidden />

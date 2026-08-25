@@ -130,8 +130,11 @@ export default function TotpGeneratorPage() {
 
 	const handleCopy = () => {
 		if (currentCode) {
-			navigator.clipboard.writeText(currentCode);
-			toast.success(t("tools.totpGenerator.copied"));
+			navigator.clipboard.writeText(currentCode).then(() => {
+				toast.success(t("tools.totpGenerator.copied"));
+			}).catch(() => {
+				toast.error(t("common.copyFailed"));
+			});
 		}
 	};
 

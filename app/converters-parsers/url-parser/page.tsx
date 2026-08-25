@@ -39,10 +39,13 @@ export default function UrlParserPage() {
 	};
 
 	const copyToClipboard = (text: string) => {
-		navigator.clipboard.writeText(text);
-		toast({
-			title: t("common.copied"),
-			description: text,
+		navigator.clipboard.writeText(text).then(() => {
+			toast({
+				title: t("common.copied"),
+				description: text,
+			});
+		}).catch(() => {
+			toast({ variant: "destructive", title: t("common.copyFailed") });
 		});
 	};
 

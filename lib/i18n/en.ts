@@ -11,6 +11,8 @@ export const en = {
 		copiedType: "{what} copied to clipboard!",
 		/** Toast title after copying, no object named */
 		copied: "Copied to clipboard!",
+		/** Toast title when a copy to the clipboard fails */
+		copyFailed: "Failed to copy to clipboard.",
 		/** Resets a tool's inputs/outputs */
 		clear: "Clear",
 	},

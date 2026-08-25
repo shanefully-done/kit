@@ -10,6 +10,7 @@ import toStartCase from "@stdlib/string/startcase";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Braces as SettingsIcon } from "lucide-react";
+import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 
 const TextCaseConverterPage = () => {
@@ -45,7 +46,9 @@ const TextCaseConverterPage = () => {
 	};
 
 	const handleCopy = () => {
-		navigator.clipboard.writeText(outputText);
+		navigator.clipboard.writeText(outputText).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	};
 
 	return (

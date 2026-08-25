@@ -8,6 +8,7 @@ import { CopyIcon, SettingsIcon } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
 import { useI18n } from "@/lib/i18n";
+import { toast } from "sonner";
 
 const base64UrlDecode = (str: string) => {
 	try {
@@ -73,7 +74,11 @@ const JwtDecoderPage = () => {
 	}, [jwtToken, t]);
 
 	const copyToClipboard = (text: string) => {
-		navigator.clipboard.writeText(text);
+		navigator.clipboard.writeText(text).then(() => {
+			toast.success(t("common.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	};
 
 	return (

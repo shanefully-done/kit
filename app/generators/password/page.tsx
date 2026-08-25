@@ -88,8 +88,11 @@ const PasswordGeneratorPage = () => {
 	]);
 
 	const copyToClipboard = useCallback(() => {
-		navigator.clipboard.writeText(password);
-		toast.success(t("tools.password.copiedToast"));
+		navigator.clipboard.writeText(password).then(() => {
+			toast.success(t("tools.password.copiedToast"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	}, [password, t]);
 
 	// Generate password on initial load and whenever options change

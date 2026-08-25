@@ -76,8 +76,11 @@ export default function JsonParserPage() {
 	const handleCopyToClipboard = () => {
 		try {
 			const parsedJson = JSON.parse(jsonInput);
-			navigator.clipboard.writeText(JSON.stringify(parsedJson, null, 2));
-			toast.success(t("tools.jsonParser.formattedCopied"));
+			navigator.clipboard.writeText(JSON.stringify(parsedJson, null, 2)).then(() => {
+				toast.success(t("tools.jsonParser.formattedCopied"));
+			}).catch(() => {
+				toast.error(t("common.copyFailed"));
+			});
 		} catch {
 			toast.error(t("tools.jsonParser.copyFailed"));
 		}

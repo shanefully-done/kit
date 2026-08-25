@@ -116,10 +116,13 @@ export default function Base64EncoderDecoderPage() {
 
 	const copyToClipboard = useCallback(
 		(text: string, type: string) => {
-			navigator.clipboard.writeText(text);
-			toast({
-				title: t("common.copiedType", { what: type }),
-				description: text.substring(0, 50) + (text.length > 50 ? "..." : ""),
+			navigator.clipboard.writeText(text).then(() => {
+				toast({
+					title: t("common.copiedType", { what: type }),
+					description: text.substring(0, 50) + (text.length > 50 ? "..." : ""),
+				});
+			}).catch(() => {
+				toast({ variant: "destructive", title: t("common.copyFailed") });
 			});
 		},
 		[toast, t],

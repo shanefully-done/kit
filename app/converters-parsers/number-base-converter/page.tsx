@@ -102,8 +102,11 @@ export default function NumberBaseConverter() {
 
 	const handleCopy = (text: string) => {
 		if (text) {
-			navigator.clipboard.writeText(text);
-			toast.success(t("common.copied"));
+			navigator.clipboard.writeText(text).then(() => {
+				toast.success(t("common.copied"));
+			}).catch(() => {
+				toast.error(t("common.copyFailed"));
+			});
 		} else {
 			toast.error(t("tools.numberBaseConverter.nothingToCopy"));
 		}

@@ -212,8 +212,11 @@ export default function DataConverterPage() {
 	}, [input, fromFormat, toFormat]);
 
 	const handleCopy = useCallback(() => {
-		navigator.clipboard.writeText(result.output);
-		toast.success(t("tools.dataConverter.copied"));
+		navigator.clipboard.writeText(result.output).then(() => {
+			toast.success(t("tools.dataConverter.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	}, [result.output, t]);
 
 	return (

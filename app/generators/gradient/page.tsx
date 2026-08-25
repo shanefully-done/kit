@@ -108,8 +108,11 @@ export default function GradientGeneratorPage() {
 	};
 
 	const handleCopyCss = () => {
-		navigator.clipboard.writeText(cssOutput);
-		toast.success(t("tools.gradient.copied"));
+		navigator.clipboard.writeText(cssOutput).then(() => {
+			toast.success(t("tools.gradient.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	};
 
 	return (

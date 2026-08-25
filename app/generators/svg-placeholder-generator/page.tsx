@@ -74,15 +74,22 @@ export default function SvgPlaceholderGeneratorPage() {
 	}, [generateSvg]);
 
 	const handleCopySvg = () => {
-		navigator.clipboard.writeText(svgCode);
-		toast.success(t("tools.svgPlaceholderGenerator.copied"));
+		navigator.clipboard.writeText(svgCode).then(() => {
+			toast.success(t("tools.svgPlaceholderGenerator.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	};
 
 	const handleCopyDataUri = () => {
 		const encoded = btoa(unescape(encodeURIComponent(svgCode)));
-		navigator.clipboard.writeText(`data:image/svg+xml;base64,${encoded}`);
-		toast.success(t("tools.svgPlaceholderGenerator.copied"));
+		navigator.clipboard.writeText(`data:image/svg+xml;base64,${encoded}`).then(() => {
+			toast.success(t("tools.svgPlaceholderGenerator.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	};
+
 
 	const handleDownload = () => {
 		const blob = new Blob([svgCode], { type: "image/svg+xml" });
@@ -167,8 +174,8 @@ export default function SvgPlaceholderGeneratorPage() {
 				</div>
 
 				{/* Output */}
-				<Tabs value={outputTab} onValueChange={setOutputTab}>
-					<TabsList>
+<Tabs value={outputTab} onValueChange={setOutputTab} className="w-full">
+<TabsList className="grid w-full grid-cols-2">
 						<TabsTrigger value="preview">
 							{t("tools.svgPlaceholderGenerator.previewTab")}
 						</TabsTrigger>
@@ -177,12 +184,11 @@ export default function SvgPlaceholderGeneratorPage() {
 						</TabsTrigger>
 					</TabsList>
 					<TabsContent value="preview">
-						<div className="border border-ink bg-card p-4 grid place-items-center min-h-[120px]">
-							<div
-								dangerouslySetInnerHTML={{ __html: svgCode }}
-								className="max-w-full overflow-auto"
-								style={{ maxWidth: "100%" }}
-							/>
+<div className="border border-ink bg-card p-4 grid place-items-center min-h-[120px] overflow-hidden">
+<div
+	dangerouslySetInnerHTML={{ __html: svgCode }}
+	className="min-w-0 w-full max-w-full overflow-auto"
+/>
 						</div>
 					</TabsContent>
 					<TabsContent value="code">
@@ -195,7 +201,7 @@ export default function SvgPlaceholderGeneratorPage() {
 				</Tabs>
 
 				{/* Actions */}
-				<div className="flex gap-2">
+<div className="flex flex-wrap gap-2">
 					<Button
 						onClick={handleCopySvg}
 						variant="outline"

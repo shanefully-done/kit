@@ -41,9 +41,15 @@ export default function URLEncoderDecoderPage() {
 	}, [decodeInput]);
 
 	const handleCopy = (text: string) => {
-		navigator.clipboard.writeText(text);
-		toast({
-			title: t("common.copied"),
+		navigator.clipboard.writeText(text).then(() => {
+			toast({
+				title: t("common.copied"),
+			});
+		}).catch(() => {
+			toast({
+				variant: "destructive",
+				title: t("common.copyFailed"),
+			});
 		});
 	};
 

@@ -93,15 +93,21 @@ export default function HmacGeneratorPage() {
 
 	const handleCopyHex = () => {
 		if (result) {
-			navigator.clipboard.writeText(result.hex);
-			toast.success(t("common.copied"));
+			navigator.clipboard.writeText(result.hex).then(() => {
+				toast.success(t("common.copied"));
+			}).catch(() => {
+				toast.error(t("common.copyFailed"));
+			});
 		}
 	};
 
 	const handleCopyBase64 = () => {
 		if (result) {
-			navigator.clipboard.writeText(result.base64);
-			toast.success(t("common.copied"));
+			navigator.clipboard.writeText(result.base64).then(() => {
+				toast.success(t("common.copied"));
+			}).catch(() => {
+				toast.error(t("common.copyFailed"));
+			});
 		}
 	};
 

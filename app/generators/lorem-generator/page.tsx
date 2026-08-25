@@ -164,8 +164,11 @@ export default function LoremGeneratorPage() {
 
 	const handleCopy = () => {
 		if (!output) return;
-		navigator.clipboard.writeText(output);
-		toast.success(t("common.copied"));
+		navigator.clipboard.writeText(output).then(() => {
+			toast.success(t("common.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	};
 
 	const stats = computeStats(output);

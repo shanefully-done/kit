@@ -13,6 +13,8 @@ export const ko: Dictionary = {
 		copiedType: "{what} 클립보드에 복사됨!",
 		/** Toast title after copying, no object named */
 		copied: "클립보드에 복사됨!",
+		/** Toast title when a copy to the clipboard fails */
+		copyFailed: "클립보드 복사에 실패했습니다.",
 		/** Resets a tool's inputs/outputs */
 		clear: "지우기",
 	},

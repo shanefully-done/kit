@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { toast } from "sonner";
 import { usePersistentState } from "@/hooks/use-persistent-state";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -52,7 +53,9 @@ const HashGeneratorPage = () => {
 	}, [inputText, selectedAlgorithm]);
 
 	const handleCopyClick = () => {
-		navigator.clipboard.writeText(hashedOutput);
+		navigator.clipboard.writeText(hashedOutput).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	};
 
 	return (

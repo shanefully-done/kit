@@ -101,20 +101,29 @@ export default function UnicodeInspectorPage() {
 	const handleEscapeAll = useCallback(() => {
 		const result = escapeAll(text);
 		setTransformOutput(result);
-		navigator.clipboard.writeText(result);
-		toast.success(t("common.copied"));
+		navigator.clipboard.writeText(result).then(() => {
+			toast.success(t("common.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	}, [text, t]);
 
 	const handleUnescape = useCallback(() => {
 		const result = unescape(text);
 		setTransformOutput(result);
-		navigator.clipboard.writeText(result);
-		toast.success(t("common.copied"));
+		navigator.clipboard.writeText(result).then(() => {
+			toast.success(t("common.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	}, [text, t]);
 
 	const handleCopyOutput = useCallback(() => {
-		navigator.clipboard.writeText(transformOutput);
-		toast.success(t("common.copied"));
+		navigator.clipboard.writeText(transformOutput).then(() => {
+			toast.success(t("common.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	}, [transformOutput, t]);
 
 	return (

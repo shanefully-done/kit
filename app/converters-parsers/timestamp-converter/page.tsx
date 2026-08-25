@@ -103,8 +103,11 @@ const TimestampConverterPage = () => {
 	};
 
 	const copyToClipboard = (text: string) => {
-		navigator.clipboard.writeText(text);
-		toast.success(t("common.copied"));
+		navigator.clipboard.writeText(text).then(() => {
+			toast.success(t("common.copied"));
+		}).catch(() => {
+			toast.error(t("common.copyFailed"));
+		});
 	};
 
 	return (
