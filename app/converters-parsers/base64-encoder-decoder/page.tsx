@@ -31,7 +31,7 @@ export default function Base64EncoderDecoderPage() {
 			setEncodeOutput(encoded);
 		} catch (error: unknown) {
 			setEncodeOutput(
-				`Error: ${error instanceof Error ? error.message : String(error)}`
+				`Error: ${error instanceof Error ? error.message : String(error)}`,
 			);
 		}
 	}, [encodeInput, isUrlSafe]);
@@ -45,7 +45,7 @@ export default function Base64EncoderDecoderPage() {
 			setDecodeOutput(decoded);
 		} catch (error: unknown) {
 			setDecodeError(
-				`Error: ${error instanceof Error ? error.message : String(error)}`
+				`Error: ${error instanceof Error ? error.message : String(error)}`,
 			);
 			setDecodeOutput("");
 		}
@@ -69,7 +69,7 @@ export default function Base64EncoderDecoderPage() {
 				reader.readAsArrayBuffer(file);
 			}
 		},
-		[isUrlSafe]
+		[isUrlSafe],
 	);
 
 	const handleDragOver = useCallback(
@@ -78,7 +78,7 @@ export default function Base64EncoderDecoderPage() {
 			event.stopPropagation();
 			event.dataTransfer.dropEffect = "copy";
 		},
-		[]
+		[],
 	);
 
 	const handleDrop = useCallback(
@@ -101,7 +101,7 @@ export default function Base64EncoderDecoderPage() {
 				reader.readAsArrayBuffer(file);
 			}
 		},
-		[isUrlSafe]
+		[isUrlSafe],
 	);
 
 	const copyToClipboard = useCallback(
@@ -112,7 +112,7 @@ export default function Base64EncoderDecoderPage() {
 				description: text.substring(0, 50) + (text.length > 50 ? "..." : ""),
 			});
 		},
-		[toast]
+		[toast],
 	);
 
 	return (
@@ -125,26 +125,28 @@ export default function Base64EncoderDecoderPage() {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
 				<div className="sr-only">Inputs and outputs organized in tabs below</div>
 
-				{/* ActionButtons */}
-				<div className="flex flex-wrap gap-2"></div>
-
-				{/* AdditionalSettings */}
-				<div className="flex items-center gap-2">
-					<Switch
-						id="url-safe"
-						checked={isUrlSafe}
-						onCheckedChange={setIsUrlSafe}
-						aria-label="Toggle URL-safe encoding"
-					/>
-					<Label htmlFor="url-safe" className="text-sm">
-						URL-safe encoding
+				<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
+					<Label
+						htmlFor="url-safe"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						URL-SAFE MODE
 					</Label>
+					<div className="flex items-center gap-2">
+						<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+							{isUrlSafe ? "ON" : "OFF"}
+						</span>
+						<Switch
+							id="url-safe"
+							checked={isUrlSafe}
+							onCheckedChange={setIsUrlSafe}
+							aria-label="Toggle URL-safe encoding"
+						/>
+					</div>
 				</div>
 
-				{/* ResultDisplay */}
 				<Tabs defaultValue="encode" className="w-full">
 					<TabsList className="grid w-full grid-cols-2">
 						<TabsTrigger value="encode">Encode</TabsTrigger>
@@ -153,6 +155,9 @@ export default function Base64EncoderDecoderPage() {
 
 					<TabsContent value="encode" className="p-0">
 						<div className="grid w-full gap-4">
+							<Label className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+								[ INPUT ]
+							</Label>
 							<Textarea
 								placeholder="Enter text to encode..."
 								value={encodeInput}
@@ -160,14 +165,14 @@ export default function Base64EncoderDecoderPage() {
 								className="min-h-[150px]"
 							/>
 							<div
-								className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:border-gray-400 transition-colors"
+								className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-ink cursor-pointer hover:border-muted-foreground transition-colors"
 								onDragOver={handleDragOver}
 								onDrop={handleDrop}
 								onClick={() => document.getElementById("file-upload-input")?.click()}
 								aria-label="Upload file to encode"
 							>
-								<UploadIcon className="w-8 h-8 text-gray-400 mb-2" />
-								<p className="text-gray-500">
+								<UploadIcon className="w-8 h-8 text-muted-foreground mb-2" />
+								<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
 									Drag & drop a file here, or click to select
 								</p>
 								<input
@@ -180,22 +185,22 @@ export default function Base64EncoderDecoderPage() {
 							<div className="flex flex-wrap gap-2">
 								<Button onClick={handleEncode}>Encode</Button>
 							</div>
-							<div className="relative">
-								<Textarea
-									placeholder="Encoded output will appear here..."
-									value={encodeOutput}
-									readOnly
-									className="min-h-[150px] pr-10"
-								/>
+							<Label className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+								[ OUTPUT ]
+							</Label>
+							<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[150px] whitespace-pre-wrap">
+								{encodeOutput || "Encoded output will appear here..."}
+							</div>
+							<div className="flex justify-end">
 								<Button
-									variant="ghost"
+									variant="outline"
 									size="sm"
-									className="absolute top-2 right-2"
 									onClick={() => copyToClipboard(encodeOutput, "Encoded text")}
 									disabled={!encodeOutput}
 									aria-label="Copy encoded output"
 								>
-									<CopyIcon className="w-4 h-4" />
+									<CopyIcon className="w-4 h-4 mr-2" />
+									Copy
 								</Button>
 							</div>
 						</div>
@@ -203,6 +208,9 @@ export default function Base64EncoderDecoderPage() {
 
 					<TabsContent value="decode" className="p-0">
 						<div className="grid w-full gap-4">
+							<Label className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+								[ INPUT ]
+							</Label>
 							<Textarea
 								placeholder="Enter Base64 string to decode..."
 								value={decodeInput}
@@ -212,27 +220,29 @@ export default function Base64EncoderDecoderPage() {
 							<div className="flex flex-wrap gap-2">
 								<Button onClick={handleDecode}>Decode</Button>
 							</div>
-							<div className="relative">
-								<Textarea
-									placeholder="Decoded output will appear here..."
-									value={decodeOutput}
-									readOnly
-									className="min-h-[150px] pr-10"
-								/>
+							{decodeError && (
+								<p className="font-mono text-xs text-hazard break-all border border-hazard px-3 py-2">
+									{decodeError}
+								</p>
+							)}
+							<Label className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+								[ OUTPUT ]
+							</Label>
+							<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[150px] whitespace-pre-wrap">
+								{decodeOutput || "Decoded output will appear here..."}
+							</div>
+							<div className="flex justify-end">
 								<Button
-									variant="ghost"
+									variant="outline"
 									size="sm"
-									className="absolute top-2 right-2"
 									onClick={() => copyToClipboard(decodeOutput, "Decoded text")}
 									disabled={!decodeOutput}
 									aria-label="Copy decoded output"
 								>
-									<CopyIcon className="w-4 h-4" />
+									<CopyIcon className="w-4 h-4 mr-2" />
+									Copy
 								</Button>
 							</div>
-							{decodeError && (
-								<p className="text-red-500 text-sm mt-2">{decodeError}</p>
-							)}
 						</div>
 					</TabsContent>
 				</Tabs>

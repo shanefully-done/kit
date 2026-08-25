@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
 	Select,
 	SelectContent,
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+
 import { Copy as CopyIcon, Ruler as RulerIcon } from "lucide-react";
 import convert, { Measure, Unit } from "convert-units";
 import ToolPageLayout from "@/components/ToolPageLayout";
@@ -104,111 +104,121 @@ const UnitConverterPage = () => {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
-				<div className="grid gap-4">
-					<div className="grid gap-2">
-						<Label htmlFor="unit-type" className="text-sm">
-							Unit Type
-						</Label>
-						<Select onValueChange={handleUnitTypeChange} value={unitType}>
-							<SelectTrigger id="unit-type">
-								<SelectValue placeholder="Select a unit type" />
-							</SelectTrigger>
-							<SelectContent>
-								{unitTypes.map((type) => (
-									<SelectItem key={type} value={type}>
-										{type.charAt(0).toUpperCase() + type.slice(1)}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					</div>
+				<div className="grid w-full items-center gap-2">
+					<label
+						htmlFor="unit-type"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						CATEGORY
+					</label>
+					<Select onValueChange={handleUnitTypeChange} value={unitType}>
+						<SelectTrigger id="unit-type">
+							<SelectValue placeholder="Select a unit type" />
+						</SelectTrigger>
+						<SelectContent>
+							{unitTypes.map((type) => (
+								<SelectItem key={type} value={type}>
+									{type.charAt(0).toUpperCase() + type.slice(1)}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				</div>
 
-					{unitType && (
-						<>
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-								<div className="grid gap-2">
-									<Label htmlFor="from-unit" className="text-sm">
-										From Unit
-									</Label>
-									<Select onValueChange={handleFromUnitChange} value={fromUnit}>
-										<SelectTrigger id="from-unit">
-											<SelectValue placeholder="Select unit" />
-										</SelectTrigger>
-										<SelectContent>
-											{getUnitsForType(unitType).map((unit) => (
-												<SelectItem key={unit} value={unit}>
-													{unit}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-								</div>
-
-								<div className="grid gap-2">
-									<Label htmlFor="to-unit" className="text-sm">
-										To Unit
-									</Label>
-									<Select onValueChange={handleToUnitChange} value={toUnit}>
-										<SelectTrigger id="to-unit">
-											<SelectValue placeholder="Select unit" />
-										</SelectTrigger>
-										<SelectContent>
-											{getUnitsForType(unitType).map((unit) => (
-												<SelectItem key={unit} value={unit}>
-													{unit}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-								</div>
-
-								<div className="grid gap-2">
-									<Label htmlFor="input-value" className="text-sm">
-										Value
-									</Label>
-									<Input
-										id="input-value"
-										type="number"
-										value={inputValue}
-										onChange={(e) => setInputValue(e.target.value)}
-										placeholder="Enter value"
-									/>
-								</div>
+				{unitType && (
+					<>
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ CONVERSION RIG ]
+						</p>
+						<div className="grid md:grid-cols-[1fr_auto_1fr] gap-3 items-end">
+							<div className="grid w-full items-center gap-2">
+								<label
+									htmlFor="from-unit"
+									className="font-mono text-[11px] uppercase tracking-[0.08em]"
+								>
+									FROM
+								</label>
+								<Select onValueChange={handleFromUnitChange} value={fromUnit}>
+									<SelectTrigger id="from-unit">
+										<SelectValue placeholder="Select unit" />
+									</SelectTrigger>
+									<SelectContent>
+										{getUnitsForType(unitType).map((unit) => (
+											<SelectItem key={unit} value={unit}>
+												{unit}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
 							</div>
 
-							{/* ActionButtons */}
-							<div className="flex flex-wrap gap-2" aria-hidden />
+							<div className="flex items-end justify-center pb-2">
+								<span className="font-mono text-lg text-muted-foreground">
+									&gt;&gt;&gt;
+								</span>
+							</div>
 
-							{/* ResultDisplay */}
-							<div className="grid gap-2">
-								<Label htmlFor="converted-value" className="text-sm">
-									Converted Value
-								</Label>
-								<div className="flex items-center gap-2">
-									<Input
-										id="converted-value"
-										type="text"
-										value={convertedValue}
-										readOnly
-										placeholder="Result"
-									/>
+							<div className="grid w-full items-center gap-2">
+								<label
+									htmlFor="to-unit"
+									className="font-mono text-[11px] uppercase tracking-[0.08em]"
+								>
+									TO
+								</label>
+								<Select onValueChange={handleToUnitChange} value={toUnit}>
+									<SelectTrigger id="to-unit">
+										<SelectValue placeholder="Select unit" />
+									</SelectTrigger>
+									<SelectContent>
+										{getUnitsForType(unitType).map((unit) => (
+											<SelectItem key={unit} value={unit}>
+												{unit}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</div>
+						</div>
+
+						<div className="grid w-full items-center gap-2">
+							<label
+								htmlFor="input-value"
+								className="font-mono text-[11px] uppercase tracking-[0.08em]"
+							>
+								VALUE
+							</label>
+							<Input
+								id="input-value"
+								type="number"
+								value={inputValue}
+								onChange={(e) => setInputValue(e.target.value)}
+								placeholder="Enter value"
+							/>
+						</div>
+
+						{error && <p className="font-mono text-sm text-hazard">{error}</p>}
+
+						{convertedValue && (
+							<>
+								<div className="border-t border-ink pt-4" />
+								<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-1">
+									[ RESULT ]
+								</p>
+								<div className="border border-ink bg-muted/40 px-3 py-3 flex items-center justify-between gap-2">
+									<span className="font-mono text-xl break-all">{convertedValue}</span>
 									<Button
-										onClick={handleCopy}
-										disabled={!convertedValue}
-										variant="ghost"
+										variant="outline"
 										size="icon"
+										onClick={handleCopy}
 										aria-label="Copy converted value"
 									>
 										<CopyIcon className="h-4 w-4" aria-hidden />
 									</Button>
 								</div>
-							</div>
-
-							{error && <p className="text-red-500 text-sm">{error}</p>}
-						</>
-					)}
-				</div>
+							</>
+						)}
+					</>
+				)}
 			</div>
 		</ToolPageLayout>
 	);

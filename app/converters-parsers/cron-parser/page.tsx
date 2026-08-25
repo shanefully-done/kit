@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -60,63 +60,67 @@ export default function CronParserPage() {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
-				<div className="grid gap-4">
-					<div>
-						<Label htmlFor="cron-input" className="text-sm">
-							CRON Expression
-						</Label>
-						<Input
-							id="cron-input"
-							value={cronExpression}
-							onChange={handleCronChange}
-							placeholder="e.g., * * * * *"
-						/>
-					</div>
-
-					{/* AdditionalSettings */}
-					<div>
-						<Label htmlFor="example-select" className="text-sm">
-							Examples
-						</Label>
-						<Select onValueChange={handleExampleSelect}>
-							<SelectTrigger id="example-select">
-								<SelectValue placeholder="Select an example" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="* * * * *">Every minute</SelectItem>
-								<SelectItem value="0 0 * * *">Every day at midnight</SelectItem>
-								<SelectItem value="0 0 1 * *">
-									First day of every month at midnight
-								</SelectItem>
-								<SelectItem value="0 0 * * 0">Every Sunday at midnight</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ INPUT ]
+				</p>
+				<div className="grid w-full items-center gap-2">
+					<label
+						htmlFor="cron-input"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						EXPRESSION
+					</label>
+					<Input
+						id="cron-input"
+						value={cronExpression}
+						onChange={handleCronChange}
+						placeholder="e.g., * * * * *"
+					/>
 				</div>
 
-				{/* ActionButtons - none required */}
-				<div className="flex flex-wrap gap-2" aria-hidden />
-
-				{/* ResultDisplay */}
-				<div className="space-y-2">
-					{humanReadable && (
-						<div>
-							<span className="sr-only">Human-Readable Schedule</span>
-							<p className="p-2 border rounded-md bg-gray-100 dark:bg-gray-800">
-								{humanReadable}
-							</p>
-						</div>
-					)}
-					{error && (
-						<div>
-							<span className="sr-only">Error</span>
-							<p className="p-2 border rounded-md bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300">
-								{error}
-							</p>
-						</div>
-					)}
+				<div className="grid w-full items-center gap-2">
+					<label
+						htmlFor="example-select"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						PRESETS
+					</label>
+					<Select onValueChange={handleExampleSelect}>
+						<SelectTrigger id="example-select">
+							<SelectValue placeholder="Select an example" />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="* * * * *">Every minute</SelectItem>
+							<SelectItem value="0 0 * * *">Every day at midnight</SelectItem>
+							<SelectItem value="0 0 1 * *">
+								First day of every month at midnight
+							</SelectItem>
+							<SelectItem value="0 0 * * 0">Every Sunday at midnight</SelectItem>
+						</SelectContent>
+					</Select>
 				</div>
+
+				{humanReadable && (
+					<>
+						<div className="border-t border-ink pt-4" />
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ HUMAN READABLE ]
+						</p>
+						<div className="border-2 border-ink px-4 py-4 font-mono text-base md:text-lg">
+							{humanReadable}
+						</div>
+					</>
+				)}
+
+				{error && (
+					<>
+						<div className="border-t border-ink pt-4" />
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ ERROR ]
+						</p>
+						<p className="font-mono text-sm text-hazard">{error}</p>
+					</>
+				)}
 			</div>
 		</ToolPageLayout>
 	);

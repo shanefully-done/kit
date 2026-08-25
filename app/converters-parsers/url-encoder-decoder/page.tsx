@@ -56,16 +56,6 @@ export default function URLEncoderDecoderPage() {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
-				<div className="sr-only">Inputs are inside tabs below</div>
-
-				{/* ActionButtons */}
-				<div className="flex flex-wrap gap-2"></div>
-
-				{/* AdditionalSettings */}
-				<div className="sr-only">No additional settings</div>
-
-				{/* ResultDisplay */}
 				<Tabs defaultValue="encode" className="w-full">
 					<TabsList className="grid w-full grid-cols-2">
 						<TabsTrigger value="encode">Encode URL</TabsTrigger>
@@ -77,17 +67,17 @@ export default function URLEncoderDecoderPage() {
 							placeholder="Enter text to encode..."
 							value={encodeInput}
 							onChange={(e) => setEncodeInput(e.target.value)}
-							className="min-h-[150px]"
+							className="min-h-[150px] font-mono"
 						/>
-						<div className="relative">
-							<Textarea
-								placeholder="Encoded output"
-								value={encodedOutput}
-								readOnly
-								className="min-h-[150px]"
-							/>
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ ENCODED OUTPUT ]
+						</p>
+						<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[150px] relative">
+							{encodedOutput || (
+								<span className="text-muted-foreground">Encoded output</span>
+							)}
 							<Button
-								variant="ghost"
+								variant="outline"
 								size="sm"
 								className="absolute top-2 right-2"
 								onClick={() => handleCopy(encodedOutput)}
@@ -103,17 +93,20 @@ export default function URLEncoderDecoderPage() {
 							placeholder="Enter text to decode..."
 							value={decodeInput}
 							onChange={(e) => setDecodeInput(e.target.value)}
-							className={`min-h-[150px] ${decodeError ? "border-red-500" : ""}`}
+							className={`min-h-[150px] font-mono ${decodeError ? "border-hazard" : ""}`}
 						/>
-						<div className="relative">
-							<Textarea
-								placeholder="Decoded output"
-								value={decodedOutput}
-								readOnly
-								className="min-h-[150px]"
-							/>
+						{decodeError && (
+							<p className="text-hazard font-mono text-sm">{decodeError}</p>
+						)}
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ DECODED OUTPUT ]
+						</p>
+						<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[150px] relative">
+							{decodedOutput || (
+								<span className="text-muted-foreground">Decoded output</span>
+							)}
 							<Button
-								variant="ghost"
+								variant="outline"
 								size="sm"
 								className="absolute top-2 right-2"
 								onClick={() => handleCopy(decodedOutput)}
@@ -122,9 +115,6 @@ export default function URLEncoderDecoderPage() {
 								<CopyIcon className="h-4 w-4" />
 							</Button>
 						</div>
-						{decodeError && (
-							<p className="text-red-500 text-sm text-left">{decodeError}</p>
-						)}
 					</TabsContent>
 				</Tabs>
 			</div>

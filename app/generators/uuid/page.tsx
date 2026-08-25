@@ -3,10 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 import { Fingerprint as FingerprintIcon } from "lucide-react";
@@ -22,23 +20,23 @@ export default function UUIDGeneratorPage() {
 			uuids.push(uuidv4());
 		}
 		setGeneratedUUIDs(uuids.join("\n"));
-		setCopyStatus("Copy"); // Reset copy status when new UUIDs are generated
+		setCopyStatus("Copy");
 	}, [numUUIDs]);
 
 	useEffect(() => {
 		generateUUIDs();
-	}, [generateUUIDs]); // Generate UUIDs on initial load
+	}, [generateUUIDs]);
 
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(generatedUUIDs).then(
 			() => {
 				setCopyStatus("Copied!");
-				setTimeout(() => setCopyStatus("Copy"), 2000); // Reset after 2 seconds
+				setTimeout(() => setCopyStatus("Copy"), 2000);
 			},
 			(err) => {
 				setCopyStatus("Failed to copy!");
 				console.error("Could not copy text: ", err);
-			}
+			},
 		);
 	};
 
@@ -49,9 +47,12 @@ export default function UUIDGeneratorPage() {
 			}
 		>
 			<div className="space-y-4">
-				<div className="grid gap-2">
-					<Label htmlFor="num-uuids" className="text-sm">
-						Number of UUIDs to generate
+				<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
+					<Label
+						htmlFor="num-uuids"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						Count
 					</Label>
 					<Input
 						id="num-uuids"
@@ -60,14 +61,14 @@ export default function UUIDGeneratorPage() {
 						max={100}
 						value={numUUIDs}
 						onChange={(e) => setNumUUIDs(parseInt(e.target.value))}
-						className="w-full"
+						className="w-20"
 					/>
 				</div>
 
 				<div className="flex flex-wrap gap-2">
-					<Button onClick={generateUUIDs}>Generate UUID(s)</Button>
+					<Button onClick={generateUUIDs}>Generate</Button>
 					<Button
-						variant="ghost"
+						variant="outline"
 						onClick={copyToClipboard}
 						aria-label="Copy generated UUIDs"
 					>
@@ -75,20 +76,13 @@ export default function UUIDGeneratorPage() {
 					</Button>
 				</div>
 
-				<Separator />
-
-				<div className="grid gap-2">
-					<Label htmlFor="generated-uuids" className="text-sm">
-						Generated UUID(s)
-					</Label>
-					<Textarea
-						id="generated-uuids"
-						value={generatedUUIDs}
-						readOnly
-						rows={10}
-						className="font-mono resize-y"
-						placeholder="Generated UUIDs will appear here..."
-					/>
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ Output ]
+				</p>
+				<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all space-y-1">
+					{generatedUUIDs
+						? generatedUUIDs.split("\n").map((uuid, i) => <div key={i}>{uuid}</div>)
+						: null}
 				</div>
 			</div>
 		</ToolPageLayout>

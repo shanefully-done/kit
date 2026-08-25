@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Copy, Braces as BracesIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -30,12 +29,16 @@ class ErrorBoundary extends React.Component<
 	render() {
 		if (this.state.hasError) {
 			return (
-				<div className="text-red-500 p-4 border border-red-300 rounded-md">
-					<h4 className="font-bold">Error rendering JSON tree:</h4>
-					<p>{this.state.error?.message}</p>
+				<div className="text-hazard p-3 border border-hazard font-mono text-xs">
+					<h4 className="font-mono text-[11px] uppercase tracking-[0.08em] mb-2">
+						[ RENDER ERROR ]
+					</h4>
+					<p className="break-all">{this.state.error?.message}</p>
 					<details className="mt-2">
-						<summary>Error Details</summary>
-						<pre className="whitespace-pre-wrap text-xs">
+						<summary className="font-mono text-[11px] uppercase tracking-[0.08em] cursor-pointer">
+							Error Details
+						</summary>
+						<pre className="whitespace-pre-wrap text-xs mt-1">
 							{this.state.errorInfo?.componentStack}
 						</pre>
 					</details>
@@ -79,54 +82,55 @@ export default function JsonParserPage() {
 			header={<ToolHeader icon={<BracesIcon aria-hidden />} title="JSON Parser" />}
 		>
 			<div className="space-y-4">
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<div>
-						<label className="text-sm font-medium mb-2 block">Input JSON</label>
-						<Textarea
-							className={`w-full h-64 font-mono ${
-								!isValidJson ? "border-red-500" : ""
-							}`}
-							value={jsonInput}
-							onChange={handleJsonInputChange}
-							placeholder='Enter JSON here, e.g., {"name": "Kilo Code", "age": 30}'
-						/>
-						<div className="mt-2">
-							{isValidJson ? (
-								<Badge variant="outline" className="bg-green-500 text-white">
-									Valid JSON
-								</Badge>
-							) : (
-								<Badge variant="destructive">Invalid JSON: {errorMessage}</Badge>
-							)}
-						</div>
-					</div>
-					<div>
-						<label className="text-sm font-medium mb-2 block">Formatted JSON</label>
-						<div className="w-full h-64 overflow-auto rounded-md border">
-							<div className="p-4">
-								{isValidJson && jsonInput ? (
-									<ErrorBoundary>
-										<ReactJson
-											src={JSON.parse(jsonInput)}
-											name={false}
-											collapsed={2}
-											enableClipboard={false}
-											displayObjectSize={false}
-											displayDataTypes={false}
-										/>
-									</ErrorBoundary>
-								) : (
-									<pre className="font-mono text-sm">
-										{isValidJson ? "" : "Invalid JSON"}
-									</pre>
-								)}
-							</div>
-						</div>
-					</div>
+				<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ INPUT ]
+				</p>
+				<Textarea
+					className={`w-full h-64 font-mono ${!isValidJson ? "border-hazard" : ""}`}
+					value={jsonInput}
+					onChange={handleJsonInputChange}
+					placeholder='Enter JSON here, e.g., {"name": "Kilo Code", "age": 30}'
+				/>
+
+				<div
+					className={`flex items-center gap-2 border px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] ${
+						isValidJson
+							? "border-ink text-muted-foreground"
+							: "border-hazard text-hazard"
+					}`}
+				>
+					{isValidJson ? <span>[ VALID JSON ]</span> : <span>[ PARSE ERROR ]</span>}
+				</div>
+
+				{!isValidJson && errorMessage && (
+					<p className="font-mono text-xs text-hazard break-all">{errorMessage}</p>
+				)}
+
+				<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ FORMATTED OUTPUT ]
+				</p>
+				<div className="border border-ink bg-card p-2 overflow-auto max-h-96">
+					{isValidJson && jsonInput ? (
+						<ErrorBoundary>
+							<ReactJson
+								src={JSON.parse(jsonInput)}
+								name={false}
+								collapsed={2}
+								enableClipboard={false}
+								displayObjectSize={false}
+								displayDataTypes={false}
+							/>
+						</ErrorBoundary>
+					) : (
+						<pre className="font-mono text-sm text-muted-foreground">
+							{isValidJson ? "" : "Invalid JSON"}
+						</pre>
+					)}
 				</div>
 
 				<div className="flex flex-wrap justify-end gap-2">
 					<Button
+						variant="outline"
 						onClick={handleCopyToClipboard}
 						disabled={!isValidJson || !jsonInput}
 						aria-label="Copy formatted JSON to clipboard"

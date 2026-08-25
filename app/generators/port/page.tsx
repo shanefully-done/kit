@@ -2,13 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
-import { Switch } from "@/components/ui/switch";
 import { EthernetPort as EthernetPortIcon } from "lucide-react";
 
 const RESERVED_PORT_CEILING = 1024;
@@ -63,7 +61,7 @@ export default function PortGeneratorPage() {
 			(err) => {
 				setCopyStatus("Failed to copy!");
 				console.error("Could not copy text: ", err);
-			}
+			},
 		);
 	};
 
@@ -78,9 +76,12 @@ export default function PortGeneratorPage() {
 		>
 			<div className="space-y-4">
 				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-					<div className="grid gap-2">
-						<Label htmlFor="num-ports" className="text-sm">
-							Number of ports
+					<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
+						<Label
+							htmlFor="num-ports"
+							className="font-mono text-[11px] uppercase tracking-[0.08em]"
+						>
+							Count
 						</Label>
 						<Input
 							id="num-ports"
@@ -89,12 +90,15 @@ export default function PortGeneratorPage() {
 							max={100}
 							value={numPorts}
 							onChange={(e) => setNumPorts(parseInt(e.target.value) || 1)}
-							className="w-full"
+							className="w-20"
 						/>
 					</div>
-					<div className="grid gap-2">
-						<Label htmlFor="min-port" className="text-sm">
-							Min port
+					<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
+						<Label
+							htmlFor="min-port"
+							className="font-mono text-[11px] uppercase tracking-[0.08em]"
+						>
+							Min Port
 						</Label>
 						<Input
 							id="min-port"
@@ -103,12 +107,15 @@ export default function PortGeneratorPage() {
 							max={65535}
 							value={minPort}
 							onChange={(e) => setMinPort(parseInt(e.target.value) || 0)}
-							className="w-full"
+							className="w-20"
 						/>
 					</div>
-					<div className="grid gap-2">
-						<Label htmlFor="max-port" className="text-sm">
-							Max port
+					<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
+						<Label
+							htmlFor="max-port"
+							className="font-mono text-[11px] uppercase tracking-[0.08em]"
+						>
+							Max Port
 						</Label>
 						<Input
 							id="max-port"
@@ -117,26 +124,29 @@ export default function PortGeneratorPage() {
 							max={65535}
 							value={maxPort}
 							onChange={(e) => setMaxPort(parseInt(e.target.value) || 0)}
-							className="w-full"
+							className="w-20"
 						/>
 					</div>
 				</div>
 
-				<div className="flex items-center gap-2">
+				<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
+					<Label
+						htmlFor="avoid-reserved"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						Avoid Reserved (0–1023)
+					</Label>
 					<Switch
 						id="avoid-reserved"
 						checked={avoidReserved}
 						onCheckedChange={handleAvoidReservedChange}
 					/>
-					<Label htmlFor="avoid-reserved" className="text-sm">
-						Avoid reserved ports (0–1023)
-					</Label>
 				</div>
 
 				<div className="flex flex-wrap gap-2">
-					<Button onClick={generatePorts}>Generate Port(s)</Button>
+					<Button onClick={generatePorts}>Generate</Button>
 					<Button
-						variant="ghost"
+						variant="outline"
 						onClick={copyToClipboard}
 						aria-label="Copy generated ports"
 					>
@@ -144,21 +154,20 @@ export default function PortGeneratorPage() {
 					</Button>
 				</div>
 
-				<Separator />
-
-				<div className="grid gap-2">
-					<Label htmlFor="generated-ports" className="text-sm">
-						Generated Port(s)
-					</Label>
-					<Textarea
-						id="generated-ports"
-						value={generatedPorts}
-						readOnly
-						rows={10}
-						className="font-mono resize-y"
-						placeholder="Generated ports will appear here..."
-					/>
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ Generated Ports ]
+				</p>
+				<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all space-y-1">
+					{generatedPorts
+						? generatedPorts.split("\n").map((port, i) => <div key={i}>{port}</div>)
+						: null}
 				</div>
+
+				{avoidReserved && (
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-hazard">
+						Reserved ports (0–1023) excluded from generation range.
+					</p>
+				)}
 			</div>
 		</ToolPageLayout>
 	);

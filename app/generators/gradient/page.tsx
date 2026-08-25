@@ -5,13 +5,9 @@ import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Copy, PaletteIcon } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Copy, PaletteIcon, Plus, X } from "lucide-react";
+import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
 
@@ -27,7 +23,7 @@ export default function GradientGeneratorPage() {
 	const [gradientType, setGradientType] = useState<GradientType>("linear");
 	const [angle, setAngle] = useState<number>(90); // For linear gradient
 	const [radialPosition, setRadialPosition] = useState<{ x: number; y: number }>(
-		{ x: 50, y: 50 }
+		{ x: 50, y: 50 },
 	); // For radial gradient
 	const [colorStops, setColorStops] = useState<ColorStop[]>([
 		{ id: "1", color: "#FF0000", position: 0 },
@@ -37,7 +33,7 @@ export default function GradientGeneratorPage() {
 
 	const updateCssOutput = useCallback(() => {
 		const sortedColorStops = [...colorStops].sort(
-			(a, b) => a.position - b.position
+			(a, b) => a.position - b.position,
 		);
 		const stops = sortedColorStops
 			.map((stop) => `${stop.color} ${stop.position}%`)
@@ -68,21 +64,22 @@ export default function GradientGeneratorPage() {
 	const handleColorChange = (id: string, newColor: string) => {
 		setColorStops(
 			colorStops.map((stop) =>
-				stop.id === id ? { ...stop, color: newColor } : stop
-			)
+				stop.id === id ? { ...stop, color: newColor } : stop,
+			),
 		);
 	};
 
 	const handlePositionChange = (id: string, newPosition: number[]) => {
 		setColorStops(
 			colorStops.map((stop) =>
-				stop.id === id ? { ...stop, position: newPosition[0] } : stop
-			)
+				stop.id === id ? { ...stop, position: newPosition[0] } : stop,
+			),
 		);
 	};
 
 	const handleCopyCss = () => {
 		navigator.clipboard.writeText(cssOutput);
+		toast.success("COPIED");
 	};
 
 	return (
@@ -95,91 +92,105 @@ export default function GradientGeneratorPage() {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea / Controls */}
-				<div className="space-y-4">
+				{/* Type Toggle */}
+				<div className="space-y-2">
+					<Label>TYPE</Label>
+					<Tabs
+						value={gradientType}
+						onValueChange={(val) => setGradientType(val as GradientType)}
+					>
+						<TabsList>
+							<TabsTrigger value="linear">LINEAR</TabsTrigger>
+							<TabsTrigger value="radial">RADIAL</TabsTrigger>
+						</TabsList>
+					</Tabs>
+				</div>
+
+				{/* Angle / Radial Position */}
+				{gradientType === "linear" && (
 					<div className="space-y-2">
-						<label className="text-sm font-medium" htmlFor="gradient-type">
-							Gradient Type
-						</label>
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button variant="outline" className="w-full justify-between">
-									{gradientType === "linear" ? "Linear" : "Radial"}
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent>
-								<DropdownMenuItem onClick={() => setGradientType("linear")}>
-									Linear
-								</DropdownMenuItem>
-								<DropdownMenuItem onClick={() => setGradientType("radial")}>
-									Radial
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+						<Label
+							htmlFor="angle"
+							className="font-mono text-[11px] uppercase tracking-[0.08em]"
+						>
+							ANGLE — {angle}DEG
+						</Label>
+						<Slider
+							id="angle"
+							min={0}
+							max={360}
+							step={1}
+							value={[angle]}
+							onValueChange={(val) => setAngle(val[0])}
+							className="w-full"
+						/>
 					</div>
+				)}
 
-					{gradientType === "linear" && (
-						<div className="space-y-2">
-							<Label htmlFor="angle">Angle ({angle}deg)</Label>
-							<Slider
-								id="angle"
-								min={0}
-								max={360}
-								step={1}
-								value={[angle]}
-								onValueChange={(val) => setAngle(val[0])}
-								className="w-full"
-							/>
-						</div>
-					)}
-
-					{gradientType === "radial" && (
-						<div className="space-y-2">
-							<Label>
-								Radial Position (X: {radialPosition.x}%, Y: {radialPosition.y}%)
-							</Label>
-							<div className="flex gap-4">
-								<div className="flex-1 space-y-1">
-									<Label htmlFor="radial-x">X</Label>
-									<Slider
-										id="radial-x"
-										min={0}
-										max={100}
-										step={1}
-										value={[radialPosition.x]}
-										onValueChange={(val) =>
-											setRadialPosition({ ...radialPosition, x: val[0] })
-										}
-										className="w-full"
-									/>
-								</div>
-								<div className="flex-1 space-y-1">
-									<Label htmlFor="radial-y">Y</Label>
-									<Slider
-										id="radial-y"
-										min={0}
-										max={100}
-										step={1}
-										value={[radialPosition.y]}
-										onValueChange={(val) =>
-											setRadialPosition({ ...radialPosition, y: val[0] })
-										}
-										className="w-full"
-									/>
-								</div>
+				{gradientType === "radial" && (
+					<div className="space-y-2">
+						<Label className="font-mono text-[11px] uppercase tracking-[0.08em]">
+							POSITION — X: {radialPosition.x}% / Y: {radialPosition.y}%
+						</Label>
+						<div className="flex gap-4">
+							<div className="flex-1 space-y-1">
+								<Label
+									htmlFor="radial-x"
+									className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground"
+								>
+									X
+								</Label>
+								<Slider
+									id="radial-x"
+									min={0}
+									max={100}
+									step={1}
+									value={[radialPosition.x]}
+									onValueChange={(val) =>
+										setRadialPosition({ ...radialPosition, x: val[0] })
+									}
+									className="w-full"
+								/>
+							</div>
+							<div className="flex-1 space-y-1">
+								<Label
+									htmlFor="radial-y"
+									className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground"
+								>
+									Y
+								</Label>
+								<Slider
+									id="radial-y"
+									min={0}
+									max={100}
+									step={1}
+									value={[radialPosition.y]}
+									onValueChange={(val) =>
+										setRadialPosition({ ...radialPosition, y: val[0] })
+									}
+									className="w-full"
+								/>
 							</div>
 						</div>
-					)}
+					</div>
+				)}
 
-					<div className="space-y-2">
-						<span className="text-sm font-medium">Color Stops</span>
+				{/* Color Stops */}
+				<div className="space-y-2">
+					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+						[ COLOR STOPS ]
+					</p>
+					<div>
 						{colorStops.map((stop) => (
-							<div key={stop.id} className="flex items-center gap-4">
+							<div
+								key={stop.id}
+								className="grid grid-cols-[auto_1fr_auto] items-center gap-2 border-b border-ink py-2"
+							>
 								<Input
 									type="color"
 									value={stop.color}
 									onChange={(e) => handleColorChange(stop.id, e.target.value)}
-									className="w-16 h-10 p-1"
+									className="h-8 w-10 border border-ink bg-card p-0.5 cursor-pointer"
 								/>
 								<Slider
 									min={0}
@@ -187,42 +198,51 @@ export default function GradientGeneratorPage() {
 									step={1}
 									value={[stop.position]}
 									onValueChange={(val) => handlePositionChange(stop.id, val)}
-									className="flex-1"
 								/>
-								<span className="w-12 text-right text-sm">{stop.position}%</span>
+								<span className="font-mono text-sm w-12 text-right">
+									{stop.position}%
+								</span>
 								<Button
-									variant="destructive"
+									variant="outline"
 									size="sm"
 									onClick={() => removeColorStop(stop.id)}
+									aria-label={`Remove stop ${stop.id}`}
 								>
-									Remove
+									<X className="h-4 w-4" aria-hidden="true" />
 								</Button>
 							</div>
 						))}
-						<div className="flex flex-wrap gap-2">
-							<Button onClick={addColorStop}>Add Color Stop</Button>
-						</div>
 					</div>
+					<Button variant="outline" onClick={addColorStop}>
+						<Plus className="h-4 w-4 mr-2" aria-hidden="true" />
+						Add Stop
+					</Button>
 				</div>
 
-				{/* ResultDisplay */}
+				{/* Preview — functional gradient surface */}
 				<div className="space-y-2">
-					<span className="text-sm font-medium">Preview</span>
+					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+						[ PREVIEW ]
+					</p>
 					<div
 						style={{ background: cssOutput }}
-						className="w-full h-64 rounded-md border"
+						className="w-full h-64 border-2 border-ink"
 					/>
 				</div>
 
-				{/* ActionButtons */}
+				{/* CSS Output */}
 				<div className="space-y-2">
-					<label className="text-sm font-medium">CSS Output</label>
+					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+						[ CSS OUTPUT ]
+					</p>
 					<div className="relative">
-						<Input type="text" value={cssOutput} readOnly className="pr-10" />
+						<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all pr-10">
+							{cssOutput}
+						</div>
 						<Button
-							variant="ghost"
+							variant="outline"
 							size="sm"
-							className="absolute right-0 top-0 h-full px-3 py-1"
+							className="absolute right-1 top-1"
 							onClick={handleCopyCss}
 							aria-label="Copy CSS"
 						>

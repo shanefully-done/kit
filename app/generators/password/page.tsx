@@ -4,7 +4,6 @@ import React, { useState, useCallback } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
@@ -25,22 +24,22 @@ const PasswordGeneratorPage = () => {
 		(pwd: string) => {
 			let newStrength = 0;
 			if (pwd.length > 0) {
-				newStrength += pwd.length * 4; // Length contributes
+				newStrength += pwd.length * 4;
 				if (includeUppercase) newStrength += 10;
 				if (includeLowercase) newStrength += 10;
 				if (includeNumbers) newStrength += 10;
 				if (includeSymbols) newStrength += 10;
 
 				// Deductions for common patterns (simplified)
-				if (/(.)\1\1/.test(pwd)) newStrength -= 20; // Three consecutive identical characters
-				if (/(abc|123)/i.test(pwd)) newStrength -= 15; // Simple sequences
+				if (/(.)\1\1/.test(pwd)) newStrength -= 20;
+				if (/(abc|123)/i.test(pwd)) newStrength -= 15;
 
 				// Ensure strength is within 0-100 range
 				newStrength = Math.max(0, Math.min(100, newStrength));
 			}
 			setStrength(newStrength);
 		},
-		[includeUppercase, includeLowercase, includeNumbers, includeSymbols]
+		[includeUppercase, includeLowercase, includeNumbers, includeSymbols],
 	);
 
 	const generatePassword = useCallback(() => {
@@ -90,8 +89,11 @@ const PasswordGeneratorPage = () => {
 		>
 			<div className="space-y-4">
 				<div>
-					<Label htmlFor="password-length" className="mb-2 block text-sm">
-						Password Length: {length}
+					<Label
+						htmlFor="password-length"
+						className="font-mono text-[11px] uppercase tracking-[0.08em] mb-2 block"
+					>
+						Length: {length}
 					</Label>
 					<Slider
 						id="password-length"
@@ -104,84 +106,86 @@ const PasswordGeneratorPage = () => {
 					/>
 				</div>
 
-				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-					<div className="flex items-center space-x-2">
-						<Checkbox
-							id="uppercase"
-							checked={includeUppercase}
-							onCheckedChange={(checked) => setIncludeUppercase(Boolean(checked))}
-						/>
-						<Label htmlFor="uppercase">Uppercase (A-Z)</Label>
+				<div>
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-2">
+						[ Character Sets ]
+					</p>
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<div className="flex items-center space-x-2">
+							<Checkbox
+								id="uppercase"
+								checked={includeUppercase}
+								onCheckedChange={(checked) => setIncludeUppercase(Boolean(checked))}
+							/>
+							<Label htmlFor="uppercase">Uppercase (A-Z)</Label>
+						</div>
+						<div className="flex items-center space-x-2">
+							<Checkbox
+								id="lowercase"
+								checked={includeLowercase}
+								onCheckedChange={(checked) => setIncludeLowercase(Boolean(checked))}
+							/>
+							<Label htmlFor="lowercase">Lowercase (a-z)</Label>
+						</div>
+						<div className="flex items-center space-x-2">
+							<Checkbox
+								id="numbers"
+								checked={includeNumbers}
+								onCheckedChange={(checked) => setIncludeNumbers(Boolean(checked))}
+							/>
+							<Label htmlFor="numbers">Numbers (0-9)</Label>
+						</div>
+						<div className="flex items-center space-x-2">
+							<Checkbox
+								id="symbols"
+								checked={includeSymbols}
+								onCheckedChange={(checked) => setIncludeSymbols(Boolean(checked))}
+							/>
+							<Label htmlFor="symbols">Symbols (!@#$)</Label>
+						</div>
 					</div>
-					<div className="flex items-center space-x-2">
-						<Checkbox
-							id="lowercase"
-							checked={includeLowercase}
-							onCheckedChange={(checked) => setIncludeLowercase(Boolean(checked))}
-						/>
-						<Label htmlFor="lowercase">Lowercase (a-z)</Label>
-					</div>
-					<div className="flex items-center space-x-2">
-						<Checkbox
-							id="numbers"
-							checked={includeNumbers}
-							onCheckedChange={(checked) => setIncludeNumbers(Boolean(checked))}
-						/>
-						<Label htmlFor="numbers">Numbers (0-9)</Label>
-					</div>
-					<div className="flex items-center space-x-2">
-						<Checkbox
-							id="symbols"
-							checked={includeSymbols}
-							onCheckedChange={(checked) => setIncludeSymbols(Boolean(checked))}
-						/>
-						<Label htmlFor="symbols">Symbols (!@#$)</Label>
+				</div>
+
+				<div className="border-t border-ink pt-4">
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-2">
+						[ Generated Password ]
+					</p>
+					<div className="border-2 border-ink px-4 py-4 font-mono text-lg md:text-xl break-all select-all">
+						{password}
 					</div>
 				</div>
 
 				<div>
-					<Label htmlFor="password-output" className="mb-2 block text-sm">
-						Generated Password
-					</Label>
-					<div className="flex flex-wrap gap-2">
-						<Input
-							id="password-output"
-							type="text"
-							readOnly
-							value={password}
-							className="flex-1 font-mono"
-						/>
-						<Button
-							onClick={copyToClipboard}
-							disabled={!password}
-							aria-label="Copy password"
-						>
-							Copy
-						</Button>
-					</div>
-				</div>
-
-				<div>
-					<Label className="mb-2 block text-sm">Password Strength</Label>
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-2">
+						[ Strength ]
+					</p>
 					<Progress value={strength} className="w-full" />
-					<div className="text-sm text-muted-foreground mt-1">
+					<div className="font-mono text-sm text-muted-foreground mt-1">
 						{strength < 30
 							? "Very Weak"
 							: strength < 60
-							? "Weak"
-							: strength < 80
-							? "Good"
-							: "Strong"}
+								? "Weak"
+								: strength < 80
+									? "Good"
+									: "Strong"}
 					</div>
 				</div>
 
 				<div className="flex flex-wrap gap-2">
 					<Button onClick={generatePassword}>Generate New Password</Button>
-					<Button variant="secondary" onClick={() => setLength(12)}>
+					<Button
+						variant="outline"
+						onClick={copyToClipboard}
+						disabled={!password}
+						aria-label="Copy password"
+					>
+						Copy
+					</Button>
+					<Button variant="outline" onClick={() => setLength(12)}>
 						Sample
 					</Button>
 					<Button
-						variant="ghost"
+						variant="outline"
 						onClick={() => {
 							setPassword("");
 						}}

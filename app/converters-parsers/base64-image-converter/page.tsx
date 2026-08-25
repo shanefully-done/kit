@@ -98,7 +98,7 @@ export default function Base64ImageConverterPage() {
 			setDecodeError("");
 		} catch (error: unknown) {
 			setDecodeError(
-				`Invalid Base64 string: ${error instanceof Error ? error.message : String(error)}`
+				`Invalid Base64 string: ${error instanceof Error ? error.message : String(error)}`,
 			);
 			setDecodedImage(null);
 		}
@@ -117,7 +117,7 @@ export default function Base64ImageConverterPage() {
 				setUploadError("");
 			}
 		},
-		[]
+		[],
 	);
 
 	const handleDragOver = useCallback(
@@ -127,7 +127,7 @@ export default function Base64ImageConverterPage() {
 			event.dataTransfer.dropEffect = "copy";
 			setIsDragging(true);
 		},
-		[]
+		[],
 	);
 
 	const handleDragLeave = useCallback(
@@ -136,28 +136,25 @@ export default function Base64ImageConverterPage() {
 			event.stopPropagation();
 			setIsDragging(false);
 		},
-		[]
+		[],
 	);
 
-	const handleDrop = useCallback(
-		(event: React.DragEvent<HTMLDivElement>) => {
-			event.preventDefault();
-			event.stopPropagation();
-			setIsDragging(false);
+	const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+		event.preventDefault();
+		event.stopPropagation();
+		setIsDragging(false);
 
-			const file = event.dataTransfer.files?.[0];
-			if (file) {
-				if (!file.type.startsWith("image/")) {
-					setUploadError("Please upload an image file");
-					return;
-				}
-				setUploadedFile(file);
-				setEncodedBase64("");
-				setUploadError("");
+		const file = event.dataTransfer.files?.[0];
+		if (file) {
+			if (!file.type.startsWith("image/")) {
+				setUploadError("Please upload an image file");
+				return;
 			}
-		},
-		[]
-	);
+			setUploadedFile(file);
+			setEncodedBase64("");
+			setUploadError("");
+		}
+	}, []);
 
 	const copyToClipboard = useCallback(
 		(text: string, type: string) => {
@@ -167,7 +164,7 @@ export default function Base64ImageConverterPage() {
 				description: text.substring(0, 50) + (text.length > 50 ? "..." : ""),
 			});
 		},
-		[toast]
+		[toast],
 	);
 
 	const downloadImage = useCallback(() => {
@@ -194,16 +191,24 @@ export default function Base64ImageConverterPage() {
 			<div className="space-y-4">
 				<div className="sr-only">Inputs and outputs organized in tabs below</div>
 
-				<div className="flex items-center gap-2">
-					<Switch
-						id="data-uri-prefix"
-						checked={includeDataUriPrefix}
-						onCheckedChange={setIncludeDataUriPrefix}
-						aria-label="Toggle data URI prefix"
-					/>
-					<Label htmlFor="data-uri-prefix" className="text-sm">
-						Include data URI prefix
+				<div className="flex items-center justify-between border border-ink bg-muted/40 px-3 py-2">
+					<Label
+						htmlFor="data-uri-prefix"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						DATA URI PREFIX
 					</Label>
+					<div className="flex items-center gap-2">
+						<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+							{includeDataUriPrefix ? "ON" : "OFF"}
+						</span>
+						<Switch
+							id="data-uri-prefix"
+							checked={includeDataUriPrefix}
+							onCheckedChange={setIncludeDataUriPrefix}
+							aria-label="Toggle data URI prefix"
+						/>
+					</div>
 				</div>
 
 				<Tabs defaultValue="image-to-base64" className="w-full">
@@ -215,10 +220,10 @@ export default function Base64ImageConverterPage() {
 					<TabsContent value="image-to-base64" className="p-0">
 						<div className="grid w-full gap-4">
 							<div
-								className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-md cursor-pointer transition-colors ${
+								className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-ink cursor-pointer transition-colors ${
 									isDragging
-										? "border-blue-500 bg-blue-50 dark:bg-blue-950"
-										: "border-gray-300 hover:border-gray-400"
+										? "border-hazard bg-hazard/5"
+										: "hover:border-muted-foreground"
 								}`}
 								onDragOver={handleDragOver}
 								onDragLeave={handleDragLeave}
@@ -226,8 +231,8 @@ export default function Base64ImageConverterPage() {
 								onClick={() => document.getElementById("image-upload-input")?.click()}
 								aria-label="Upload image to convert"
 							>
-								<UploadIcon className="w-12 h-12 text-gray-400 mb-4" />
-								<p className="text-gray-500 text-center mb-2">
+								<UploadIcon className="w-12 h-12 text-muted-foreground mb-4" />
+								<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground text-center">
 									Drag & drop an image here, or click to select
 								</p>
 								<input
@@ -240,22 +245,22 @@ export default function Base64ImageConverterPage() {
 							</div>
 
 							{uploadedFile && (
-								<div className="bg-gray-50 p-4 rounded-md">
-									<h3 className="font-medium text-sm mb-2">File Info:</h3>
-									<div className="grid grid-cols-2 gap-2 text-sm">
+								<div className="border border-ink bg-muted/40 p-3">
+									<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground mb-2">
+										[ FILE INFO ]
+									</p>
+									<div className="grid grid-cols-2 gap-2 font-mono text-sm">
 										<div>
-											<span className="text-gray-500">Name:</span>{" "}
-											<span className="font-medium">{uploadedFile.name}</span>
+											<span className="text-muted-foreground">Name:</span>{" "}
+											<span>{uploadedFile.name}</span>
 										</div>
 										<div>
-											<span className="text-gray-500">Size:</span>{" "}
-											<span className="font-medium">
-												{(uploadedFile.size / 1024).toFixed(2)} KB
-											</span>
+											<span className="text-muted-foreground">Size:</span>{" "}
+											<span>{(uploadedFile.size / 1024).toFixed(2)} KB</span>
 										</div>
 										<div>
-											<span className="text-gray-500">Type:</span>{" "}
-											<span className="font-medium">{uploadedFile.type}</span>
+											<span className="text-muted-foreground">Type:</span>{" "}
+											<span>{uploadedFile.type}</span>
 										</div>
 									</div>
 								</div>
@@ -272,48 +277,52 @@ export default function Base64ImageConverterPage() {
 							</div>
 
 							{uploadedFile && uploadPreview && (
-								<div className="flex justify-center">
-									<div className="max-w-md">
-										<NextImage
-											src={uploadPreview}
-											alt="Uploaded image preview"
-											width={300}
-											height={200}
-											unoptimized
-											className="rounded-md shadow-md"
-										/>
-									</div>
+								<div className="border border-ink bg-muted/40 p-3 grid place-items-center">
+									<NextImage
+										src={uploadPreview}
+										alt="Uploaded image preview"
+										width={300}
+										height={200}
+										unoptimized
+									/>
 								</div>
 							)}
 
 							{encodedBase64 && (
-								<div className="relative">
-									<Textarea
-										placeholder="Base64 output will appear here..."
-										value={encodedBase64}
-										readOnly
-										className="min-h-[200px] pr-10"
-									/>
-									<Button
-										variant="ghost"
-										size="sm"
-										className="absolute top-2 right-2"
-										onClick={() => copyToClipboard(encodedBase64, "Base64 string")}
-										aria-label="Copy Base64 output"
-									>
-										<CopyIcon className="w-4 h-4" />
-									</Button>
-								</div>
+								<>
+									<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+										[ BASE64 OUTPUT ]
+									</p>
+									<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[200px] whitespace-pre-wrap">
+										{encodedBase64}
+									</div>
+									<div className="flex justify-end">
+										<Button
+											variant="outline"
+											size="sm"
+											onClick={() => copyToClipboard(encodedBase64, "Base64 string")}
+											aria-label="Copy Base64 output"
+										>
+											<CopyIcon className="w-4 h-4 mr-2" />
+											Copy
+										</Button>
+									</div>
+								</>
 							)}
 
 							{uploadError && (
-								<p className="text-red-500 text-sm">{uploadError}</p>
+								<p className="font-mono text-xs text-hazard break-all border border-hazard px-3 py-2">
+									{uploadError}
+								</p>
 							)}
 						</div>
 					</TabsContent>
 
 					<TabsContent value="base64-to-image" className="p-0">
 						<div className="grid w-full gap-4">
+							<Label className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+								[ BASE64 INPUT ]
+							</Label>
 							<Textarea
 								placeholder="Paste Base64 string here..."
 								value={decodeInput}
@@ -331,27 +340,27 @@ export default function Base64ImageConverterPage() {
 							</div>
 
 							{decodedImage && (
-								<div className="flex flex-col items-center">
+								<div className="border border-ink bg-muted/40 p-3 grid place-items-center">
 									<NextImage
 										src={decodedImage}
 										alt="Decoded image preview"
 										width={400}
 										height={300}
 										unoptimized
-										className="rounded-md shadow-md mb-4"
 									/>
-									<Button
-										onClick={downloadImage}
-										aria-label="Download decoded image"
-									>
-										<DownloadIcon className="w-4 h-4 mr-2" />
-										Download Image
-									</Button>
+									<div className="mt-3">
+										<Button onClick={downloadImage} aria-label="Download decoded image">
+											<DownloadIcon className="w-4 h-4 mr-2" />
+											Download Image
+										</Button>
+									</div>
 								</div>
 							)}
 
 							{decodeError && (
-								<p className="text-red-500 text-sm">{decodeError}</p>
+								<p className="font-mono text-xs text-hazard break-all border border-hazard px-3 py-2">
+									{decodeError}
+								</p>
 							)}
 						</div>
 					</TabsContent>

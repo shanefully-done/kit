@@ -74,66 +74,78 @@ const ImageMetadataViewerPage = () => {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
-				<div className="space-y-2">
-					<span className="text-sm font-medium">Upload Image</span>
-					<div
-						{...getRootProps()}
-						className="border-2 border-dashed border-gray-300 p-6 rounded-lg text-center cursor-pointer"
-					>
-						<Input {...getInputProps()} />
-						{isDragActive ? (
-							<p>Drop the image here ...</p>
-						) : (
-							<p>Drag &apos;n&apos; drop an image here, or click to select one</p>
-						)}
-					</div>
-					{image && (
-						<div className="mt-2 text-center">
-							<p className="text-sm">Selected file: {image.name}</p>
-							<NextImage
-								src={URL.createObjectURL(image)}
-								alt="Uploaded"
-								className="max-w-full h-auto mt-2 mx-auto"
-								width={300}
-								height={300}
-							/>
-						</div>
+				{/* Dropzone */}
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ UPLOAD ]
+				</p>
+				<div
+					{...getRootProps()}
+					className="border border-ink border-dashed p-6 grid place-items-center cursor-pointer"
+				>
+					<Input {...getInputProps()} />
+					{isDragActive ? (
+						<p className="font-mono text-sm">Drop the image here ...</p>
+					) : (
+						<p className="font-mono text-sm text-muted-foreground">
+							Drag &apos;n&apos; drop an image here, or click to select
+						</p>
 					)}
-					{error && <p className="text-red-500 mt-2">{error}</p>}
 				</div>
 
-				{/* AdditionalSettings */}
-				<div className="sr-only">
-					<h2>Additional Settings</h2>
-				</div>
+				{image && (
+					<div className="border border-ink bg-card p-4 grid place-items-center">
+						<p className="font-mono text-sm mb-2">{image.name}</p>
+						<NextImage
+							src={URL.createObjectURL(image)}
+							alt="Uploaded"
+							className="max-w-full h-auto"
+							width={300}
+							height={300}
+							unoptimized
+						/>
+					</div>
+				)}
 
-				{/* ResultDisplay */}
-				<div className="space-y-2">
-					<span className="text-sm font-medium">EXIF Data</span>
-					{exifData ? (
+				{error && <p className="font-mono text-sm text-hazard mt-2">{error}</p>}
+
+				{/* EXIF Data */}
+				{exifData && (
+					<>
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ EXIF DATA ]
+						</p>
 						<Table>
 							<TableHeader>
 								<TableRow>
-									<TableHead>Tag</TableHead>
-									<TableHead>Value</TableHead>
+									<TableHead className="font-mono text-[10px] uppercase tracking-[0.08em] w-1/3">
+										Tag
+									</TableHead>
+									<TableHead className="font-mono text-[10px] uppercase tracking-[0.08em]">
+										Value
+									</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
 								{Object.entries(exifData).map(([key, value]) => (
 									<TableRow key={key}>
-										<TableCell>{key}</TableCell>
-										<TableCell>{String(value)}</TableCell>
+										<TableCell className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground align-top">
+											{key}
+										</TableCell>
+										<TableCell className="font-mono text-sm break-all align-top">
+											{String(value)}
+										</TableCell>
 									</TableRow>
 								))}
 							</TableBody>
 						</Table>
-					) : (
-						<p className="text-muted-foreground text-sm">
-							Upload an image to view its metadata.
-						</p>
-					)}
-				</div>
+					</>
+				)}
+
+				{!exifData && !error && (
+					<p className="font-mono text-sm text-muted-foreground">
+						Upload an image to view its metadata.
+					</p>
+				)}
 			</div>
 		</ToolPageLayout>
 	);

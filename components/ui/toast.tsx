@@ -16,8 +16,8 @@ const ToastViewport = React.forwardRef<
 	<ToastPrimitives.Viewport
 		ref={ref}
 		className={cn(
-			"fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
-			className
+			"fixed bottom-0 right-0 z-[100] flex max-h-screen w-full flex-col-reverse gap-2 p-4 sm:bottom-3 sm:right-3 md:max-w-[420px]",
+			className,
 		)}
 		{...props}
 	/>
@@ -25,19 +25,18 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-	"group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full data-[state=closed]:slide-out-to-right-full data-[swipe=end]:slide-out-to-right-full data-[state=open]:sm:slide-in-from-bottom-full",
+	"group pointer-events-auto relative flex w-full items-center justify-between gap-2 overflow-hidden border-2 border-ink bg-card p-4 pr-8 shadow-[4px_4px_0_0_#0A0A0A] transition-all data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full data-[state=closed]:slide-out-to-right-full data-[swipe=end]:slide-out-to-right-full",
 	{
 		variants: {
 			variant: {
-				default: "border bg-background text-foreground",
-				destructive:
-					"destructive group border-destructive bg-destructive text-destructive-foreground",
+				default: "text-foreground",
+				destructive: "destructive group border-hazard bg-hazard text-paper",
 			},
 		},
 		defaultVariants: {
 			variant: "default",
 		},
-	}
+	},
 );
 
 const Toast = React.forwardRef<
@@ -62,8 +61,8 @@ const ToastAction = React.forwardRef<
 	<ToastPrimitives.Action
 		ref={ref}
 		className={cn(
-			"inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
-			className
+			"inline-flex h-8 shrink-0 items-center justify-center border border-ink bg-transparent px-3 font-mono text-[11px] uppercase tracking-[0.08em] font-medium transition-colors hover:bg-ink hover:text-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hazard disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-paper/40 group-[.destructive]:hover:bg-ink group-[.destructive]:hover:text-paper",
+			className,
 		)}
 		{...props}
 	/>
@@ -77,8 +76,8 @@ const ToastClose = React.forwardRef<
 	<ToastPrimitives.Close
 		ref={ref}
 		className={cn(
-			"absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
-			className
+			"absolute right-1 top-1 p-1 font-mono text-foreground/50 opacity-0 transition-opacity hover:text-hazard focus:opacity-100 focus:outline-none group-hover:opacity-100 group-[.destructive]:text-paper/70 group-[.destructive]:hover:text-paper",
+			className,
 		)}
 		toast-close=""
 		{...props}
@@ -94,7 +93,10 @@ const ToastTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<ToastPrimitives.Title
 		ref={ref}
-		className={cn("text-sm font-semibold [&+div]:text-xs", className)}
+		className={cn(
+			"font-mono text-xs uppercase tracking-[0.08em] font-semibold [&+div]:text-xs",
+			className,
+		)}
 		{...props}
 	/>
 ));
@@ -106,7 +108,7 @@ const ToastDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<ToastPrimitives.Description
 		ref={ref}
-		className={cn("text-sm opacity-90", className)}
+		className={cn("font-mono text-xs opacity-90", className)}
 		{...props}
 	/>
 ));

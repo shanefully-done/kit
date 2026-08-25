@@ -32,7 +32,7 @@ export default function ApiDirectoryPage() {
 	const filteredApis = apiList.filter(
 		(api) =>
 			api.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			api.description.toLowerCase().includes(searchTerm.toLowerCase())
+			api.description.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
 
 	return (
@@ -42,16 +42,20 @@ export default function ApiDirectoryPage() {
 			}
 		>
 			<div className="space-y-4">
-				<div>
-					<label htmlFor="api-search" className="sr-only">
-						Search APIs
+				<div className="space-y-2">
+					<label
+						htmlFor="api-search"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						Search
 					</label>
 					<Input
 						id="api-search"
 						type="text"
-						placeholder="Search APIs..."
+						placeholder="Filter by name or description..."
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
+						className="font-mono"
 					/>
 				</div>
 
@@ -59,28 +63,43 @@ export default function ApiDirectoryPage() {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead>Name</TableHead>
-								<TableHead>Description</TableHead>
-								<TableHead>Auth</TableHead>
-								<TableHead>Link</TableHead>
+								<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
+									Name
+								</TableHead>
+								<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
+									Auth
+								</TableHead>
+								<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em]">
+									Endpoint
+								</TableHead>
+								<TableHead className="font-mono text-[11px] uppercase tracking-[0.08em] w-12"></TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{filteredApis.map((api) => (
 								<TableRow key={api.name}>
-									<TableCell className="font-medium">{api.name}</TableCell>
-									<TableCell>{api.description}</TableCell>
+								<TableCell>
+									<div className="font-mono text-sm">{api.name}</div>
+									<div className="mt-0.5 font-mono text-[10px] tracking-[0.08em] text-muted-foreground">
+										{api.description}
+									</div>
+								</TableCell>
 									<TableCell>
-										<Badge variant="secondary">{api.auth}</Badge>
+										<Badge variant={api.auth === "No" ? "secondary" : "default"}>
+											{api.auth}
+										</Badge>
+									</TableCell>
+									<TableCell className="font-mono text-sm break-all max-w-xs">
+										{api.link}
 									</TableCell>
 									<TableCell>
 										<a
 											href={api.link}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="text-primary underline-offset-4 hover:underline"
+											className="font-mono text-sm"
 										>
-											Documentation
+											{">>>"}
 										</a>
 									</TableCell>
 								</TableRow>
@@ -89,7 +108,9 @@ export default function ApiDirectoryPage() {
 					</Table>
 
 					{filteredApis.length === 0 && (
-						<p className="text-center text-muted-foreground mt-4">No APIs found.</p>
+						<p className="mt-4 text-center font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ NO MATCH ]
+						</p>
 					)}
 				</div>
 			</div>

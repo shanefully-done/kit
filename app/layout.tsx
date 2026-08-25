@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import Sidebar from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import MobileNavToggle from "@/components/MobileNavToggle";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
+const inter = Inter({
+	variable: "--font-inter",
 	subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
+const ibmPlexMono = IBM_Plex_Mono({
+	weight: ["400", "500", "600"],
+	variable: "--font-ibm-plex-mono",
 	subsets: ["latin"],
 });
 
@@ -44,38 +45,35 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
-				>
-					<div className="flex min-h-screen">
-						{/* Desktop Sidebar */}
-						<aside className="hidden md:flex md:flex-col w-72 border-r bg-background">
-							<Sidebar />
-						</aside>
+		<html lang="en">
+			<body className={`${inter.variable} ${ibmPlexMono.variable} antialiased`}>
+				<div className="flex min-h-screen bg-background">
+					{/* Desktop Sidebar */}
+					<aside className="hidden md:flex md:flex-col w-72 border-r-2 border-ink bg-paper">
+						<Sidebar />
+					</aside>
 
-						{/* Main Content */}
-						<main className="flex-1 overflow-auto">
-							{/* Mobile Header with Sheet Trigger */}
-							<div className="sticky top-0 z-20 flex items-center gap-2 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-3 md:hidden">
-								<Sheet>
-									<MobileNavToggle />
-									<SheetContent side="left" className="w-64 p-0" aria-label="Sidebar">
-										<Sidebar />
-									</SheetContent>
-								</Sheet>
-								<span className="text-sm font-medium text-muted-foreground">Menu</span>
-							</div>
+					{/* Main Content */}
+					<main className="flex-1 overflow-auto">
+						{/* Mobile Header with Sheet Trigger */}
+						<div className="sticky top-0 z-20 flex items-center gap-3 border-b-2 border-ink bg-paper p-3 md:hidden">
+							<Sheet>
+								<MobileNavToggle />
+								<SheetContent side="left" className="w-64 p-0" aria-label="Sidebar">
+									<Sidebar />
+								</SheetContent>
+							</Sheet>
+							<span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+								[ NAV ]
+							</span>
+						</div>
 
-							<div className="p-4 md:p-6">{children}</div>
-						</main>
-					</div>
-				</ThemeProvider>
+						<div className="p-4 md:p-8">{children}</div>
+					</main>
+				</div>
+				<div className="noise-overlay" aria-hidden="true" />
 				<Toaster />
+				<SonnerToaster />
 			</body>
 		</html>
 	);

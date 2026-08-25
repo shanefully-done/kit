@@ -26,16 +26,16 @@ export default function PageContainer({
 		size === "sm"
 			? "max-w-prose"
 			: size === "md"
-			? "max-w-screen-md"
-			: size === "lg"
-			? "max-w-screen-lg"
-			: "max-w-none";
+				? "max-w-screen-md"
+				: size === "lg"
+					? "max-w-screen-lg"
+					: "max-w-none";
 
 	return (
 		<div
 			className={cn(
 				"min-h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8",
-				className
+				className,
 			)}
 			{...rest}
 		>

@@ -59,9 +59,10 @@ const HashGeneratorPage = () => {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
-				<div className="space-y-2">
-					<label className="text-sm font-medium">Input Text</label>
+				<div>
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-2">
+						[ Input ]
+					</p>
 					<Textarea
 						placeholder="Enter text here..."
 						value={inputText}
@@ -71,9 +72,10 @@ const HashGeneratorPage = () => {
 					/>
 				</div>
 
-				{/* AdditionalSettings */}
-				<div className="space-y-2">
-					<label className="text-sm font-medium">Algorithm</label>
+				<div>
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-2">
+						[ Algorithm ]
+					</p>
 					<Select
 						value={selectedAlgorithm}
 						onValueChange={(value) => setSelectedAlgorithm(value)}
@@ -90,23 +92,20 @@ const HashGeneratorPage = () => {
 					</Select>
 				</div>
 
-				{/* ResultDisplay */}
-				<div className="space-y-2">
-					<label className="text-sm font-medium">Hashed Output</label>
-					<Textarea
-						value={hashedOutput}
-						readOnly
-						rows={8}
-						className="w-full bg-gray-100 dark:bg-gray-800"
-					/>
-				</div>
-
-				{/* ActionButtons */}
-				<div className="flex flex-wrap gap-2">
-					<Button onClick={handleCopyClick} className="mt-2">
-						Copy to Clipboard
-					</Button>
-				</div>
+				{hashedOutput && (
+					<>
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ Digest ]
+						</p>
+						<div className="grid grid-cols-[5rem_1fr_auto] items-center gap-2 border-b border-ink py-2">
+							<span className="font-mono text-xs uppercase">{selectedAlgorithm}</span>
+							<span className="font-mono text-sm break-all">{hashedOutput}</span>
+							<Button variant="outline" onClick={handleCopyClick}>
+								Copy
+							</Button>
+						</div>
+					</>
+				)}
 			</div>
 		</ToolPageLayout>
 	);

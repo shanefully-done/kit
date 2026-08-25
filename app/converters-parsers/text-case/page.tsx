@@ -56,37 +56,46 @@ const TextCaseConverterPage = () => {
 			}
 		>
 			<div className="space-y-4">
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<div>
-						<label className="text-sm font-medium mb-2 block">Input</label>
-						<Textarea
-							placeholder="Enter your text here..."
-							value={inputText}
-							onChange={(e) => setInputText(e.target.value)}
-							className="min-h-[160px] resize-y"
-						/>
-					</div>
-					<div>
-						<label className="text-sm font-medium mb-2 block">Output</label>
-						<Textarea
-							placeholder="Converted text will appear here..."
-							value={outputText}
-							readOnly
-							className="min-h-[160px] resize-y"
-						/>
-					</div>
+				<Textarea
+					placeholder="Enter your text here..."
+					value={inputText}
+					onChange={(e) => setInputText(e.target.value)}
+					className="min-h-[160px] resize-y font-mono"
+				/>
+
+				<div className="grid grid-cols-2 md:grid-cols-4 border border-ink divide-x divide-y divide-ink">
+					<Button variant="outline" onClick={() => handleConvert("UPPERCASE")}>
+						UPPERCASE
+					</Button>
+					<Button variant="outline" onClick={() => handleConvert("lowercase")}>
+						LOWERCASE
+					</Button>
+					<Button variant="outline" onClick={() => handleConvert("Title Case")}>
+						TITLE CASE
+					</Button>
+					<Button variant="outline" onClick={() => handleConvert("camelCase")}>
+						CAMELCASE
+					</Button>
+					<Button variant="outline" onClick={() => handleConvert("snake_case")}>
+						SNAKE_CASE
+					</Button>
+					<Button variant="outline" onClick={() => handleConvert("kebab-case")}>
+						KEBAB-CASE
+					</Button>
+					<Button variant="outline" onClick={handleCopy}>
+						COPY
+					</Button>
 				</div>
 
-				<div className="flex flex-wrap gap-2">
-					<Button onClick={() => handleConvert("UPPERCASE")}>UPPERCASE</Button>
-					<Button onClick={() => handleConvert("lowercase")}>lowercase</Button>
-					<Button onClick={() => handleConvert("Title Case")}>Title Case</Button>
-					<Button onClick={() => handleConvert("camelCase")}>camelCase</Button>
-					<Button onClick={() => handleConvert("snake_case")}>snake_case</Button>
-					<Button onClick={() => handleConvert("kebab-case")}>kebab-case</Button>
-					<Button variant="ghost" onClick={handleCopy} aria-label="Copy output text">
-						Copy
-					</Button>
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ OUTPUT ]
+				</p>
+				<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all min-h-[160px]">
+					{outputText || (
+						<span className="text-muted-foreground">
+							Converted text will appear here...
+						</span>
+					)}
 				</div>
 			</div>
 		</ToolPageLayout>

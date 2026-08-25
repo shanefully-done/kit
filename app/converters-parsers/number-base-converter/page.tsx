@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Copy, Calculator as CalculatorIcon } from "lucide-react";
 import { toast } from "sonner";
 import ToolPageLayout from "@/components/ToolPageLayout";
@@ -71,7 +71,7 @@ export default function NumberBaseConverter() {
 				setBinary("");
 			}
 		},
-		[activeInput]
+		[activeInput],
 	);
 
 	useEffect(() => {
@@ -116,13 +116,18 @@ export default function NumberBaseConverter() {
 				/>
 			}
 		>
-			<div className="space-y-4">
-				{/* InputArea */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<div className="space-y-2">
-						<Label htmlFor="decimal" className="text-sm">
-							Decimal
-						</Label>
+			<div className="space-y-3">
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ INPUT ]
+				</p>
+				<div className="space-y-2">
+					<div className="grid grid-cols-[4.5rem_1fr] items-center gap-2">
+						<label
+							htmlFor="decimal"
+							className="font-mono text-[11px] uppercase tracking-[0.08em]"
+						>
+							DEC
+						</label>
 						<div className="flex gap-2">
 							<Input
 								id="decimal"
@@ -135,7 +140,7 @@ export default function NumberBaseConverter() {
 								placeholder="Enter decimal number"
 							/>
 							<Button
-								variant="ghost"
+								variant="outline"
 								size="icon"
 								aria-label="Copy decimal"
 								onClick={() => handleCopy(decimal)}
@@ -145,10 +150,13 @@ export default function NumberBaseConverter() {
 						</div>
 					</div>
 
-					<div className="space-y-2">
-						<Label htmlFor="hexadecimal" className="text-sm">
-							Hexadecimal
-						</Label>
+					<div className="grid grid-cols-[4.5rem_1fr] items-center gap-2">
+						<label
+							htmlFor="hexadecimal"
+							className="font-mono text-[11px] uppercase tracking-[0.08em]"
+						>
+							HEX
+						</label>
 						<div className="flex gap-2">
 							<Input
 								id="hexadecimal"
@@ -158,7 +166,7 @@ export default function NumberBaseConverter() {
 								placeholder="Enter hexadecimal number"
 							/>
 							<Button
-								variant="ghost"
+								variant="outline"
 								size="icon"
 								aria-label="Copy hexadecimal"
 								onClick={() => handleCopy(hexadecimal)}
@@ -168,10 +176,13 @@ export default function NumberBaseConverter() {
 						</div>
 					</div>
 
-					<div className="space-y-2">
-						<Label htmlFor="octal" className="text-sm">
-							Octal
-						</Label>
+					<div className="grid grid-cols-[4.5rem_1fr] items-center gap-2">
+						<label
+							htmlFor="octal"
+							className="font-mono text-[11px] uppercase tracking-[0.08em]"
+						>
+							OCT
+						</label>
 						<div className="flex gap-2">
 							<Input
 								id="octal"
@@ -184,7 +195,7 @@ export default function NumberBaseConverter() {
 								placeholder="Enter octal number"
 							/>
 							<Button
-								variant="ghost"
+								variant="outline"
 								size="icon"
 								aria-label="Copy octal"
 								onClick={() => handleCopy(octal)}
@@ -194,10 +205,13 @@ export default function NumberBaseConverter() {
 						</div>
 					</div>
 
-					<div className="space-y-2">
-						<Label htmlFor="binary" className="text-sm">
-							Binary
-						</Label>
+					<div className="grid grid-cols-[4.5rem_1fr] items-center gap-2">
+						<label
+							htmlFor="binary"
+							className="font-mono text-[11px] uppercase tracking-[0.08em]"
+						>
+							BIN
+						</label>
 						<div className="flex gap-2">
 							<Input
 								id="binary"
@@ -210,7 +224,7 @@ export default function NumberBaseConverter() {
 								placeholder="Enter binary number"
 							/>
 							<Button
-								variant="ghost"
+								variant="outline"
 								size="icon"
 								aria-label="Copy binary"
 								onClick={() => handleCopy(binary)}
@@ -220,15 +234,6 @@ export default function NumberBaseConverter() {
 						</div>
 					</div>
 				</div>
-
-				{/* ActionButtons - none primary actions for this tool beyond copy, grouped if added later */}
-				<div className="flex flex-wrap gap-2" aria-hidden />
-
-				{/* AdditionalSettings - none for this tool */}
-				<div aria-hidden />
-
-				{/* ResultDisplay - values already visible in inputs */}
-				<div aria-hidden />
 			</div>
 		</ToolPageLayout>
 	);

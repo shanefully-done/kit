@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CopyIcon, SettingsIcon } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
@@ -21,7 +20,7 @@ const base64UrlDecode = (str: string) => {
 				.map(function (c) {
 					return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
 				})
-				.join("")
+				.join(""),
 		);
 	} catch (error) {
 		console.error("Base64 URL decode error:", error);
@@ -83,10 +82,12 @@ const JwtDecoderPage = () => {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
 				<div>
-					<label htmlFor="jwt-input" className="text-sm">
-						Encoded
+					<label
+						htmlFor="jwt-input"
+						className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground"
+					>
+						[ ENCODED TOKEN ]
 					</label>
 					<Textarea
 						id="jwt-input"
@@ -98,28 +99,19 @@ const JwtDecoderPage = () => {
 					/>
 				</div>
 
-				{/* ActionButtons */}
-				<div className="flex flex-wrap gap-2">
-					{/* No primary actions in original; keeping structure for consistency */}
-				</div>
+				{!isValid && (
+					<div className="flex items-center gap-2 border border-hazard px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard">
+						[ MALFORMED JWT TOKEN ]
+					</div>
+				)}
 
-				{/* AdditionalSettings */}
-				<div>
-					{!isValid && (
-						<Badge variant="destructive" className="mb-2">
-							Warning: Malformed JWT Token
-						</Badge>
-					)}
-				</div>
-
-				{/* ResultDisplay */}
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div className="space-y-4">
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-								<CardTitle className="text-sm font-medium">Header</CardTitle>
+								<CardTitle>Header</CardTitle>
 								<Button
-									variant="ghost"
+									variant="outline"
 									size="sm"
 									aria-label="Copy header"
 									onClick={() => copyToClipboard(header)}
@@ -127,8 +119,8 @@ const JwtDecoderPage = () => {
 									<CopyIcon className="h-4 w-4" />
 								</Button>
 							</CardHeader>
-							<CardContent>
-								<pre className="whitespace-pre-wrap break-all text-sm bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono">
+							<CardContent className="font-mono text-xs break-all">
+								<pre className="whitespace-pre-wrap bg-muted/40 p-3 border-t">
 									{header}
 								</pre>
 							</CardContent>
@@ -136,9 +128,9 @@ const JwtDecoderPage = () => {
 
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-								<CardTitle className="text-sm font-medium">Signature</CardTitle>
+								<CardTitle>Signature</CardTitle>
 								<Button
-									variant="ghost"
+									variant="outline"
 									size="sm"
 									aria-label="Copy signature"
 									onClick={() => copyToClipboard(signature)}
@@ -146,8 +138,8 @@ const JwtDecoderPage = () => {
 									<CopyIcon className="h-4 w-4" />
 								</Button>
 							</CardHeader>
-							<CardContent>
-								<pre className="whitespace-pre-wrap break-all text-sm bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono">
+							<CardContent className="font-mono text-xs break-all">
+								<pre className="whitespace-pre-wrap bg-muted/40 p-3 border-t">
 									{signature}
 								</pre>
 							</CardContent>
@@ -157,9 +149,9 @@ const JwtDecoderPage = () => {
 					<div className="space-y-4">
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-								<CardTitle className="text-sm font-medium">Payload</CardTitle>
+								<CardTitle>Payload</CardTitle>
 								<Button
-									variant="ghost"
+									variant="outline"
 									size="sm"
 									aria-label="Copy payload"
 									onClick={() => copyToClipboard(payload)}
@@ -167,14 +159,14 @@ const JwtDecoderPage = () => {
 									<CopyIcon className="h-4 w-4" />
 								</Button>
 							</CardHeader>
-							<CardContent>
-								<pre className="whitespace-pre-wrap break-all text-sm bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono">
+							<CardContent className="font-mono text-xs break-all">
+								<pre className="whitespace-pre-wrap bg-muted/40 p-3 border-t">
 									{payload}
 								</pre>
 							</CardContent>
 						</Card>
 
-						<p className="text-sm text-muted-foreground">
+						<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
 							Note: Signature verification status is not checked by this decoder.
 						</p>
 					</div>

@@ -73,7 +73,7 @@ export default function TimezoneConverterPage() {
 		const [searchValue, setSearchValue] = useState("");
 
 		const filteredTimezones = timezones.filter((tz) =>
-			tz.toLowerCase().includes(searchValue.toLowerCase())
+			tz.toLowerCase().includes(searchValue.toLowerCase()),
 		);
 
 		return (
@@ -113,7 +113,7 @@ export default function TimezoneConverterPage() {
 										<Check
 											className={cn(
 												"mr-2 h-4 w-4",
-												selectedTimezone === timezone ? "opacity-100" : "opacity-0"
+												selectedTimezone === timezone ? "opacity-100" : "opacity-0",
 											)}
 										/>
 										{timezone}
@@ -137,102 +137,117 @@ export default function TimezoneConverterPage() {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-					{/* Source Timezone Input */}
-					<div className="flex flex-col space-y-4">
-						<label htmlFor="source-time" className="text-sm">
-							Source Time
-						</label>
-						<div className="flex items-center gap-2">
-							<Popover>
-								<PopoverTrigger asChild>
-									<Button
-										variant={"outline"}
-										className={cn(
-											"w-[200px] justify-start text-left font-normal",
-											!sourceTime && "text-muted-foreground"
-										)}
-									>
-										<CalendarIcon className="mr-2 h-4 w-4" />
-										{sourceTime ? format(sourceTime, "PPP") : <span>Pick a date</span>}
-									</Button>
-								</PopoverTrigger>
-								<PopoverContent className="w-auto p-0">
-									<Calendar
-										mode="single"
-										selected={sourceTime}
-										onSelect={setSourceTime}
-										initialFocus
-									/>
-								</PopoverContent>
-							</Popover>
-							<input
-								type="time"
-								value={sourceTime ? format(sourceTime, "HH:mm") : ""}
-								onChange={(e) => {
-									const [hours, minutes] = e.target.value.split(":").map(Number);
-									if (sourceTime) {
-										const newTime = new Date(sourceTime);
-										newTime.setHours(hours, minutes);
-										setSourceTime(newTime);
-									}
-								}}
-								className="p-2 border rounded"
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ CONVERSION ]
+				</p>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					{/* Source Timezone */}
+					<div className="border border-ink bg-muted/40 p-4 space-y-3">
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ SOURCE ]
+						</p>
+						<div className="grid w-full items-center gap-2">
+							<label
+								htmlFor="source-time"
+								className="font-mono text-[11px] uppercase tracking-[0.08em]"
+							>
+								DATE
+							</label>
+							<div className="flex items-center gap-2">
+								<Popover>
+									<PopoverTrigger asChild>
+										<Button
+											variant={"outline"}
+											className={cn(
+												"w-full justify-start text-left font-normal",
+												!sourceTime && "text-muted-foreground",
+											)}
+										>
+											<CalendarIcon className="mr-2 h-4 w-4" />
+											{sourceTime ? format(sourceTime, "PPP") : <span>Pick a date</span>}
+										</Button>
+									</PopoverTrigger>
+									<PopoverContent className="w-auto p-0">
+										<Calendar
+											mode="single"
+											selected={sourceTime}
+											onSelect={setSourceTime}
+											initialFocus
+										/>
+									</PopoverContent>
+								</Popover>
+								<input
+									type="time"
+									value={sourceTime ? format(sourceTime, "HH:mm") : ""}
+									onChange={(e) => {
+										const [hours, minutes] = e.target.value.split(":").map(Number);
+										if (sourceTime) {
+											const newTime = new Date(sourceTime);
+											newTime.setHours(hours, minutes);
+											setSourceTime(newTime);
+										}
+									}}
+									className="p-2 border border-ink bg-card"
+								/>
+							</div>
+						</div>
+						<div className="grid w-full items-center gap-2">
+							<label
+								htmlFor="source-timezone"
+								className="font-mono text-[11px] uppercase tracking-[0.08em]"
+							>
+								TIMEZONE
+							</label>
+							<TimezoneSelect
+								selectedTimezone={sourceTimezone}
+								onSelectTimezone={setSourceTimezone}
 							/>
 						</div>
-
-						<label htmlFor="source-timezone" className="text-sm">
-							Source Timezone
-						</label>
-						<TimezoneSelect
-							selectedTimezone={sourceTimezone}
-							onSelectTimezone={setSourceTimezone}
-						/>
 					</div>
 
-					{/* Target Timezone Input */}
-					<div className="flex flex-col space-y-4">
-						<label htmlFor="target-timezone" className="text-sm">
-							Target Timezone
-						</label>
-						<TimezoneSelect
-							selectedTimezone={targetTimezone}
-							onSelectTimezone={setTargetTimezone}
-						/>
-
-						<label htmlFor="converted-time" className="text-sm">
-							Converted Time
-						</label>
-						<div className="flex items-center gap-2">
-							<input
-								type="text"
-								id="converted-time"
-								value={convertedTime}
-								readOnly
-								className="p-2 border rounded bg-gray-100 flex-1"
-							/>
-							<Button
-								variant="ghost"
-								size="icon"
-								aria-label="Copy converted time"
-								onClick={() => navigator.clipboard.writeText(convertedTime)}
-								disabled={!convertedTime}
+					{/* Target Timezone */}
+					<div className="border border-ink bg-muted/40 p-4 space-y-3">
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+							[ TARGET ]
+						</p>
+						<div className="grid w-full items-center gap-2">
+							<label
+								htmlFor="target-timezone"
+								className="font-mono text-[11px] uppercase tracking-[0.08em]"
 							>
-								<CopyIcon className="h-4 w-4" aria-hidden />
-							</Button>
+								TIMEZONE
+							</label>
+							<TimezoneSelect
+								selectedTimezone={targetTimezone}
+								onSelectTimezone={setTargetTimezone}
+							/>
+						</div>
+						<div>
+							<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-1">
+								CONVERTED TIME
+							</p>
+							<div className="border border-ink bg-muted/40 px-3 py-3 flex items-center justify-between gap-2">
+								<span
+									className={cn(
+										"font-mono text-lg md:text-xl break-all",
+										convertedTime === "Invalid Timezone or Date" && "text-hazard",
+									)}
+								>
+									{convertedTime || "—"}
+								</span>
+								<Button
+									variant="outline"
+									size="icon"
+									aria-label="Copy converted time"
+									onClick={() => navigator.clipboard.writeText(convertedTime)}
+									disabled={!convertedTime}
+								>
+									<CopyIcon className="h-4 w-4" aria-hidden />
+								</Button>
+							</div>
 						</div>
 					</div>
 				</div>
-
-				{/* ActionButtons */}
-				<div className="flex flex-wrap gap-2" aria-hidden />
-
-				{/* AdditionalSettings */}
-				<div aria-hidden />
-
-				{/* ResultDisplay */}
-				<div aria-hidden />
 			</div>
 		</ToolPageLayout>
 	);

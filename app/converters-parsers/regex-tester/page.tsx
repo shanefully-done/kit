@@ -5,6 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import HighlightWords from "react-highlight-words";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ToolHeader from "@/components/ToolHeader";
 import { SettingsIcon } from "lucide-react";
@@ -39,7 +47,7 @@ export default function RegexTesterPage() {
 	const updateMatches = (
 		pattern: string,
 		text: string,
-		currentFlags: typeof flags
+		currentFlags: typeof flags,
 	) => {
 		if (!pattern) {
 			setMatches([]);
@@ -76,19 +84,19 @@ export default function RegexTesterPage() {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
 				<div className="space-y-2">
-					<label htmlFor="regex-pattern" className="text-sm">
-						Regex Pattern
-					</label>
 					<Input
-						id="regex-pattern"
 						type="text"
 						value={regexPattern}
 						onChange={handleRegexChange}
 						placeholder="Enter regex pattern"
+						className="font-mono"
+						aria-label="Regex pattern"
 					/>
 
+					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+						FLAGS
+					</p>
 					<div className="flex flex-wrap gap-2">
 						<Badge
 							variant={flags.g ? "default" : "outline"}
@@ -113,84 +121,75 @@ export default function RegexTesterPage() {
 						</Badge>
 					</div>
 
-					<label htmlFor="test-string" className="text-sm">
-						Test String
-					</label>
 					<Textarea
-						id="test-string"
 						value={testString}
 						onChange={handleTestStringChange}
 						placeholder="Enter string to test against"
 						rows={10}
 						className="font-mono"
+						aria-label="Test string"
 					/>
 				</div>
 
-				{/* ActionButtons */}
-				<div className="flex flex-wrap gap-2"></div>
-
-				{/* AdditionalSettings */}
-				<div className="sr-only">No additional settings</div>
-
-				{/* ResultDisplay */}
-				<div className="space-y-4">
-					<div className="bg-gray-100 p-4 rounded-md">
-						<h3 className="text-lg font-medium mb-2">
-							Highlighted Matches ({matches.length})
-						</h3>
-						<div className="whitespace-pre-wrap font-mono">
-							{testString && regexPattern ? (
-								<HighlightWords
-									highlightClassName="bg-yellow-300"
-									searchWords={matches}
-									autoEscape={true}
-									textToHighlight={testString}
-								/>
-							) : (
-								testString
-							)}
-						</div>
+				{error ? (
+					<div className="border border-hazard bg-muted/40 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard">
+						ERROR: {error}
 					</div>
+				) : matches.length === 0 && regexPattern && testString ? (
+					<div className="border border-hazard px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-hazard">
+						[ NO MATCH ]
+					</div>
+				) : (
+					<div className="border border-ink px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+						[ {matches.length} MATCHES ]
+					</div>
+				)}
 
-					<div className="bg-gray-100 p-4 rounded-md">
-						<h3 className="text-lg font-medium mb-2">Match Details</h3>
-						{matches.length === 0 ? (
-							<p>No matches found.</p>
+				<div className="space-y-4">
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+						[ HIGHLIGHTED MATCHES ]
+					</p>
+					<div className="border border-ink bg-muted/40 p-3 font-mono text-sm whitespace-pre-wrap">
+						{testString && regexPattern ? (
+							<HighlightWords
+								highlightStyle={{ backgroundColor: "#E61919", color: "#F4F4F0" }}
+								searchWords={matches}
+								autoEscape={true}
+								textToHighlight={testString}
+							/>
 						) : (
-							<table className="min-w-full divide-y divide-gray-200">
-								<thead className="bg-gray-50">
-									<tr>
-										<th
-											scope="col"
-											className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-										>
-											Match
-										</th>
-										<th
-											scope="col"
-											className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-										>
-											Index
-										</th>
-									</tr>
-								</thead>
-								<tbody className="bg-white divide-y divide-gray-200">
-									{matches.map((match, index) => (
-										<tr key={index}>
-											<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-												{match}
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-												{testString.indexOf(match)}
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
+							testString
 						)}
 					</div>
 
-					{error && <p className="text-red-500">Error: {error}</p>}
+					<div className="border-t border-ink pt-4" />
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+						[ MATCH DETAILS ]
+					</p>
+					{matches.length === 0 ? (
+						<div className="border border-ink bg-muted/40 p-3 font-mono text-sm text-muted-foreground">
+							No matches found.
+						</div>
+					) : (
+						<Table>
+							<TableHeader>
+								<TableRow>
+									<TableHead>Match</TableHead>
+									<TableHead>Index</TableHead>
+								</TableRow>
+							</TableHeader>
+							<TableBody>
+								{matches.map((match, index) => (
+									<TableRow key={index}>
+										<TableCell className="font-mono">{match}</TableCell>
+										<TableCell className="font-mono">
+											{testString.indexOf(match)}
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					)}
 				</div>
 			</div>
 		</ToolPageLayout>

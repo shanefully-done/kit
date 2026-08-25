@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ToolPageLayout } from "@/components/ToolPageLayout";
 import { ToolHeader } from "@/components/ToolHeader";
-import { QrCodeIcon } from "lucide-react";
+import { QrCodeIcon, Download, Copy } from "lucide-react";
 
 export default function QRCodePage() {
 	const [text, setText] = useState("");
@@ -156,54 +156,76 @@ export default function QRCodePage() {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
+				{/* Encode Section */}
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ ENCODE ]
+				</p>
 				<div className="space-y-2">
-					<label className="text-sm font-medium">Text or URL</label>
+					<label
+						htmlFor="qr-text"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						Content
+					</label>
 					<Input
+						id="qr-text"
 						type="text"
 						placeholder="Enter text or URL"
 						value={text}
 						onChange={(e) => setText(e.target.value)}
+						className="font-mono"
 					/>
 				</div>
 
-				{/* ActionButtons */}
 				<div className="flex flex-wrap gap-2">
 					<Button onClick={generateQrCode}>Generate</Button>
 					{qrCodeSvg && (
 						<>
-							<Button variant="secondary" onClick={() => downloadQrCode("png")}>
-								Download PNG
+							<Button variant="outline" onClick={() => downloadQrCode("png")}>
+								<Download className="h-4 w-4 mr-2" aria-hidden="true" />
+								PNG
 							</Button>
-							<Button variant="secondary" onClick={() => downloadQrCode("svg")}>
-								Download SVG
+							<Button variant="outline" onClick={() => downloadQrCode("svg")}>
+								<Download className="h-4 w-4 mr-2" aria-hidden="true" />
+								SVG
 							</Button>
-							<Button variant="ghost" onClick={copyToClipboard}>
+							<Button variant="outline" onClick={copyToClipboard}>
+								<Copy className="h-4 w-4 mr-2" aria-hidden="true" />
 								Copy Text
 							</Button>
 						</>
 					)}
 				</div>
 
-				{/* AdditionalSettings */}
-				<div className="sr-only">
-					<h2>Additional Settings</h2>
-				</div>
-
-				{/* ResultDisplay */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-					<div className="space-y-4">
-						<p className="text-sm font-medium">Generated QR</p>
+				{/* QR Output */}
+				<div className="space-y-2">
+					<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+						[ OUTPUT ]
+					</p>
+					<div className="border border-ink bg-card p-4 grid place-items-center">
 						{qrCodeSvg ? (
 							<div ref={qrCodeRef} dangerouslySetInnerHTML={{ __html: qrCodeSvg }} />
 						) : (
-							<p className="text-sm text-muted-foreground">No QR yet. Generate one.</p>
+							<p className="font-mono text-sm text-muted-foreground">
+								No QR yet. Generate one.
+							</p>
 						)}
 					</div>
+				</div>
 
-					<div className="space-y-4">
-						<p className="text-sm font-medium">Read QR from Image</p>
-						<div className="border-2 border-dashed border-gray-300 rounded p-8 text-center">
+				{/* Decode Section */}
+				<div className="border-t border-ink pt-4">
+					<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+						[ DECODE ]
+					</p>
+					<div className="mt-3 space-y-2">
+						<label
+							htmlFor="qr-image-upload"
+							className="font-mono text-[11px] uppercase tracking-[0.08em]"
+						>
+							Upload Image
+						</label>
+						<div className="border border-ink border-dashed p-8 grid place-items-center">
 							<Input
 								type="file"
 								accept="image/*"
@@ -213,24 +235,37 @@ export default function QRCodePage() {
 							/>
 							<label
 								htmlFor="qr-image-upload"
-								className="cursor-pointer text-blue-500"
+								className="cursor-pointer font-mono text-sm text-muted-foreground"
 							>
-								Drag & drop an image or click to upload
+								Click to upload QR image
 							</label>
 						</div>
+					</div>
 
-						{decodedText && (
-							<div className="space-y-2">
-								<p className="text-sm font-medium">Decoded Text</p>
-								<p className="break-words">{decodedText}</p>
-								<div className="flex flex-wrap gap-2">
-									<Button size="sm" variant="ghost" onClick={copyDecodedTextToClipboard}>
+					{decodedText && (
+						<div className="mt-3 space-y-2">
+							<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+								[ DECODED ]
+							</p>
+							{decodedText === "No QR code found." ? (
+								<p className="font-mono text-sm text-hazard">No QR code found.</p>
+							) : (
+								<>
+									<div className="border border-ink bg-muted/40 p-3 font-mono text-sm break-all">
+										{decodedText}
+									</div>
+									<Button
+										size="sm"
+										variant="outline"
+										onClick={copyDecodedTextToClipboard}
+									>
+										<Copy className="h-4 w-4 mr-2" aria-hidden="true" />
 										Copy Decoded
 									</Button>
-								</div>
-							</div>
-						)}
-					</div>
+								</>
+							)}
+						</div>
+					)}
 				</div>
 			</div>
 		</ToolPageLayout>

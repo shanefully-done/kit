@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import {
 	Popover,
@@ -65,7 +65,7 @@ const TimestampConverterPage = () => {
 	};
 
 	const handleHumanReadableDateChange = (
-		e: React.ChangeEvent<HTMLInputElement>
+		e: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		const value = e.target.value;
 		setHumanReadableDate(value);
@@ -115,126 +115,116 @@ const TimestampConverterPage = () => {
 			}
 		>
 			<div className="space-y-4">
-				{/* InputArea */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-					{/* Left: Unix Timestamp -> Human */}
-					<div className="grid w-full items-center gap-4">
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="unix-timestamp" className="text-sm">
-								Input Unix Timestamp
-							</Label>
-							<Input
-								id="unix-timestamp"
-								placeholder="e.g., 1678886400 or 1678886400000"
-								value={unixTimestamp}
-								onChange={handleUnixTimestampChange}
-							/>
-							{timestampError && (
-								<p className="text-red-500 text-sm">{timestampError}</p>
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ UNIX → HUMAN ]
+				</p>
+				<div className="grid w-full items-center gap-2">
+					<label
+						htmlFor="unix-timestamp"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						EXPRESSION
+					</label>
+					<Input
+						id="unix-timestamp"
+						placeholder="e.g., 1678886400 or 1678886400000"
+						value={unixTimestamp}
+						onChange={handleUnixTimestampChange}
+					/>
+					{timestampError && (
+						<p className="font-mono text-sm text-hazard">{timestampError}</p>
+					)}
+				</div>
+
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ HUMAN → UNIX ]
+				</p>
+				<div className="grid w-full items-center gap-2">
+					<label
+						htmlFor="human-readable-input"
+						className="font-mono text-[11px] uppercase tracking-[0.08em]"
+					>
+						EXPRESSION
+					</label>
+					<Input
+						id="human-readable-input"
+						placeholder="e.g., 2023-03-15 00:00:00"
+						value={humanReadableDate}
+						onChange={handleHumanReadableDateChange}
+					/>
+					{dateError && <p className="font-mono text-sm text-hazard">{dateError}</p>}
+				</div>
+
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ DATE PICKER ]
+				</p>
+				<Popover>
+					<PopoverTrigger asChild>
+						<Button
+							variant={"outline"}
+							className={cn(
+								"w-full justify-start text-left font-normal",
+								!selectedDate && "text-muted-foreground",
 							)}
-						</div>
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="human-readable-output" className="text-sm">
-								Human-Readable Date/Time
-							</Label>
-							<div className="flex items-center gap-2">
-								<Input
-									id="human-readable-output"
-									value={humanReadableDate}
-									readOnly
-									className="flex-1"
-								/>
-								<Button
-									variant="ghost"
-									size="icon"
-									onClick={() => copyToClipboard(humanReadableDate)}
-									disabled={!humanReadableDate}
-									aria-label="Copy human readable"
-								>
-									<CopyIcon className="h-4 w-4" aria-hidden />
-								</Button>
-							</div>
+						>
+							<CalendarIcon className="mr-2 h-4 w-4" />
+							{selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
+						</Button>
+					</PopoverTrigger>
+					<PopoverContent className="w-auto p-0">
+						<Calendar
+							mode="single"
+							selected={selectedDate}
+							onSelect={handleDateSelect}
+							initialFocus
+						/>
+					</PopoverContent>
+				</Popover>
+
+				<div className="border-t border-ink pt-4" />
+				<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+					[ READOUTS ]
+				</p>
+				<div className="space-y-3">
+					<div>
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-1">
+							UNIX TIMESTAMP
+						</p>
+						<div className="border border-ink bg-muted/40 px-3 py-3 flex items-center justify-between gap-2">
+							<span className="font-mono text-lg md:text-xl break-all">
+								{unixTimestamp || "—"}
+							</span>
+							<Button
+								variant="outline"
+								size="icon"
+								onClick={() => copyToClipboard(unixTimestamp)}
+								disabled={!unixTimestamp}
+								aria-label="Copy unix timestamp"
+							>
+								<CopyIcon className="h-4 w-4" aria-hidden />
+							</Button>
 						</div>
 					</div>
-
-					{/* Right: Human -> Unix */}
-					<div className="grid w-full items-center gap-4">
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="human-readable-input" className="text-sm">
-								Input Date/Time
-							</Label>
-							<Input
-								id="human-readable-input"
-								placeholder="e.g., 2023-03-15 00:00:00"
-								value={humanReadableDate}
-								onChange={handleHumanReadableDateChange}
-							/>
-							{dateError && <p className="text-red-500 text-sm">{dateError}</p>}
-						</div>
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="date-picker" className="text-sm">
-								Select Date
-							</Label>
-							<Popover>
-								<PopoverTrigger asChild>
-									<Button
-										variant={"outline"}
-										className={cn(
-											"w-full justify-start text-left font-normal",
-											!selectedDate && "text-muted-foreground"
-										)}
-									>
-										<CalendarIcon className="mr-2 h-4 w-4" />
-										{selectedDate ? (
-											format(selectedDate, "PPP")
-										) : (
-											<span>Pick a date</span>
-										)}
-									</Button>
-								</PopoverTrigger>
-								<PopoverContent className="w-auto p-0">
-									<Calendar
-										mode="single"
-										selected={selectedDate}
-										onSelect={handleDateSelect}
-										initialFocus
-									/>
-								</PopoverContent>
-							</Popover>
-						</div>
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="unix-timestamp-output" className="text-sm">
-								Unix Timestamp
-							</Label>
-							<div className="flex items-center gap-2">
-								<Input
-									id="unix-timestamp-output"
-									value={unixTimestamp}
-									readOnly
-									className="flex-1"
-								/>
-								<Button
-									variant="ghost"
-									size="icon"
-									onClick={() => copyToClipboard(unixTimestamp)}
-									disabled={!unixTimestamp}
-									aria-label="Copy unix timestamp"
-								>
-									<CopyIcon className="h-4 w-4" aria-hidden />
-								</Button>
-							</div>
+					<div>
+						<p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground mb-1">
+							ISO 8601
+						</p>
+						<div className="border border-ink bg-muted/40 px-3 py-3 flex items-center justify-between gap-2">
+							<span className="font-mono text-lg md:text-xl break-all">
+								{humanReadableDate || "—"}
+							</span>
+							<Button
+								variant="outline"
+								size="icon"
+								onClick={() => copyToClipboard(humanReadableDate)}
+								disabled={!humanReadableDate}
+								aria-label="Copy human readable"
+							>
+								<CopyIcon className="h-4 w-4" aria-hidden />
+							</Button>
 						</div>
 					</div>
 				</div>
-
-				{/* ActionButtons */}
-				<div className="flex flex-wrap gap-2" aria-hidden />
-
-				{/* AdditionalSettings */}
-				<div aria-hidden />
-
-				{/* ResultDisplay */}
-				<div aria-hidden />
 			</div>
 		</ToolPageLayout>
 	);

@@ -19,7 +19,7 @@ export function MobileNavToggle({
 			<Button
 				aria-label={label}
 				title={label}
-				variant="ghost"
+				variant="outline"
 				size="icon"
 				className={className ? className : "md:hidden"}
 			>
