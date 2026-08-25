@@ -45,8 +45,8 @@ data/api-list.json                # Static dataset for API Directory tool
 Three files to touch:
 
 1. **`app/<category>/<tool-name>/page.tsx`** — the tool page
-2. **`components/ui/sidebar.tsx`** — add entry to the `tools` array (around line 22)
-3. **`app/page.tsx`** — add entry to the matching category's `hrefs` array
+2. **`components/ui/sidebar.tsx`** — add the entry to the matching category in the `groups` array
+3. **`app/page.tsx`** — add the entry to the matching section of the data array
 
 ### Tool page pattern
 
@@ -61,12 +61,7 @@ import { SomeIcon } from "lucide-react";
 export default function ToolPage() {
 	return (
 		<ToolPageLayout
-			header={
-				<ToolHeader
-					icon={<SomeIcon aria-hidden />}
-					title="Tool Name"
-				/>
-			}
+			header={<ToolHeader icon={<SomeIcon aria-hidden />} title="Tool Name" />}
 		>
 			{/* tool UI */}
 		</ToolPageLayout>
@@ -83,7 +78,7 @@ export default function ToolPage() {
 ### Homepage entry format
 
 ```ts
-{ label: "Short Name", href: "/category/tool-name" },
+{ name: "Tool Name", href: "/category/tool-name" },
 ```
 
 ## Style & Formatting

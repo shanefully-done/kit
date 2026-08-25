@@ -1,6 +1,6 @@
 # kit.
 
-A single-page developer toolkit — 20 instruments that run entirely in your browser. No API routes, no database, no auth, no telemetry: every route prerenders to static HTML and all computation (hashing, parsing, encoding, QR, EXIF) happens client-side.
+A single-page developer toolkit — 35 instruments that run entirely in your browser. No API routes, no database, no auth, no telemetry: every route prerenders to static HTML and all computation (hashing, parsing, encoding, QR, EXIF) happens client-side.
 
 Built with [Next.js 15](https://nextjs.org) (App Router), React 19, TypeScript, Tailwind CSS v4, and shadcn/ui, dressed in a Swiss Industrial Print design system: paper substrate, carbon ink, one hazard-red accent, zero rounded corners.
 
@@ -14,7 +14,11 @@ Live at [kit.ixtj.dev](https://kit.ixtj.dev).
 | ---------------------- | -------------------------------------------- |
 | Base64 Encoder/Decoder | `/converters-parsers/base64-encoder-decoder` |
 | Base64 Image Converter | `/converters-parsers/base64-image-converter` |
+| chmod Calculator       | `/converters-parsers/chmod-calculator`       |
+| Color Converter        | `/converters-parsers/color-converter`        |
 | CRON Parser            | `/converters-parsers/cron-parser`            |
+| curl to fetch          | `/converters-parsers/curl-converter`         |
+| Data Converter         | `/converters-parsers/data-converter`         |
 | JSON Parser            | `/converters-parsers/json-parser`            |
 | JWT Decoder            | `/converters-parsers/jwt-decoder`            |
 | Number Base Converter  | `/converters-parsers/number-base-converter`  |
@@ -28,21 +32,31 @@ Live at [kit.ixtj.dev](https://kit.ixtj.dev).
 
 ### Generators
 
-| Tool                       | Route                  |
-| -------------------------- | ---------------------- |
-| Gradient Generator         | `/generators/gradient` |
-| Hash Generator             | `/generators/hash`     |
-| Password Generator         | `/generators/password` |
-| Port Number Generator      | `/generators/port`     |
-| QR Code Generator & Reader | `/generators/qr-code`  |
-| UUID Generator             | `/generators/uuid`     |
+| Tool                       | Route                                   |
+| -------------------------- | --------------------------------------- |
+| Barcode Generator          | `/generators/barcode-generator`         |
+| Gradient Generator         | `/generators/gradient`                  |
+| Hash Generator             | `/generators/hash`                      |
+| HMAC Generator             | `/generators/hmac-generator`            |
+| ID Generator               | `/generators/id-generator`              |
+| Lorem Generator            | `/generators/lorem-generator`           |
+| Password Generator         | `/generators/password`                  |
+| Port Number Generator      | `/generators/port`                      |
+| QR Code Generator & Reader | `/generators/qr-code`                   |
+| SVG Placeholder Generator  | `/generators/svg-placeholder-generator` |
+| TOTP Generator             | `/generators/totp-generator`            |
+| UUID Generator             | `/generators/uuid`                      |
 
 ### Viewers & Misc
 
 | Tool                  | Route                                          |
 | --------------------- | ---------------------------------------------- |
 | API Directory         | `/viewers-miscellaneous/api-directory`         |
+| Diff Viewer           | `/viewers-miscellaneous/diff-viewer`           |
+| HTTP Status Codes     | `/viewers-miscellaneous/http-status-codes`     |
 | Image Metadata Viewer | `/viewers-miscellaneous/image-metadata-viewer` |
+| Token Counter         | `/viewers-miscellaneous/token-counter`         |
+| Unicode Inspector     | `/viewers-miscellaneous/unicode-inspector`     |
 
 ## Design System
 

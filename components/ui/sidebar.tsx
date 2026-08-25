@@ -18,6 +18,8 @@ const groups = [
 				name: "Base64 Image Converter",
 				href: "/converters-parsers/base64-image-converter",
 			},
+			{ name: "chmod Calculator", href: "/converters-parsers/chmod-calculator" },
+			{ name: "Color Converter", href: "/converters-parsers/color-converter" },
 			{ name: "CRON Parser", href: "/converters-parsers/cron-parser" },
 			{ name: "JSON Parser", href: "/converters-parsers/json-parser" },
 			{ name: "JWT Decoder", href: "/converters-parsers/jwt-decoder" },
@@ -25,6 +27,8 @@ const groups = [
 				name: "Number Base Converter",
 				href: "/converters-parsers/number-base-converter",
 			},
+			{ name: "curl to fetch", href: "/converters-parsers/curl-converter" },
+			{ name: "Data Converter", href: "/converters-parsers/data-converter" },
 			{ name: "Regex Tester", href: "/converters-parsers/regex-tester" },
 			{ name: "Text Case Converter", href: "/converters-parsers/text-case" },
 			{
@@ -46,11 +50,20 @@ const groups = [
 	{
 		label: "GENERATORS",
 		tools: [
+			{ name: "Barcode Generator", href: "/generators/barcode-generator" },
 			{ name: "Gradient Generator", href: "/generators/gradient" },
 			{ name: "Hash Generator", href: "/generators/hash" },
+			{ name: "HMAC Generator", href: "/generators/hmac-generator" },
+			{ name: "ID Generator", href: "/generators/id-generator" },
+			{ name: "Lorem Generator", href: "/generators/lorem-generator" },
 			{ name: "Password Generator", href: "/generators/password" },
 			{ name: "Port Number Generator", href: "/generators/port" },
 			{ name: "QR Code Generator & Reader", href: "/generators/qr-code" },
+			{
+				name: "SVG Placeholder Generator",
+				href: "/generators/svg-placeholder-generator",
+			},
+			{ name: "TOTP Generator", href: "/generators/totp-generator" },
 			{ name: "UUID Generator", href: "/generators/uuid" },
 		],
 	},
@@ -58,9 +71,19 @@ const groups = [
 		label: "VIEWERS & MISC",
 		tools: [
 			{ name: "API Directory", href: "/viewers-miscellaneous/api-directory" },
+			{ name: "Diff Viewer", href: "/viewers-miscellaneous/diff-viewer" },
+			{
+				name: "HTTP Status Codes",
+				href: "/viewers-miscellaneous/http-status-codes",
+			},
 			{
 				name: "Image Metadata Viewer",
 				href: "/viewers-miscellaneous/image-metadata-viewer",
+			},
+			{ name: "Token Counter", href: "/viewers-miscellaneous/token-counter" },
+			{
+				name: "Unicode Inspector",
+				href: "/viewers-miscellaneous/unicode-inspector",
 			},
 		],
 	},

@@ -78,12 +78,12 @@ export default function ApiDirectoryPage() {
 						<TableBody>
 							{filteredApis.map((api) => (
 								<TableRow key={api.name}>
-								<TableCell>
-									<div className="font-mono text-sm">{api.name}</div>
-									<div className="mt-0.5 font-mono text-[10px] tracking-[0.08em] text-muted-foreground">
-										{api.description}
-									</div>
-								</TableCell>
+									<TableCell>
+										<div className="font-mono text-sm">{api.name}</div>
+										<div className="mt-0.5 font-mono text-[10px] tracking-[0.08em] text-muted-foreground">
+											{api.description}
+										</div>
+									</TableCell>
 									<TableCell>
 										<Badge variant={api.auth === "No" ? "secondary" : "default"}>
 											{api.auth}
